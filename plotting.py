@@ -9,7 +9,7 @@ mpl.rc('xtick', labelsize=12)
 mpl.rc('ytick', labelsize=12)
 width = 15
 height = width/1.618 # Use the golden ratio.
-mpl.rc('figure', figsize=(width,height)) 
+mpl.rc('figure', figsize=(width,height))
 plt.style.use('ggplot') # This plot style is borrowed from R's ggplot2.
 
 # Now we want to specify where to save figures.
@@ -41,7 +41,7 @@ def plot_history(total_rewards_history, name=None):
     ax.set_xlabel('Episode Number')
     ax.set_ylabel('Total Episode Reward')
     plt.legend(df.columns.to_list(), loc='best')
-    fig_id = f'snake-agent-learning-curve-{name}' if name else 'snake-agent-learning-curve'
+    fig_id = f'learning-curve-{name}' if name else 'learning-curve'
     save_fig(fig_id)
     plt.show()
     plt.close()
