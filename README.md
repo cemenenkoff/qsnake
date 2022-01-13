@@ -1,16 +1,20 @@
 # Snake and Deep Q Reinforcement Learning
 
 This project contains the following files:
-1. **snake_env.py**
-   This is the environment that represents the snake game. If you run `python snake_env.py`, you'll be able to play snake manually with the arrow keys.
+1. **environment.py**
+
+   This is the environment that represents the snake game. If you run `python environment.py`, you'll be able to play snake manually with the arrow keys.
 ____
-2. **agent_1.py**
-   This script trains an agent to play snake via a deep Q-learning network. Running `python agent_1.py` causes the agent to autonomously train over a specified number of episodes.
+2. **agent.py**
+
+   This script trains an agent to play snake via a deep Q-learning network. Running `python agent.py` causes the agent to autonomously train over a specified number of episodes.
 ____
 3. **plotting.py**
+
    This is a supporting script that graphs some statistics about how the network was trained and the performance of the agent.
 ____
 4. **requirements.txt**
+
    After cloning this repository, run `pip install -r requirements.txt` to set up your environment. This project runs on **Python 3.9.7**, and some of the main modules utilized in this demo are **tensorflow**, **keras**, **turtle**, and **gym**.
 ____
 ## To do:
