@@ -211,7 +211,7 @@ if __name__ == '__main__':
     params['learning_rate'] = 0.00025 # Rely heavily on prior knowledge.
     params['layer_sizes'] = [128, 128, 128] # 128 nodes on each of the hidden layers.
     num_episodes = 15
-    state_definition_type = 'coordinates'
+    state_definition_type = 'default'
     # Definition types for the state space vector are:
     #   ['coordinates', 'no direction', 'no body knowledge', 'default']
     env = Snake(state_definition_type=state_definition_type)
