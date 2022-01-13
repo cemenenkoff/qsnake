@@ -29,11 +29,17 @@ def save_fig(fig_id, tight_layout=True, fig_extension='png', resolution=300):
     plt.savefig(path, format=fig_extension, dpi=resolution)
 
 def prepare_data_for_plotting(total_rewards_history, smoothing_window=5):
+    '''
+    puts the historical total rewards data into a dataframe
+    '''
     df = pd.DataFrame(total_rewards_history, columns=['Total Reward'])
     df[f'Total Reward Rolling Mean (k={smoothing_window})'] = df['Total Reward'].rolling(smoothing_window).mean()
     return df
 
 def plot_history(total_rewards_history, name=None):
+    '''
+    plots the historical total rewards data
+    '''
     df = prepare_data_for_plotting(total_rewards_history)
     fig, ax = plt.subplots(figsize=(12,8))
     ax.plot(df, '.-')
