@@ -1,6 +1,6 @@
 import random
 import numpy as np
-from snake_env import Snake # The Snake class inherits gym.Env
+from environment import Snake # The Snake class inherits gym.Env
 '''
 In deep reinforcement learning, we need to create two things:
     - an environment (the snake game universe)
