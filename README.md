@@ -17,6 +17,29 @@ ____
 
    After cloning this repository, run `pip install -r requirements.txt` to set up your environment. This project runs on **Python 3.9.7**, and some of the main modules utilized in this demo are **tensorflow**, **keras**, **turtle**, and **gym**.
 ____
+## I recommend setting this projeect in a **virtual environment**.
+#### If you are new to python programming, I'd reccomend the following steps:
+1. Download and install VS Code.
+2. Install Python 3.9.7.
+3. Install Git bash.
+4. Run `pip install venv`.
+5. Run `python -m venv <myenvname>`.
+6. Navigate to the main project folder (`<projdir>`) that contains `<myenvname>` via `cd <projdir>`.
+7. On Windows, `./<myenvname>/Scripts/activate` to activate the virtual environment.
+8. On Linux or Mac, `source <myenvname>/bin/activate` to do the same thing.
+9. Once your virtual environment is activated, close and restart your VS Code terminal.
+10. You should see a `(<myenvname>)` string above the terminal input when the environment is active.
+11. Press `Ctrl+Shift+P` to open VS Code's command palette.
+12. From the dropdown menu, click `Python: Select Interpreter`
+13. Select `Python 3.9.7 64-bit ('<myenvname>':venv)`. (It may already be selected automatically.)
+14. Run `pip list` to see a list of installed packages. It should only have 2-3 modules.
+15. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
+16. Once everything is installed, run `python environment.py` to test if you can play the game manually.
+17. Next, run `python agent.py` to see if the agent is able to play the game.
+18. Let the agent run to the end and check that **plotting.py** is able to produce a graph.
+19. Have fun reading through and playing with the code.
+20. If you are brand new to reinforcement learning, I would recommend reading through **environment.py** before **agent.py**.
+____
 ## To do:
 - Allow for several user-definable agents via **config.json** files.
 - ~~Clean up **plotting.py** and add the ability to save figures locally.~~
