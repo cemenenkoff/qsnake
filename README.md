@@ -17,8 +17,8 @@ ____
 
    After cloning this repository, run `pip install -r requirements.txt` to set up your environment. This project runs on **Python 3.9.7**, and some of the main modules utilized in this demo are **tensorflow**, **keras**, **turtle**, and **gym**.
 ____
-## I recommend setting this projeect in a **virtual environment**.
-#### If you are new to python programming, I'd reccomend the following steps:
+## I recommend setting up this project in a **virtual environment**.
+#### If you are new to python programming, I'd reccommend the following steps:
 1. Download and install VS Code.
 2. Install Python 3.9.7.
 3. Install Git bash.
