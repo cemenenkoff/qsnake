@@ -1,5 +1,13 @@
 # Snake and Deep Q Reinforcement Learning
+### Overview
+- **Reinforcement learning** is a style of machine learning that relies on past experience to develop a policy on what do to next.
+- **Deep neural networks** are used in machine learning to set up decision pathways that maximize reward (i.e. minimize loss or error).
+- **Q-learning** is a subclass of reinforcement learning that is **model-free*, meaning that it does not require a model of the environment, so it can handle problems with random transitions (e.g. the apple respawning) and rewards (e.g. 10 points for eating an apple, but -100 for eating a body chunk) alone.
 
+In this exploration, a *policy* is a strategy to win the game of snake. Q-learning finds an *optimal* policy in the sense of maximizing the expected value of the total reward over any and all steps in the game, starting from an initial state.
+
+In our implementation, our initial policy starts off as *"move randomly and hope for the best"* but changes over time to find an optimal **action-selection** policy (where the possible actions are up, down, left, and right). It's pretty neat to watch the algorithm get *"smarter"* over time.
+____
 This project contains the following files:
 1. **environment.py**
 
@@ -30,7 +38,7 @@ ____
 9. Once your virtual environment is activated, close and restart your VS Code terminal.
 10. You should see a `(<myenvname>)` string above the terminal input when the environment is active.
 11. Press `Ctrl+Shift+P` to open VS Code's command palette.
-12. From the dropdown menu, click `Python: Select Interpreter`
+12. From the dropdown menu, click `Python: Select Interpreter`.
 13. Select `Python 3.9.7 64-bit ('<myenvname>':venv)`. (It may already be selected automatically.)
 14. Run `pip list` to see a list of installed packages. It should only have 2-3 modules.
 15. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
