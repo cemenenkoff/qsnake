@@ -2,58 +2,92 @@
 ### Overview
 - **Reinforcement learning** is a style of machine learning that relies on past experience to develop a policy on what do to next.
 - **Deep neural networks** are used in machine learning to set up decision pathways that maximize reward (i.e. minimize loss or error).
-- **Q-learning** is a subclass of reinforcement learning that is **model-free*, meaning that it does not require a model of the environment, so it can handle problems with random transitions (e.g. the apple respawning) and rewards (e.g. 10 points for eating an apple, but -100 for eating a body chunk) alone.
+- **Q-learning** is a subclass of reinforcement learning that is *model-free*, meaning that it does not require a model of the environment, so it can handle problems with random transitions (e.g. the apple respawning) and rewards (e.g. 10 points for eating an apple, but -100 for eating a body chunk) alone.
 
-In this exploration, a *policy* is a strategy to win the game of snake. Q-learning finds an *optimal* policy in the sense of maximizing the expected value of the total reward over any and all steps in the game, starting from an initial state.
+In this exploration, a **policy** is a strategy to win the game of snake. Q-learning finds an *optimal* policy in the sense of maximizing the expected value of the total reward over any and all steps in the game, starting from an initial state.
 
-In our implementation, our initial policy starts off as *"move randomly and hope for the best"* but changes over time to find an optimal **action-selection** policy (where the possible actions are up, down, left, and right). It's pretty neat to watch the algorithm get *"smarter"* over time.
+In our implementation, our initial policy starts off as *"move randomly and hope for the best"* but changes over time to find an *optimal action-selection policy* (where the possible actions are up, down, left, and right). It's pretty neat to watch the algorithm get "smarter" over time.
+
 ____
+
 This project contains the following files:
-1. **environment.py**
 
-   This is the environment that represents the snake game. If you run `python environment.py`, you'll be able to play snake manually with the arrow keys.
-____
-2. **agent.py**
+1. **environment.py**  This is the environment that represents the snake game. If you run `python environment.py`, you'll be able to play snake manually with the arrow keys.
 
-   This script trains an agent to play snake via a deep Q-learning network. Running `python agent.py` causes the agent to autonomously train over a specified number of episodes.
 ____
-3. **plotting.py**
 
-   This is a supporting script that graphs some statistics about how the network was trained and the performance of the agent.
-____
-4. **requirements.txt**
+2. **agent.py**  This script trains an agent to play snake via a deep Q-learning network. Running `python agent.py` causes the agent to autonomously train over a specified number of episodes.
 
-   After cloning this repository, run `pip install -r requirements.txt` to set up your environment. This project runs on **Python 3.9.7**, and some of the main modules utilized in this demo are **tensorflow**, **keras**, **turtle**, and **gym**.
 ____
+
+3. **plotting.py**  This is a supporting script that graphs some statistics about how the network was trained and the performance of the agent.
+
+____
+
+4. **requirements.txt**  After cloning this repository, run `pip install -r requirements.txt` to set up your environment. This project runs on **Python 3.9.7**, and some of the main modules utilized in this demo are **tensorflow**, **keras**, **turtle**, and **gym**.
+
+____
+
 ## I recommend setting up this project in a **virtual environment**.
+
 #### If you are new to python programming, I'd reccommend the following steps:
+
 1. Download and install VS Code.
+
 2. Install Python 3.9.7.
+
 3. Install Git bash.
-4. Run `pip install venv`.
-5. Run `python -m venv <myenvname>`.
+
+4. Run `pip install virtualenv`.
+
+5. Run `python -m virtualenv <myenvname> --python=python3.9.7`.
+
 6. Navigate to the main project folder (`<projdir>`) that contains `<myenvname>` via `cd <projdir>`.
-7. On Windows, `./<myenvname>/Scripts/activate` to activate the virtual environment.
-8. On Linux or Mac, `source <myenvname>/bin/activate` to do the same thing.
+
+7. On Windows, run `./<myenvname>/Scripts/activate` to activate the virtual environment.
+
+8. On Linux or Mac, run `source <myenvname>/bin/activate` to do the same thing.
+
 9. Once your virtual environment is activated, close and restart your VS Code terminal.
-10. You should see a `(<myenvname>)` string above the terminal input when the environment is active.
-11. Press `Ctrl+Shift+P` to open VS Code's command palette.
+
+10. You should see a `(<myenvname>)` string next to the  terminal input when the environment is active.
+
+11. Press `Ctrl+Shift+P` (on Windows) to open VS Code's command palette.
+
 12. From the dropdown menu, click `Python: Select Interpreter`.
+
 13. Select `Python 3.9.7 64-bit ('<myenvname>':venv)`. (It may already be selected automatically.)
+
 14. Run `pip list` to see a list of installed packages. It should only have 2-3 modules.
+
 15. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
+
 16. Once everything is installed, run `python environment.py` to test if you can play the game manually.
+
 17. Next, run `python agent.py` to see if the agent is able to play the game.
+
 18. Let the agent run to the end and check that **plotting.py** is able to produce a graph.
-19. Have fun reading through and playing with the code.
+
+19. Have fun experimenting with the code.
+
 20. If you are brand new to reinforcement learning, I would recommend reading through **environment.py** before **agent.py**.
+
 ____
+
 ## To do:
+
 - Allow for several user-definable agents via **config.json** files.
+
 - ~~Clean up **plotting.py** and add the ability to save figures locally.~~
+
 - Add hyperparameter settings to the learning curve figure generated by **plotting.py**.
+
 - Expand **README.md** to include a high-level overview of how the network is trained via a **Bellman equation**.
+
 - **Allow for models to be saved.**
+
 - **Allow previously trained models to play with saved settings.**
+
 - **Allow previously trained models to play and resume training.**
+
 - Expand **plotting.py** to store a hyperparameter configuration's collection of training episodes as a gif.
