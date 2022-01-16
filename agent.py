@@ -217,4 +217,4 @@ if __name__ == '__main__':
     env = Snake(state_definition_type=state_definition_type)
     total_rewards_history = train_dqn(num_episodes, env)
     plot_name = f'{state_definition_type.replace(" ","-")}-state-{num_episodes}-ep-{params["batch_size"]}-batch'
-    plot_history(total_rewards_history, name=plot_name)
+    plot_history(total_rewards_history, name=plot_name, params=params)

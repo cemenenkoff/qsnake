@@ -2,6 +2,7 @@ import matplotlib as mpl
 from matplotlib import pyplot as plt
 from pathlib import Path
 import pandas as pd
+import json
 
 # These are global matplotlib settings to emphasize uniformity across figures
 mpl.rc('axes', labelsize=14)
@@ -36,7 +37,7 @@ def prepare_data_for_plotting(total_rewards_history, smoothing_window=5):
     df[f'Total Reward Rolling Mean (k={smoothing_window})'] = df['Total Reward'].rolling(smoothing_window).mean()
     return df
 
-def plot_history(total_rewards_history, name=None):
+def plot_history(total_rewards_history, name=None, params=None):
     '''
     plots the historical total rewards data
     '''
@@ -46,6 +47,8 @@ def plot_history(total_rewards_history, name=None):
     ax.set_title('Snake Agent Learning Curve')
     ax.set_xlabel('Episode Number')
     ax.set_ylabel('Total Episode Reward')
+    plt.text(0.5, -0.1, json.dumps(params), ha='center',
+             va='baseline', transform = ax.transAxes, size='small')
     plt.legend(df.columns.to_list(), loc='best')
     fig_id = f'learning-curve-{name}' if name else 'learning-curve'
     save_fig(fig_id)
