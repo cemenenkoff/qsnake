@@ -9,9 +9,9 @@ ____
 
 In this exploration, a _**policy**_ is a strategy to win the game of snake. Q-learning finds an *optimal* policy in the sense of maximizing the expected value of the total reward over any and all steps in the game, starting from an initial state.
 
-The agent's policy begins as *"move randomly and hope for the best"* but changes as it completes more games in efforts to find an *optimal action-selection policy* (where the possible actions are up, down, left, and right).
+The agent's policy begins as *"move randomly and hope for the best"* but changes as it completes more games in efforts to find an _**optimal action-selection policy**_ (where the possible actions are up, down, left, and right).
 
-### **_The more the agent plays, the more its random movements are replaced by policy-predicted movements._**
+### **The more the agent plays, the more its random movements are replaced by policy-predicted movements.**
 ____
 This project contains the following files:
 ____
@@ -117,9 +117,9 @@ ____
 
 22. *OPTIONAL:* Try converting the saved eps files into png and then into a gif. Note that you can do this all at once by specifying `"save_for_gif": true` and `"make_gif": true` in config.json.
 
-23. If you are brand new to reinforcement learning, I would recommend reading through **environment.py** before **agent.py**.
+23. To get a feel for the project, I would recommend reading the algorithm overview below, then **environment.py** before **agent.py**.
 ____
-## [Bellman Equation](https://en.wikipedia.org/wiki/Bellman_equation)
+## [What is a Bellman equation?](https://en.wikipedia.org/wiki/Bellman_equation)
 ![equation](/example_output/bellman.png)
 
 What's shown above is an [algorithmic solution to a Bellman equation](https://en.wikipedia.org/wiki/Q-learning#Algorithm) using value iteration (also known as backward induction). The linked article is very well-written, but here's a summary:
