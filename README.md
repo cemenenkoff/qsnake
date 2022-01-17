@@ -118,7 +118,7 @@ ____
 23. If you are brand new to reinforcement learning, I would recommend reading through **environment.py** before **agent.py**.
 ____
 ## [Bellman Equation](https://en.wikipedia.org/wiki/Bellman_equation)
-![equation](/example_output/bellman-equation.png)
+![equation](/example_output/bellman.png)
 
 What's shown above is an [algorithmic solution to a Bellman equation](https://en.wikipedia.org/wiki/Q-learning#Algorithm) using value iteration (also known as backward induction). The linked article is very well-written, but here's a summary:
 
