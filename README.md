@@ -1,4 +1,5 @@
 # Snake and Deep Q Reinforcement Learning
+### Each time the snake eats the apple, it grows by one chunk. The game ends if the snake head hits a wall or its own body.
 ![training montage](/example_output/training-montage.gif)
 ![learning curve](/example_output/learning-curve.png)
 ## Overview
