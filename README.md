@@ -1,25 +1,27 @@
 # Snake and Deep Q Reinforcement Learning
 ![training montage](/example_output/training-montage-default-50ep-256batch.gif)
 ![learning curve](/example_output/learning-curve-default-50ep-256batch.png)
-### Overview
+## Overview
 ____
-- **REINFORCEMENT LEARNING** is a style of machine learning that relies on past experience to develop a policy on what do to next.
-- **DEEP NEURAL NETWORKS** are used in machine learning to set up decision pathways that maximize reward (i.e. minimize loss or error).
-- **Q-LEARNING** is a subclass of reinforcement learning that is *model-free*, meaning that it does not require a model of the environment in which it operates. Given a reward structure (e.g. 10 points for eating an apple, but -100 for eating a body chunk), Q-learning can handle problems with inherent randomness (e.g. the apple respawning).
+- _**REINFORCEMENT LEARNING**_ is a style of machine learning that relies on past experience to develop a policy on what do to next.
+- _**DEEP NEURAL NETWORKS**_ are used in machine learning to set up decision pathways that maximize reward (i.e. minimize loss or error).
+- _**Q-LEARNING**_ is a subclass of reinforcement learning that is *model-free*, meaning that it does not require a model of the environment in which it operates. Given a reward structure (e.g. 10 points for eating an apple, but -100 for eating a body chunk), Q-learning can handle problems with inherent randomness (e.g. the apple respawning).
 
-In this exploration, a **policy** is a strategy to win the game of snake. Q-learning finds an *optimal* policy in the sense of maximizing the expected value of the total reward over any and all steps in the game, starting from an initial state.
+In this exploration, a _**policy**_ is a strategy to win the game of snake. Q-learning finds an *optimal* policy in the sense of maximizing the expected value of the total reward over any and all steps in the game, starting from an initial state.
 
-The agent's policy begins as *"move randomly and hope for the best"* but changes as it completes more games in efforts to find an *optimal action-selection policy* (where the possible actions are up, down, left, and right). **_The more times the agent is able to play, the more its random movements are replaced by policy-predicted movements._**
+The agent's policy begins as *"move randomly and hope for the best"* but changes as it completes more games in efforts to find an *optimal action-selection policy* (where the possible actions are up, down, left, and right).
+
+### **_The more the agent plays, the more its random movements are replaced by policy-predicted movements._**
 ____
 This project contains the following files:
 ____
 **explore.py**
 
-After everything is set up, running `python explore.py -c config.json` is the main way to interface with this project. User options like where to store output, whether to save images, build a gif, and also hyperparameters for the learning agent are all specified in **config.json**.
+>After everything is set up, running `python explore.py -c config.json` is the main way to interface with this project. User options like where to store output, whether to save images, build a gif, and also hyperparameters for the learning agent are all specified in **config.json**.
 ____
 **config.json**
 
-This configuration file defines how the script should run. All of the keys in the default configuration included below are required along with their example data types.
+>This configuration file defines how the script should run. All of the keys in the default configuration included below are required along with their example data types.
 
 ```yaml
 {
@@ -44,7 +46,7 @@ This configuration file defines how the script should run. All of the keys in th
 ____
 **requirements.txt**
 
-After cloning this repository (and hopefully setting up a virtual environment), run `pip install -r requirements.txt` to install all necessary dependencies. This project runs on **Python 3.9.7**, and some of the main modules utilized in this demo are **tensorflow**, **keras**, **turtle**, and **gym**.
+>After cloning this repository (and hopefully setting up a virtual environment), run `pip install -r requirements.txt` to install all necessary dependencies. This project runs on **Python 3.9.7**, and some of the main modules utilized in this demo are **tensorflow**, **keras**, **turtle**, and **gym**.
 ____
 **environment.py**
 
@@ -124,13 +126,13 @@ What's shown above is an [algorithmic solution to a Bellman equation](https://en
 
 ### **Q is a function that computes expected rewards for an action taken in a given state.**
 It has a few hyperparameters, but two are especially important:
-1. The **learning rate**, α, where α ∈ (0,1]. The learning rate determines to what extent newly acquired information overrides old information. A factor of 0 makes the agent exclusively use prior knowledge, whereas 1 makes it consider only the most recent data. In deterministic environments, a value of 1 is optimal, but when there is randomness involved, it needs to eventually decrease to zero. In practice however, using a constant learning rate works just fine.
-2. The **discount factor**, γ, where γ ∈ [0,1]. The discount factor determines the importance of future rewards. 0 makes the agent short-sighted, whereas 1 makes it strive for a long-term, larger reward. Starting with a small discount factor and increasing it toward a final value over time tends to accelerate learning.
+1. The _**learning rate**_, α, where α ∈ (0,1]. The learning rate determines to what extent newly acquired information overrides old information. A factor of 0 makes the agent exclusively use prior knowledge, whereas 1 makes it consider only the most recent data. In deterministic environments, a value of 1 is optimal, but when there is randomness involved, it needs to eventually decrease to zero. In practice however, using a constant learning rate works just fine.
+2. The _**discount factor**_, γ, where γ ∈ [0,1]. The discount factor determines the importance of future rewards. 0 makes the agent short-sighted, whereas 1 makes it strive for a long-term, larger reward. Starting with a small discount factor and increasing it toward a final value over time tends to accelerate learning.
 
 ### The reward value generated by **Q is the sum of three factors**:
-1. The **current value** weighted by the learning rate. Changes in Q become more rapid as the learning rate approaches 1.
-2. The **reward to earn via the proposed action** in the current state, weighted by the learning rate.
-3. The **max possible reward** from the next state, weighted by the learning rate and discount factor.
+1. The _**current value**_ weighted by the learning rate. Changes in Q become more rapid as the learning rate approaches 1.
+2. The _**reward to earn via the proposed action**_ in the current state, weighted by the learning rate.
+3. The _**max possible reward**_ from the next state, weighted by the learning rate and discount factor.
 ____
 ## To do:
 
