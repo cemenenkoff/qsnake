@@ -77,7 +77,7 @@ ____
 
 3. Install Git bash.
 
-4. *OPTIONAL*: If you want to utilize the gif-making supporting scripts, install Ghostscript and note the path of the binary. You will need to change a line in the preamble of **gif_creator.py** to specify where the binary is located.
+4. *OPTIONAL:* If you want to utilize the gif-making supporting scripts, install Ghostscript and note the path of the binary. You will need to change a line in the preamble of **gif_creator.py** to specify where the binary is located.
 
 5. From the Git bash shell, run `pip install virtualenv` to install the `virtualenv` module.
 
@@ -111,9 +111,9 @@ ____
 
 20. Play with a few settings in config.json and re-run `python explore.py` to see how the changes affect the agent's behavior.
 
-21. OPTIONAL: If you were bold enough to install Ghostscript, try saving game frames as eps files.
+21. *OPTIONAL:* If you were bold enough to install Ghostscript, try saving game frames as eps files.
 
-22. OPTIONAL: Try converting the saved eps files into png and then into a gif. Note that you can do this all at once by specifying `"save_for_gif": true` and `"make_gif": true` in config.json.
+22. *OPTIONAL:* Try converting the saved eps files into png and then into a gif. Note that you can do this all at once by specifying `"save_for_gif": true` and `"make_gif": true` in config.json.
 
 23. If you are brand new to reinforcement learning, I would recommend reading through **environment.py** before **agent.py**.
 ____
