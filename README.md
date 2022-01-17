@@ -1,5 +1,8 @@
 # Snake and Deep Q Reinforcement Learning
+![](/example_output/test.gif)
+![learning curve](/example_output/learning-curve-default-50ep-256batch.png)
 ### Overview
+____
 - **Reinforcement learning** is a style of machine learning that relies on past experience to develop a policy on what do to next.
 - **Deep neural networks** are used in machine learning to set up decision pathways that maximize reward (i.e. minimize loss or error).
 - **Q-learning** is a subclass of reinforcement learning that is *model-free*, meaning that it does not require a model of the environment in which it operates. Given a reward structure (e.g. 10 points for eating an apple, but -100 for eating a body chunk), Q-learning can handle problems with inherent randomness (e.g. the apple respawning).
@@ -16,7 +19,7 @@ After everything is set up, running `python explore.py -c config.json` is the ma
 ____
 **config.json**
 
-This configuration file defines how the script should run. All of the keys in the example below are required along with their example data types.
+This configuration file defines how the script should run. All of the keys in the default configuration included below are required along with their example data types.
 
 ```yaml
 {
