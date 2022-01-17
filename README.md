@@ -122,7 +122,8 @@ ____
 
 What's shown above is an [algorithmic solution to a Bellman equation](https://en.wikipedia.org/wiki/Q-learning#Algorithm) using value iteration (also known as backward induction). The linked article is very well-written, but here's a summary:
 
-### **Q is a function that computes expected rewards for an action taken in a given state**. It has a few hyperparameters, but two are especially important:
+### **Q is a function that computes expected rewards for an action taken in a given state.**
+It has a few hyperparameters, but two are especially important:
 1. The **learning rate**, α, where α ∈ (0,1]. The learning rate determines to what extent newly acquired information overrides old information. A factor of 0 makes the agent exclusively use prior knowledge, whereas 1 makes it consider only the most recent data. In deterministic environments, a value of 1 is optimal, but when there is randomness involved, it needs to eventually decrease to zero. In practice however, using a constant learning rate works just fine.
 2. The **discount factor**, γ, where γ ∈ [0,1]. The discount factor determines the importance of future rewards. 0 makes the agent short-sighted, whereas 1 makes it strive for a long-term, larger reward. Starting with a small discount factor and increasing it toward a final value over time tends to accelerate learning.
 
