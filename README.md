@@ -107,7 +107,7 @@ ____
 
 17. Once everything is installed, run `python explore.py -c config.json` to test if you can play the game manually.
 
-18. Next, change specify `"human": true run` in config.json, save it, and then run  `python explore.py -c config.json` again, this time to see if the agent is able to play the game.
+18. Next, specify `"human": true run` in config.json, save it, and then run  `python explore.py -c config.json` again, this time to see if the agent is able to play the game.
 
 19. Let the agent run to the end and check that **plotting.py** is able to produce a graph of the agent's learning curve.
 
