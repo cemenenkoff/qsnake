@@ -3,3 +3,4 @@ __pycache__
 snakeenv
 figures
 models
+tests

@@ -7,25 +7,54 @@
 In this exploration, a **policy** is a strategy to win the game of snake. Q-learning finds an *optimal* policy in the sense of maximizing the expected value of the total reward over any and all steps in the game, starting from an initial state.
 
 The agent's policy begins as *"move randomly and hope for the best"* but changes as it completes more games in efforts to find an *optimal action-selection policy* (where the possible actions are up, down, left, and right). The more times the agent is able to play, the more its random movements are replaced by the continually developing policy.
-
 ____
-
 This project contains the following files:
-
-1. **environment.py**  This is the environment that represents the snake game. If you run `python environment.py`, you'll be able to play snake manually with the arrow keys.
-
 ____
+**config.json**
 
-2. **agent.py**  This script trains an agent to play snake via a deep Q-learning network. Running `python agent.py` causes the agent to autonomously train over a specified number of episodes.
+This configuration file defines how the script should run. All of the keys in
+the example below are required along with their example data types.
 
+```yaml
+{
+    "project_root_dir": ".",
+    "human": false,
+    "name": "nick",
+    "save_for_gif": false,
+    "make_gif": false,
+    "params":{
+        "epsilon": 1,
+        "gamma": 0.95,
+        "batch_size": 256,
+        "epsilon_min": 0.001,
+        "epsilon_decay": 0.98,
+        "learning_rate": 0.00025,
+        "layer_sizes": [128, 128, 128],
+        "num_episodes": 15,
+        "state_definition_type": "default"
+    }
+}
+```
 ____
+**explore.py**
 
-3. **plotting.py**  This is a supporting script that graphs some statistics about how the network was trained and the performance of the agent.
-
+Running `python explore.py -c config.json` gets things going.
 ____
+**requirements.txt**
 
-4. **requirements.txt**  After cloning this repository, run `pip install -r requirements.txt` to set up your environment. This project runs on **Python 3.9.7**, and some of the main modules utilized in this demo are **tensorflow**, **keras**, **turtle**, and **gym**.
+After cloning this repository, run `pip install -r requirements.txt` to set up your environment. This project runs on **Python 3.9.7**, and some of the main modules utilized in this demo are **tensorflow**, **keras**, **turtle**, and **gym**.
+____
+**environment.py**
 
+This is the environment that represents the snake game.
+____
+**agent.py**
+
+This script trains an agent to play snake via a deep Q-learning network.
+____
+**plotting.py**
+
+This is a supporting script that graphs some statistics about how the network was trained and the performance of the agent.
 ____
 
 ## I recommend setting up this project in a **virtual environment**.
@@ -38,45 +67,47 @@ ____
 
 3. Install Git bash.
 
-4. Run `pip install virtualenv`.
+4. OPTIONAL: If you want to utilize the `"save_for_gif"` and `"make_gif"` options in the main config, install Ghostscript and note the path of the binary. You will need to change a line in the preamble of **gif_creator.py**.
 
-5. Run `python -m virtualenv <myenvname> --python=python3.9.7`.
+5. Run `pip install virtualenv`.
 
-6. Navigate to the main project folder that contains `<myenvname>` via `cd <projdir>`.
+6. Run `python -m virtualenv <myenvname> --python=python3.9.7`.
 
-7. On Windows, run `./<myenvname>/Scripts/activate` to activate the virtual environment.
+7. Navigate to the main project folder that contains `<myenvname>` via `cd <projdir>`.
 
-8. On Linux or Mac (or if prompted), run `source <myenvname>/bin/activate` to do the same thing.
+8. On Windows, run `./<myenvname>/Scripts/activate` to activate the virtual environment.
 
-9. Once your virtual environment is activated, close and restart your VS Code terminal.
+9.  On Linux or Mac (or if prompted), run `source <myenvname>/bin/activate` to do the same thing.
 
-10. You should see a `(<myenvname>)` string next to the  terminal input when the environment is active.
+10. Once your virtual environment is activated, close and restart your VS Code terminal.
 
-11. Press `Ctrl+Shift+P` (on Windows) to open VS Code's command palette.
+11. You should see a `(<myenvname>)` string next to the  terminal input when the environment is active.
 
-12. From the dropdown menu, click `Python: Select Interpreter`.
+12. Press `Ctrl+Shift+P` (on Windows) to open VS Code's command palette.
 
-13. Select `Python 3.9.7 64-bit ('<myenvname>':venv)` (it may already be selected automatically).
+13. From the dropdown menu, click `Python: Select Interpreter`.
 
-14. Run `pip list` to see a list of installed packages. It should only have two modules.
+14. Select `Python 3.9.7 64-bit ('<myenvname>':venv)` (it may already be selected automatically).
 
-15. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
+15. Run `pip list` to see a list of installed packages. It should only have two modules.
 
-16. Once everything is installed, run `python environment.py` to test if you can play the game manually.
+16. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
 
-17. Next, run `python agent.py` to see if the agent is able to play the game.
+17. Once everything is installed, run `python environment.py` to test if you can play the game manually.
 
-18. Let the agent run to the end and check that **plotting.py** is able to produce a graph.
+18. Next, run `python agent.py` to see if the agent is able to play the game.
 
-19. Have fun experimenting with the code.
+19. Let the agent run to the end and check that **plotting.py** is able to produce a graph.
 
-20. If you are brand new to reinforcement learning, I would recommend reading through **environment.py** before **agent.py**.
+20. Have fun experimenting with the code.
+
+21. If you are brand new to reinforcement learning, I would recommend reading through **environment.py** before **agent.py**.
 
 ____
 
 ## To do:
 
-- Allow for several user-definable agents via **config.json** files.
+- ~~Allow for several user-definable agents via **config.json** files.~~
 
 - ~~Clean up **plotting.py** and add the ability to save figures locally.~~
 
@@ -90,4 +121,4 @@ ____
 
 - **Allow previously trained models to play and resume training.**
 
-- Expand **plotting.py** to store a hyperparameter configuration's collection of training episodes as a gif.
+- ~~Expand **plotting.py** to store a hyperparameter configuration's collection of training episodes as a gif.~~
