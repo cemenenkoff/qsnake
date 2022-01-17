@@ -1,7 +1,7 @@
 from agent import train_dqn
 from environment import Snake
 from plotting import plot_history
-from gif_creator import make_gif
+from gif_creator import GifBuilder
 from pathlib import Path
 from argparse import ArgumentParser
 from datetime import datetime
@@ -60,9 +60,8 @@ def check_config(config:dict):
                 print(f'ERROR: missing required key {k}')
                 sys.exit(1)
             except ValueError:
-                print(f'ERROR: {k} is currently {type(k)} and should be {v}')
+                print(f'ERROR: {k} is currently {type(subdict[k])} and should be {v}')
                 sys.exit(1)
-
     return config
 
 def main():
@@ -79,34 +78,35 @@ def main():
     state_def = params["state_definition_type"]
     params_str = f'{state_def}-{num_ep}ep-{bat_sz}batch'
     instance_folder = f'{ts}-{params_str}'
-
-    # If specified, create folders to store the eps files for a gif.
     name = config['name']
     if isinstance(name, str) and name:
         instance_folder = f'{name}-{instance_folder}'
+
     if config['save_for_gif']:
+        # If wanted, create folders to store the eps files for gif creation.
         eps_dir = figures_dir/instance_folder/'gif-build'/'eps'
         config['eps_dir'] = eps_dir
         eps_dir.mkdir(exist_ok=True, parents=True)
 
     env = Snake(config)
+    # If we are just playing the game, no folders should be created.
     if config['human']:
         while True:
             env.run_game()
+
     if not config['human']:
         history = train_dqn(env, params)
-        # Create a directory to store our learning curve graph.
-        plot_name = f'learning-curve-{params_str}.png'
+        # If an agent plays, create a folder to store our learning curve graph.
         instance_dir = figures_dir/instance_folder
         instance_dir.mkdir(exist_ok=True, parents=True)
+        plot_name = f'learning-curve-{params_str}.png'
         plot_history(history, outpath=instance_dir/plot_name, params=params)
     if config['make_gif']:
-        # Create a directory to store our png files when they convert from eps.
         png_dir = eps_dir.parent/'png'
-        png_dir.mkdir(exist_ok=True, parents=True)
-        config['png_dir'] = png_dir
         gif_name = f'training-montage-{params_str}.gif'
-        make_gif(eps_dir, png_dir, outpath=instance_dir/gif_name)
+        bob_the_builder = GifBuilder(config['eps_dir'], png_dir)
+        bob_the_builder.convert_eps_files()
+        bob_the_builder.make_gif(outpath=figures_dir/instance_folder/gif_name)
 
 if __name__ == '__main__':
     main()

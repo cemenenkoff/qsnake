@@ -6,20 +6,23 @@
 
 In this exploration, a **policy** is a strategy to win the game of snake. Q-learning finds an *optimal* policy in the sense of maximizing the expected value of the total reward over any and all steps in the game, starting from an initial state.
 
-The agent's policy begins as *"move randomly and hope for the best"* but changes as it completes more games in efforts to find an *optimal action-selection policy* (where the possible actions are up, down, left, and right). The more times the agent is able to play, the more its random movements are replaced by the continually developing policy.
+The agent's policy begins as *"move randomly and hope for the best"* but changes as it completes more games in efforts to find an *optimal action-selection policy* (where the possible actions are up, down, left, and right). **_The more times the agent is able to play, the more its random movements are replaced by policy-predicted movements._**
 ____
 This project contains the following files:
 ____
+**explore.py**
+
+After everything is set up, running `python explore.py -c config.json` is the main way to interface with this project. User options like where to store output, whether to save images, build a gif, and also hyperparameters for the learning agent are all specified in **config.json**.
+____
 **config.json**
 
-This configuration file defines how the script should run. All of the keys in
-the example below are required along with their example data types.
+This configuration file defines how the script should run. All of the keys in the example below are required along with their example data types.
 
 ```yaml
 {
     "project_root_dir": ".",
     "human": false,
-    "name": "nick",
+    "name": "test",
     "save_for_gif": false,
     "make_gif": false,
     "params":{
@@ -36,17 +39,13 @@ the example below are required along with their example data types.
 }
 ```
 ____
-**explore.py**
-
-Running `python explore.py -c config.json` gets things going.
-____
 **requirements.txt**
 
-After cloning this repository, run `pip install -r requirements.txt` to set up your environment. This project runs on **Python 3.9.7**, and some of the main modules utilized in this demo are **tensorflow**, **keras**, **turtle**, and **gym**.
+After cloning this repository (and hopefully setting up a virtual environment), run `pip install -r requirements.txt` to install all necessary dependencies. This project runs on **Python 3.9.7**, and some of the main modules utilized in this demo are **tensorflow**, **keras**, **turtle**, and **gym**.
 ____
 **environment.py**
 
-This is the environment that represents the snake game.
+This environment class inherits gym.Env and represents our snake game.
 ____
 **agent.py**
 
@@ -55,6 +54,14 @@ ____
 **plotting.py**
 
 This is a supporting script that graphs some statistics about how the network was trained and the performance of the agent.
+____
+**gif_creator.py**
+
+This is a supporting class can convert saved eps files into png files and then png files into an animated gif. *Using this class requires a separate installation of Ghostscript!*
+____
+**make_gif_from_images.py**
+
+This small script allows for converting already-saved eps or png image files into a gif without having to re-run the game. Again, *using this script requires a separate installation of Ghostscript!*
 ____
 
 ## I recommend setting up this project in a **virtual environment**.
@@ -67,21 +74,21 @@ ____
 
 3. Install Git bash.
 
-4. OPTIONAL: If you want to utilize the `"save_for_gif"` and `"make_gif"` options in the main config, install Ghostscript and note the path of the binary. You will need to change a line in the preamble of **gif_creator.py**.
+4. *OPTIONAL*: If you want to utilize the gif-making supporting scripts, install Ghostscript and note the path of the binary. You will need to change a line in the preamble of **gif_creator.py** to specify where the binary is located.
 
-5. Run `pip install virtualenv`.
+5. From the Git bash shell, run `pip install virtualenv` to install the `virtualenv` module.
 
-6. Run `python -m virtualenv <myenvname> --python=python3.9.7`.
+6. Run `python -m virtualenv <myenvname> --python=python3.9.7` to create a virtual environment that runs on Python 3.9.7.
 
-7. Navigate to the main project folder that contains `<myenvname>` via `cd <projdir>`.
+7. In your shell, navigate to the main project folder that contains `<myenvname>` via `cd <projdir>`. You can confirm the environment folder exists with a quick `ls -la` command.
 
 8. On Windows, run `./<myenvname>/Scripts/activate` to activate the virtual environment.
 
-9.  On Linux or Mac (or if prompted), run `source <myenvname>/bin/activate` to do the same thing.
+9.  On Linux or Mac (or if prompted by Git bash), run `source <myenvname>/bin/activate` to do the same thing.
 
 10. Once your virtual environment is activated, close and restart your VS Code terminal.
 
-11. You should see a `(<myenvname>)` string next to the  terminal input when the environment is active.
+11. You should see a `(<myenvname>)` string next to the terminal input when the environment is active.
 
 12. Press `Ctrl+Shift+P` (on Windows) to open VS Code's command palette.
 
@@ -93,15 +100,19 @@ ____
 
 16. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
 
-17. Once everything is installed, run `python environment.py` to test if you can play the game manually.
+17. Once everything is installed, run `python explore.py -c config.json` to test if you can play the game manually.
 
-18. Next, run `python agent.py` to see if the agent is able to play the game.
+18. Next, change specify `"human": true run` in config.json, save it, and then run  `python explore.py -c config.json` again, this time to see if the agent is able to play the game.
 
-19. Let the agent run to the end and check that **plotting.py** is able to produce a graph.
+19. Let the agent run to the end and check that **plotting.py** is able to produce a graph of the agent's learning curve.
 
-20. Have fun experimenting with the code.
+20. Play with a few settings in config.json and re-run `python explore.py` to see how the changes affect the agent's behavior.
 
-21. If you are brand new to reinforcement learning, I would recommend reading through **environment.py** before **agent.py**.
+21. OPTIONAL: If you were bold enough to install Ghostscript, try saving game frames as eps files.
+
+22. OPTIONAL: Try converting the saved eps files into png and then into a gif. Note that you can do this all at once by specifying `"save_for_gif": true` and `"make_gif": true` in config.json.
+
+23. If you are brand new to reinforcement learning, I would recommend reading through **environment.py** before **agent.py**.
 
 ____
 

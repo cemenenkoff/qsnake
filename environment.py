@@ -7,6 +7,9 @@ import sys
 from pathlib import Path
 
 class Snake(gym.Env):
+    '''
+    a game environment where a user (or AI agent) can play Snake
+    '''
     FONT_FAM = 'Courier'
     FONT_SIZE = 18
     FONT_ALIGN = 'center'

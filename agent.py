@@ -45,15 +45,18 @@ class DQN:
         self.gamma = params['gamma'] # the discount factor for future rewards (0 is short-sighted; 1 is long-sighted)
         '''
         An important note on batch_size:
-        The number of training examples used in the estimate of the error gradient
-        is a hyperparameter for the learning algorithm called the "batch size" or simply the "batch".
+        The number of training examples used in the estimate of the error
+        gradient is a hyperparameter for the learning algorithm called the
+        "batch size" or simply the "batch".
 
-        The error gradient is a statistical estimate. The more training examples used in the estimate,
-        the more accurate this estimate will be and the more likely that the weights of the network
-        will be adjusted in a way that will improve the performance of the model.
+        The error gradient is a statistical estimate. The more training examples
+        used in the estimate, the more accurate this estimate will be and the
+        more likely that the weights of the network will be adjusted in a way
+        that will improve the performance of the model.
 
-        The improved estimate of the error gradient comes at the cost of having to use the model
-        to make many more predictions before the estimate can be calculated, and in turn, the weights updated.
+        The improved estimate of the error gradient comes at the cost of having
+        to use the model to make many more predictions before the estimate can
+        be calculated, and in turn, the weights updated.
         '''
         self.batch_size = params['batch_size']
         self.epsilon_min = params['epsilon_min'] # the minimum ratio of time steps we'd like the agent to move randomly vs in a predicted direction
@@ -65,12 +68,14 @@ class DQN:
 
     def build_model(self):
         '''
-        builds a neural network of dense layers consisting of an input layer, 3 hidden layers, and an output layer
+        builds a neural network of dense layers consisting of an input layer,
+        3 hidden layers, and an output layer
         '''
         model = Sequential()
         for i, layer_size in enumerate(self.layer_sizes):
             if i == 0: # The input layer's shape (i.e. number of nodes) is defined by the dimension of the state space.
-                model.add(Dense(layer_size, input_shape=(self.state_space,), activation='relu'))
+                model.add(Dense(layer_size, input_shape=(self.state_space,),
+                                activation='relu'))
             else: # The three hidden layers will have an integer number of nodes.
                 model.add(Dense(layer_size, activation='relu'))
                 # Recall that the Rectified Linear Unit (ReLU) activation
@@ -88,21 +93,26 @@ class DQN:
 
     def remember(self, state, action, reward, next_state, done):
         '''
-        adds the current state, next state, proposed action, total reward, and whether we are done in
-        the agent's running memory buffer (deque) of states
+        adds the current state, next state, proposed action, total reward, and
+        whether we are done in the agent's running memory buffer (deque) of
+        states
         '''
         self.memory.append((state, action, reward, next_state, done))
 
 
     def act(self, state):
         '''
-        moves in a random direction or the direction predicted to give the best reward outcome
+        moves in a random direction or the direction predicted to give the best
+        reward outcome
         '''
-        if np.random.rand() <= self.epsilon: # If we are under the explore threshold parameter,
-            return random.randrange(self.action_space) # move in a random direction.
-        # Otherwise, move in the direction which maximizes the probability of a large reward.
-        act_values = self.model.predict(state) # e.g. [[0.08789534, 0.8699538 , 0.03103394, 0.01111698]]
-                                               #           0:up      1:down      2:left      3:right
+        # If we are under the explore threshold parameter, move in a random
+        # direction, otherwise move in the direction which maximizes the
+        # probability of a larger total reward.
+        if np.random.rand() <= self.epsilon:
+            return random.randrange(self.action_space)
+        act_values = self.model.predict(state)
+        # e.g. [[0.08789534, 0.8699538 , 0.03103394, 0.01111698]]
+        #           0:up      1:down      2:left      3:right
         return np.argmax(act_values[0])
 
     '''
@@ -146,48 +156,57 @@ class DQN:
     propagated through the network before the weights can be updated.
     '''
     def replay(self):
-        if len(self.memory) < self.batch_size: # If we haven't conducted enough samples for a training batch,
-            return # go collect more samples.
+        '''
+        retrains the DQN
+        '''
+         # Collect more samples if we don't have  enough for a training batch.
+        if len(self.memory) < self.batch_size:
+            return
 
-        # If we have enough samples for a learning batch...
-        minibatch = random.sample(self.memory, self.batch_size) # Get a batch_size'd random sample from the working memory buffer.
+        # Get a batch_size'd random sample from the working memory buffer.
+        minibatch = random.sample(self.memory, self.batch_size)
         states = np.array([memory[0] for memory in minibatch])
         actions = np.array([memory[1] for memory in minibatch])
         rewards = np.array([memory[2] for memory in minibatch])
         next_states = np.array([memory[3] for memory in minibatch])
         dones = np.array([memory[4] for memory in minibatch])
-        states = np.squeeze(states) # Convert the state vectors from 1x12 matrices to 12-element arrays.
+        # Convert the state vectors from 1x12 matrices to 12-element arrays.
+        states = np.squeeze(states)
         next_states = np.squeeze(next_states)
 
-        # The core of this algorithm is a Bellman equation as a simple value iteration update,
-        # using the weighted average of the old value and the new information.
+        # The core of this algorithm is a Bellman equation as a simple value
+        # iteration update, using the weighted average of the old value and the
+        # new information.
         targets = rewards + self.gamma*(np.amax(self.model.predict_on_batch(next_states), axis=1))*(1-dones)
         targets_full = self.model.predict_on_batch(states)
-
         ind = np.arange(self.batch_size)
         targets_full[[ind], [actions]] = targets
 
         self.model.fit(states, targets_full, epochs=1, verbose=0)
-        if self.epsilon > self.epsilon_min: # If our random exploration parameter is greater than the minimum
-            self.epsilon *= self.epsilon_decay # attenuate it just a bit.
+        # Attenuate the random exploration parameter as the model learns.
+        if self.epsilon > self.epsilon_min:
+            self.epsilon *= self.epsilon_decay
 
 def train_dqn(env, params):
     history = []
     agent = DQN(env, params)
     for episode_num in range(params['num_episodes']):
         state = env.reset()
-        state = np.reshape(state, (1, env.state_space)) # Convert the initial state to a 1x12 matrix.
+        # Convert the initial state to a 1x12 matrix.
+        state = np.reshape(state, (1, env.state_space))
         total_reward = 0
         max_steps = 10000
         for step_num in range(max_steps):
             action = agent.act(state)
             prev_state = state
-            next_state, reward, done, info = env.step(action, episode_num, step_num) # This is where the agent moves.
+            # The step method allows the agent to move the snake.
+            next_state, reward, done, info = env.step(action, episode_num, step_num)
             total_reward += reward
             next_state = np.reshape(next_state, (1, env.state_space))
             agent.remember(state, action, reward, next_state, done)
             state = next_state
-            if agent.batch_size > 1: # This agent doesn't perform online/stochastic gradient descent (i.e. batch_size=1) for now.
+            # We can include online gradient descent (i.e. batch_size=1) later.
+            if agent.batch_size > 1:
                 agent.replay()
             if done:
                 print(f'{str(prev_state)} {total_reward:<5} ({episode_num+1:>3}/{params["num_episodes"]:<3})')
