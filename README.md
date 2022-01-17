@@ -62,7 +62,7 @@ ____
 ____
 **gif_creator.py**
 
->This is a supporting class can convert saved eps files into png files and then png files into an animated gif. *Using this class requires a separate installation of Ghostscript!*
+>This supporting class can convert saved eps files into png files and then png files into an animated gif. *Using this class requires a separate installation of Ghostscript!*
 ____
 **make_gif_from_images.py**
 
