@@ -5,7 +5,7 @@ from pathlib import Path
 # to loop through the saved eps files and turn them into an animated gif.
 
 figures_dir = Path(r".\figures")
-instance_folder = 'gif-attempt-1-SunJan16-212029-default-50ep-256batch'
+instance_folder = 'test-animation-2-MonJan17-095750-default-50ep-256batch'
 instance_dir = figures_dir/instance_folder
 
 config = {

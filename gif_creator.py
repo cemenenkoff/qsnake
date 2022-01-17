@@ -44,7 +44,7 @@ class GifBuilder:
             # is the max for what most web browsers support. Image viewers like
             # IrfanView can play gifs up to 100fps.
             im.save(outpath, save_all=True, append_images=image_list,
-                    duration=20)
+                    duration=20, loop=0) # 0 makes the gif loop infinitely.
         except Exception as e:
             print(f'ERROR: gif creation failed: {e}')
         print(f'gif exported to {outpath}')

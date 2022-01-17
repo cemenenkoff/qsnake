@@ -1,6 +1,6 @@
 # Snake and Deep Q Reinforcement Learning
-![training montage](/example_output/training-montage-default-50ep-256batch.gif)
-![learning curve](/example_output/learning-curve-default-50ep-256batch.png)
+![training montage](/example_output/training-montage.gif)
+![learning curve](/example_output/learning-curve.png)
 ## Overview
 ____
 - _**REINFORCEMENT LEARNING**_ is a style of machine learning that relies on past experience to develop a policy on what do to next.
