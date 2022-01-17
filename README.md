@@ -1,5 +1,5 @@
 # Snake and Deep Q Reinforcement Learning
-![](/example_output/test.gif)
+![training montage](/example_output/training-montage-default-50ep-256batch.gif)
 ![learning curve](/example_output/learning-curve-default-50ep-256batch.png)
 ### Overview
 ____

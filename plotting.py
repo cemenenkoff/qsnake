@@ -21,19 +21,21 @@ def save_fig(outpath, tight_layout=True, resolution=300):
         plt.tight_layout()
     plt.savefig(outpath, dpi=resolution)
 
-def prepare_data_for_plotting(history, smoothing_window=5):
+def prepare_data_for_plotting(history, window_len=5):
     '''
     puts the historical total rewards data into a dataframe
     '''
     df = pd.DataFrame(history, columns=['Total Reward'])
-    df[f'Total Reward Rolling Mean (k={smoothing_window})'] = df['Total Reward'].rolling(smoothing_window).mean()
+    df[f'Total Reward Rolling Mean (k={window_len})'] =\
+        df['Total Reward'].rolling(window_len).mean()
     return df
 
 def plot_history(history, outpath=None, params=None):
     '''
     plots the historical total rewards data
     '''
-    df = prepare_data_for_plotting(history)
+    window_len = max(int(params.get('num_episodes')/5), 5)
+    df = prepare_data_for_plotting(history, window_len=window_len)
     fig, ax = plt.subplots(figsize=(12,8))
     ax.plot(df, '.-')
     ax.set_title('Snake Agent Learning Curve')

@@ -18,9 +18,11 @@ class GifBuilder:
         im.close()
 
     def convert_eps_files(self):
-        if not self.png_dir.exists:
+        if not self.png_dir.exists():
             self.png_dir.mkdir(parents=True)
-        for eps_fpath in tqdm(self.eps_dir.glob('*.eps')):
+        eps_fpaths = [eps_fpath for eps_fpath in self.eps_dir.glob('*.eps')]
+        print('converting eps files to png (this may take some time)')
+        for eps_fpath in tqdm(eps_fpaths):
             self._eps2png(Path(eps_fpath))
 
     def make_gif(self, outpath:Path=Path.cwd()/'training_montage.gif'):
@@ -33,15 +35,14 @@ class GifBuilder:
             keep = temp.copy()
             image_list.append(keep)
             temp.close()
-        if outpath!=Path.cwd()/'training_montage.gif':
+        if not outpath.exists():
             outpath.parent.mkdir(exist_ok=True, parents=True)
-        # The 1st image is the base; the rest get appended as additional frames.
-        im = image_list.pop(0)
+        im = image_list.pop(0) # The gif builds by appending to a base image.
         print('creating gif (this may take some time)')
         try:
             # A note on animation speed: a duration of 20ms means 50fps, which
-            # is what most web browsers support. Image viewers like IrfanView
-            # can play gifs up to 100fps.
+            # is the max for what most web browsers support. Image viewers like
+            # IrfanView can play gifs up to 100fps.
             im.save(outpath, save_all=True, append_images=image_list,
                     duration=20)
         except Exception as e:

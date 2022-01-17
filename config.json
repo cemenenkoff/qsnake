@@ -2,8 +2,8 @@
     "project_root_dir": ".",
     "human": true,
     "name": "test",
-    "save_for_gif": true,
-    "make_gif": true,
+    "save_for_gif": false,
+    "make_gif": false,
     "params":{
         "epsilon": 1.0,
         "gamma": 0.95,
@@ -12,7 +12,7 @@
         "epsilon_decay": 0.98,
         "learning_rate": 0.00025,
         "layer_sizes": [128, 128, 128],
-        "num_episodes": 10,
+        "num_episodes": 15,
         "state_definition_type": "default"
     }
 }

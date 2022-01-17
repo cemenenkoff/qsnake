@@ -4,10 +4,14 @@ from pathlib import Path
 # After running explore.py with `"save_for_gif": true`, this script allows us
 # to loop through the saved eps files and turn them into an animated gif.
 
+figures_dir = Path(r".\figures")
+instance_folder = 'gif-attempt-1-SunJan16-212029-default-50ep-256batch'
+instance_dir = figures_dir/instance_folder
+
 config = {
-    'eps_dir':Path(r".\figures\gif-attempt-1-SunJan16-212029-default-50ep-256batch\gif-build\eps"),
-    'png_dir':Path(r".\figures\gif-attempt-1-SunJan16-212029-default-50ep-256batch\gif-build\png"),
-    'outpath':Path(r".\test.gif")
+    'eps_dir':instance_dir/'gif-build'/'eps',
+    'png_dir':instance_dir/'gif-build'/'png',
+    'outpath':instance_dir/'animation.gif'
 }
 
 bob_the_builder = GifBuilder(config['eps_dir'], config['png_dir'])
