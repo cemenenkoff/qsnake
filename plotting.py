@@ -1,53 +1,48 @@
 import matplotlib as mpl
 from matplotlib import pyplot as plt
-from pathlib import Path
 import pandas as pd
+import json
 
-# These are global matplotlib settings to emphasize uniformity across figures
+# global matplotlib settings
 mpl.rc('axes', labelsize=14)
 mpl.rc('xtick', labelsize=12)
 mpl.rc('ytick', labelsize=12)
-width = 15
-height = width/1.618 # Use the golden ratio.
-mpl.rc('figure', figsize=(width,height))
+WIDTH = 15
+HEIGHT = WIDTH/1.618
+mpl.rc('figure', figsize=(WIDTH,HEIGHT))
 plt.style.use('ggplot') # This plot style is borrowed from R's ggplot2.
 
-# Now we want to specify where to save figures.
-PROJECT_ROOT_DIR = '.' #the current working directory
-IMAGES_PATH = Path(PROJECT_ROOT_DIR)/'figures'
-IMAGES_PATH.mkdir(exist_ok=True, parents=True)
-
-def save_fig(fig_id, tight_layout=True, fig_extension='png', resolution=300):
+def save_fig(outpath, tight_layout=True, resolution=300):
     '''
-    Save the current matplotlib figure to a specified global path.
+    saves the current matplotlib figure to a specified global path
     '''
-    fname = fig_id+'.'+fig_extension
-    path = IMAGES_PATH/fname
-    print(f'saving figure: {fig_id}')
+    print(f'saving figure: {outpath}')
     if tight_layout:
         plt.tight_layout()
-    plt.savefig(path, format=fig_extension, dpi=resolution)
+    plt.savefig(outpath, dpi=resolution)
 
-def prepare_data_for_plotting(total_rewards_history, smoothing_window=5):
+def prepare_data_for_plotting(history, smoothing_window=5):
     '''
     puts the historical total rewards data into a dataframe
     '''
-    df = pd.DataFrame(total_rewards_history, columns=['Total Reward'])
+    df = pd.DataFrame(history, columns=['Total Reward'])
     df[f'Total Reward Rolling Mean (k={smoothing_window})'] = df['Total Reward'].rolling(smoothing_window).mean()
     return df
 
-def plot_history(total_rewards_history, name=None):
+def plot_history(history, outpath=None, params=None):
     '''
     plots the historical total rewards data
     '''
-    df = prepare_data_for_plotting(total_rewards_history)
+    df = prepare_data_for_plotting(history)
     fig, ax = plt.subplots(figsize=(12,8))
     ax.plot(df, '.-')
     ax.set_title('Snake Agent Learning Curve')
     ax.set_xlabel('Episode Number')
     ax.set_ylabel('Total Episode Reward')
+    if params:
+        plt.text(0.5, -0.1, json.dumps(params), ha='center',
+                 va='baseline', transform = ax.transAxes, size='small')
     plt.legend(df.columns.to_list(), loc='best')
-    fig_id = f'learning-curve-{name}' if name else 'learning-curve'
-    save_fig(fig_id)
-    plt.show()
-    plt.close()
+    outpath = outpath if outpath else 'learning-curve.png'
+    save_fig(outpath)
+    plt.close('all')
