@@ -380,9 +380,9 @@ class Snake(gym.Env):
 
         # Check to if the head is adjacent to a wall and in what direction.
         wall_above=1 if  self.HEIGHT/2 - 1 <= self.head.y and self.head.y <=  self.HEIGHT/2     else 0 # within one HEAD_SIZE unit below the top wall
-        wall_below=1 if -self.HEIGHT/2     <= self.head.y and self.head.y <= -self.HEIGHT/2 + 1 else 0 # within one HEAD_SIZE unit to the left of the right wall
+        wall_below=1 if -self.HEIGHT/2     <= self.head.y and self.head.y <= -self.HEIGHT/2 + 1 else 0 # within one HEAD_SIZE unit above the bottom wall
         wall_left =1 if -self.WIDTH /2     <= self.head.x and self.head.x <= -self.WIDTH /2 + 1 else 0 # within one HEAD_SIZE unit to the right of the left wall
-        wall_right=1 if  self.WIDTH /2 - 1 <= self.head.x and self.head.x <=  self.WIDTH /2     else 0 # within one HEAD_SIZE unit above the bottom wall
+        wall_right=1 if  self.WIDTH /2 - 1 <= self.head.x and self.head.x <=  self.WIDTH /2     else 0 # within one HEAD_SIZE unit to the left of the right wall
 
         # Check to see if the snake's body chunks are adjacent to the head.
         # Here are some example states where ^ is the head and . is the tail:
