@@ -223,7 +223,7 @@ class Snake(gym.Env):
         checks to see if the snake is eating its body
         '''
         # [o][o]
-        # [o][<] You need a length of at leaset 4 to eat yourself.
+        # [o][<] You need a length of at least 4 to eat yourself.
         if any([body.distance(self.head) < self.HEAD_SIZE for\
             body in self.body[3:]]):
             self.reset_score()
@@ -387,7 +387,7 @@ class Snake(gym.Env):
         # Check to see if the snake's body chunks are adjacent to the head.
         # Here are some example states where ^ is the head and . is the tail:
         #   [0][1][0]     [.][1][0]       [^]
-        #   [1][^][1]        [^][1]       [0]
+        #   [1][^][1]        [^][1]       [1]
         #   [.][1][0]        [1][0]       [.]
         body_above=body_below=body_left=body_right=False
         if len(self.body) > 3:

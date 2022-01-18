@@ -113,7 +113,7 @@ ____
 
 19. Let the agent run to the end and check that **plotting.py** is able to produce a graph of the learning curve.
 
-20. Play with a few settings in config.json and re-run `python explore.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a questions you want to explore.
+20. Play with a few settings in config.json and re-run `python explore.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a question you want to explore.
 
 21. *OPTIONAL:* If you were bold enough to install Ghostscript, try saving game frames as eps files. You can then run `make_gif_from_images.py` (with some manual adjustments) to convert the eps files into png files and then into an animated gif.
 
