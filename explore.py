@@ -45,6 +45,7 @@ def check_config(config:dict):
         'learning_rate':float,
         'layer_sizes':list,
         'num_episodes':int,
+        'max_steps':int,
         'state_definition_type':str
     }
     iterables = [

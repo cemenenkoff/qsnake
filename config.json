@@ -13,6 +13,7 @@
         "learning_rate": 0.00025,
         "layer_sizes": [128, 128, 128],
         "num_episodes": 15,
+        "max_steps": 15000,
         "state_definition_type": "default"
     }
 }

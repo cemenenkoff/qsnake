@@ -195,8 +195,7 @@ def train_dqn(env, params):
         # Convert the initial state to a 1x12 matrix.
         state = np.reshape(state, (1, env.state_space))
         total_reward = 0
-        max_steps = 10000
-        for step_num in range(max_steps):
+        for step_num in range(params['max_steps']):
             action = agent.act(state)
             prev_state = state
             # The step method allows the agent to move the snake.
