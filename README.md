@@ -27,12 +27,12 @@ ____
 ```yaml
 {
     "project_root_dir": ".",
-    "human": false,
+    "human": true,
     "name": "test",
     "save_for_gif": false,
     "make_gif": false,
     "params":{
-        "epsilon": 1,
+        "epsilon": 1.0,
         "gamma": 0.95,
         "batch_size": 256,
         "epsilon_min": 0.001,
@@ -40,6 +40,7 @@ ____
         "learning_rate": 0.00025,
         "layer_sizes": [128, 128, 128],
         "num_episodes": 15,
+        "max_steps": 15000,
         "state_definition_type": "default"
     }
 }
