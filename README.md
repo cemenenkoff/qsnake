@@ -153,3 +153,12 @@ ____
 - **Allow previously trained models to play and resume training.**
 
 - ~~Expand **plotting.py** to store a hyperparameter configuration's collection of training episodes as a gif.~~
+____
+## References
+1. [Create a Snake-Game using Turtle in Python](https://www.geeksforgeeks.org/create-a-snake-game-using-turtle-in-python/)
+2. [Q-learning](https://en.wikipedia.org/wiki/Q-learning)
+3. [Bellman equation](https://en.wikipedia.org/wiki/Bellman_equation)
+4. [Snake Played by a Deep Reinforcement Learning Agent](https://towardsdatascience.com/snake-played-by-a-deep-reinforcement-learning-agent-53f2c4331d36)
+5. [OpenAI's `Env` class in `gym.gym.core`](https://github.com/openai/gym/blob/master/gym/core.py)
+6. [OpenAI's `classic_control` examples](https://github.com/openai/gym/tree/master/gym/envs/classic_control)
+7. [Playing Atari with Deep Reinforcement Learning](https://arxiv.org/pdf/1312.5602.pdf)
