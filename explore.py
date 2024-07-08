@@ -96,7 +96,25 @@ def main():
             env.run_game()
 
     if not config['human']:
-        history = train_dqn(env, params)
+        history, agent = train_dqn(env, params)
+        # import pickle # It doesn't look like pickle is compatible with TF!
+        # PICKLE = True
+        # if PICKLE:
+        #     outpath = Path.cwd()/'test.pckl'
+        #     pickle.dump(agent, open(outpath, 'wb'))
+
+        import joblib
+        PICKLE = True
+        if PICKLE:
+            outpath = Path.cwd()/'test.joblib'
+            joblib.dump(agent.model, outpath)
+
+            print(1)
+
+            testeroni = joblib.load(outpath)
+            print(testeroni)
+            print(2)
+
         # If an agent plays, create a folder to store our learning curve graph.
         instance_dir = figures_dir/instance_folder
         instance_dir.mkdir(exist_ok=True, parents=True)

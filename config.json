@@ -1,7 +1,7 @@
 {
     "project_root_dir": ".",
-    "human": true,
-    "name": "test",
+    "human": false,
+    "name": "test-pickle",
     "save_for_gif": false,
     "make_gif": false,
     "params":{
@@ -12,7 +12,7 @@
         "epsilon_decay": 0.98,
         "learning_rate": 0.00025,
         "layer_sizes": [128, 128, 128],
-        "num_episodes": 15,
+        "num_episodes": 5,
         "max_steps": 15000,
         "state_definition_type": "default"
     }

@@ -6,7 +6,7 @@ In deep reinforcement learning, we need to create two things:
     - an agent (the algorithm which pilots the snake the environment)
 Our environment is the Snake class and our agent is the neural network.
 '''
-from keras import Sequential
+from tensorflow.keras import Sequential
 '''
 A Sequential deep learning model is appropriate for a plain stack of layers
 where each layer has exactly one input tensor and one output tensor.
@@ -18,7 +18,7 @@ and is short for "double-ended queue"). Deques support thread-safe, memory
 efficient appends and pops from either side of the deque with approximately the
 same O(1) performance in either direction.
 '''
-from keras.layers import Dense
+from tensorflow.keras.layers import Dense
 '''
 In any neural network, a dense layer is a layer that is deeply connected with
 its preceding layer which means the neurons of the layer are connected to every
@@ -211,4 +211,4 @@ def train_dqn(env, params):
                 print(f'{str(prev_state)} {total_reward:<5} ({episode_num+1:>3}/{params["num_episodes"]:<3})')
                 break
         history.append(total_reward)
-    return history
+    return history, agent

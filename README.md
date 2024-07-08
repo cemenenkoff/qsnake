@@ -152,6 +152,10 @@ ____
 
 - **Allow previously trained models to play and resume training.**
 
+- **Display snake coordinates on screen in `HEAD_SIZE` units as well as an optional episode number.**
+
+- **If a model is loaded, display the name of the model on screen.**
+
 - ~~Expand **plotting.py** to store a hyperparameter configuration's collection of training episodes as a gif.~~
 ____
 ## References
