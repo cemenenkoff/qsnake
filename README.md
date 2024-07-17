@@ -1,4 +1,4 @@
-# qSnake: Deep Q Reinforcement Learning for Top-Down 2D Games
+# qSnake: Deep Q Learning for Top-Down 2D Games
 ### Each time the snake eats the apple, it grows by one chunk. The game ends if the snake head hits a wall or its own body.
 ![training montage](/example_output/training-montage.gif)
 ![learning curve](/example_output/learning-curve.png)
