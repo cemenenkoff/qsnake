@@ -6,7 +6,7 @@ from pathlib import Path
 
 from src.agent import train_dqn
 from src.environment import Snake
-from src.gif_creator import GifBuilder
+from gif_builder import GifBuilder
 from src.plotting import plot_history
 
 
