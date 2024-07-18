@@ -4,10 +4,10 @@ from argparse import ArgumentParser, Namespace
 from datetime import datetime
 from pathlib import Path
 
-from agent import train_dqn
-from environment import Snake
-from gif_creator import GifBuilder
-from plotting import plot_history
+from src.agent import train_dqn
+from src.environment import Snake
+from src.gif_creator import GifBuilder
+from src.plotting import plot_history
 
 
 def parse_args() -> Namespace:
