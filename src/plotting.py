@@ -7,12 +7,12 @@ from matplotlib import pyplot as plt
 from sklearn.linear_model import LinearRegression
 
 # Configure global matplotlib settings.
-mpl.rc("axes", labelsize=14)
+mpl.rc("axes", labelsize=14, facecolor="none")
 mpl.rc("xtick", labelsize=12)
 mpl.rc("ytick", labelsize=12)
 WIDTH = 15
 HEIGHT = WIDTH / 1.618
-mpl.rc("figure", figsize=(WIDTH, HEIGHT))
+mpl.rc("figure", figsize=(WIDTH, HEIGHT), facecolor="none")
 plt.style.use("ggplot")  # This plot style is borrowed from R's ggplot2.
 
 
@@ -29,7 +29,7 @@ def save_fig(
     """
     if tight_layout:
         plt.tight_layout()
-    plt.savefig(outpath, dpi=resolution)
+    plt.savefig(outpath, dpi=resolution, transparent=True)
     print(f"Figure saved to: {outpath}")
 
 
