@@ -1,6 +1,6 @@
 import json
 import sys
-from argparse import ArgumentParser
+from argparse import ArgumentParser, Namespace
 from datetime import datetime
 from pathlib import Path
 
@@ -10,33 +10,49 @@ from gif_creator import GifBuilder
 from plotting import plot_history
 
 
-def parse_args():
-    """defines our CLI options"""
+def parse_args() -> Namespace:
+    """Define CLI options.
+
+    Returns:
+        argparse.Namespace: The parsed command-line arguments.
+    """
     parser = ArgumentParser(
-        prog="Snake RL", description="teach a neural network to play snake"
+        prog="qSnake", description="Train a neural network to play Snake."
     )
     parser.add_argument(
-        "-c",
-        "--config",
         dest="config",
-        required=False,
+        nargs="?",
         default="config.json",
         help="path to the configuration file",
     )
     return parser.parse_args()
 
 
-def get_config(path: str):
+def get_config(config_path: str) -> dict:
+    """Convert a JSON config file into a dictionary.
+
+    Args:
+        config_path (str): Path of the JSON config file.
+
+    Returns:
+        dict: The JSON config file loaded as a dictionary.
     """
-    converts a JSON config file into a python dictionary
-    """
-    with open(path) as json_file:
+    with open(config_path) as json_file:
         return json.load(json_file)
 
 
-def check_config(config: dict):
-    """
-    checks a JSON config for required keys and value types
+def check_config(config: dict) -> dict:
+    """Check a JSON config for required keys and value types.
+
+    Args:
+        config (dict): The raw config file.
+
+    Raises:
+        ValueError: Raised if a config value is the wrong type.
+        KeyError: Raised if a required key is missing from the config file.
+
+    Returns:
+        dict: The validated config file.
     """
     req = {
         "project_root_dir": str,
@@ -75,10 +91,10 @@ def check_config(config: dict):
 
 def main():
     args = parse_args()
-    config = check_config(get_config(path=args.config))
-    params = config["params"]  # the main parameters for the agent
+    config = check_config(get_config(args.config))
+    params = config["params"]  # The main parameters for the agent.
     project_root_dir = Path(config["project_root_dir"])
-    figures_dir = project_root_dir / "figures"  # main folder for figures
+    figures_dir = project_root_dir / "figures"
 
     # Name a folder to store the output of this run.
     ts = datetime.now().strftime("%a%b%d-%H%M%S")
@@ -92,7 +108,7 @@ def main():
         instance_folder = f"{name}-{instance_folder}"
 
     if config["save_for_gif"]:
-        # If wanted, create folders to store the eps files for gif creation.
+        # Create folders to store the eps files for gif creation.
         eps_dir = figures_dir / instance_folder / "gif-build" / "eps"
         config["eps_dir"] = eps_dir
         eps_dir.mkdir(exist_ok=True, parents=True)
@@ -102,8 +118,7 @@ def main():
     if config["human"]:
         while True:
             env.run_game()
-
-    if not config["human"]:
+    elif not config["human"]:
         history = train_dqn(env, params)
         # If an agent plays, create a folder to store our learning curve graph.
         instance_dir = figures_dir / instance_folder

@@ -21,7 +21,7 @@ The agent's policy begins as *"move randomly and hope for the best"* but changes
 
 # Core Files
 `explore.py`
->Run `python explore.py -c config.json` to interface with this project. Options like where to store output, whether to save images, build a gif, and also hyperparameters for the learning agent are all specified in `config.json`.
+>Run `python explore.py` to interface with this project. Options like where to store output, whether to save images, build a gif, and also hyperparameters for the learning agent are all specified in `config.json`.
 
 `config.json`
 >Define how the script should run. All of the keys in the default configuration included below are required along with their example data types.
@@ -96,9 +96,9 @@ If you are fairly new to Python programming, I'd reccommend the following steps:
 
 14. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
 
-15. Once everything is installed, run `python explore.py -c config.json` to test if you can play the game manually.
+15. Once everything is installed, run `python explore.py` to test if you can play the game manually.
 
-16. Next, specify `"human": false` in `config.json`, save it, and then run  `python explore.py -c config.json` again, this time to see if the *agent* is able to play the game.
+16. Next, specify `"human": false` in `config.json`, save it, and then run  `python explore.py` again, this time to see if the *agent* is able to play the game.
 
 17. Let the agent run to the end and check that `plotting.py` is able to produce a graph of the learning curve.
 
