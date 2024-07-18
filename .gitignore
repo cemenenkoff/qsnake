@@ -1,6 +1,5 @@
-.vscode
 __pycache__
-snakeenv
+venv
 figures
 models
 tests
