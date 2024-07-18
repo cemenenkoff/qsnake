@@ -10,7 +10,7 @@ import gym
 
 
 class Snake(gym.Env):
-    """A game environment where a user (or AI agent) can play Snake."""
+    """A `gym.Env` subclass representing the game of Snake."""
 
     FONT_FAM = "Courier"
     FONT_SIZE = 18

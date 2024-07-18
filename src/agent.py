@@ -1,139 +1,128 @@
 import random
+from collections import deque
+from typing import Any, Dict, List
 
 import numpy as np
+from keras import Sequential
+from keras.layers import Dense
+from tensorflow.keras.optimizers import Adam
+
+from src.environment import Snake
 
 """
 In deep reinforcement learning, we need to create two things:
-    - an environment (the snake game universe)
-    - an agent (the algorithm which pilots the snake the environment)
-Our environment is the Snake class and our agent is the neural network.
-"""
-from keras import Sequential
+    - an environment (the snake game universe, including the snake itself)
+    - an agent (the algorithm which pilots the snake in the environment)
 
-"""
-A Sequential deep learning model is appropriate for a plain stack of layers
-where each layer has exactly one input tensor and one output tensor.
-"""
-from collections import deque
+Our environment is the `Snake` class and our agent is the neural network, `DQN`.
 
-"""
-Deques are a generalization of stacks and queues (the name is pronounced "deck"
-and is short for "double-ended queue"). Deques support thread-safe, memory
-efficient appends and pops from either side of the deque with approximately the
-same O(1) performance in either direction.
-"""
-from keras.layers import Dense
+A `Sequential` deep learning model is appropriate for a plain stack of neural network
+layers where each layer has exactly one input tensor and one output tensor.
 
-"""
-In any neural network, a dense layer is a layer that is deeply connected with
-its preceding layer which means the neurons of the layer are connected to every
-neuron of its preceding layer. This layer is the most commonly used layer in
-artificial neural network networks.
-"""
-from tensorflow.keras.optimizers import Adam
+Deques are a generalization of stacks and queues (the name is pronounced "deck" and is
+short for "double-ended queue"). Deques support thread-safe, memory-efficient appends
+and pops from either side of the deque with approximately the same O(1) performance in
+either direction.
 
-"""
-Adam optimization is a stochastic gradient descent method that is based on
-adaptive estimation of first-order and second order moments. Whereas momentum
-can be seen as a ball running down a slope, Adam behaves like a heavy ball with
-friction, which thus prefers flat minima in the error surface.
+A dense layer, also known as a fully connected layer, is a layer in an artificial
+neural network where each neuron in the current layer is connected to every neuron in
+the previous layer. This complete linkage is what gives the layer its name, and it's
+the most commonly used type of layer in artificial neural network networks.
+
+Adam (short for Adaptive Moment Estimation) optimization is a stochastic gradient descent method that is based on adaptive estimation of first-order and second order moments. Whereas momentum can be seen as a ball running down a slope, Adam behaves like a heavy ball with friction, which thus prefers flat minima in the error surface.
 """
 
 
 class DQN:
-    """
-    a deep-Q neural network that can train itself to play snake
-    """
+    """A deep-Q neural network that can train itself to play Snake."""
 
-    def __init__(self, env, params):
-        self.action_space = env.action_space  # the dimension of the action space (4 here because the snake's only options are up, down, left, right)
+    def __init__(self, env: Snake, params: Dict[str, Any]) -> None:
+        """Instantiate a deep-Q network meant to learn the game of Snake.
+
+        Args:
+            env (Snake): The `gym.Env` subclass representing the game of Snake.
+            params (Dict[str, Any]): Dictionary of relevant hyperparameters.
+        """
+        # There are only four possible directions to move in, so the action space is 4D.
+        self.action_space = env.action_space
         self.state_space = (
             env.state_space
-        )  # the dimension of the state space (e.g. 12 binary elements)
-        self.epsilon = params[
-            "epsilon"
-        ]  # the initial ratio of steps taken to randomly explore vs move in a predicted direction
-        self.gamma = params[
-            "gamma"
-        ]  # the discount factor for future rewards (0 is short-sighted; 1 is long-sighted)
-        """
-        An important note on batch_size:
-        The number of training examples used in the estimate of the error
-        gradient is a hyperparameter for the learning algorithm called the
-        "batch size" or simply the "batch".
-
-        The error gradient is a statistical estimate. The more training examples
-        used in the estimate, the more accurate this estimate will be and the
-        more likely that the weights of the network will be adjusted in a way
-        that will improve the performance of the model.
-
-        The improved estimate of the error gradient comes at the cost of having
-        to use the model to make many more predictions before the estimate can
-        be calculated, and in turn, the weights updated.
-        """
+        )  # The dimension of the state space (e.g. 12 binary elements is 12D).
+        self.epsilon = params["epsilon"]
+        self.gamma = params["gamma"]
         self.batch_size = params["batch_size"]
-        self.epsilon_min = params[
-            "epsilon_min"
-        ]  # the minimum ratio of time steps we'd like the agent to move randomly vs in a predicted direction
-        self.epsilon_decay = params[
-            "epsilon_decay"
-        ]  # how much of the ratio of random moving we want to take into the next iteration of gathering a batch of states
-        self.learning_rate = params[
-            "learning_rate"
-        ]  # to what extent newly acquired info overrides old info (0 learn nothing and exploit prior knowledge exclusively; 1 only consider the most recent information)
-        self.layer_sizes = params[
-            "layer_sizes"
-        ]  # the number of nodes for the hidden layers of our Q network
-        self.memory = deque(
-            maxlen=2500
-        )  # our defined working memory array of the state of the agent and the environment over time
+        self.epsilon_min = params["epsilon_min"]
+        self.epsilon_decay = params["epsilon_decay"]
+        self.learning_rate = params["learning_rate"]
+        self.layer_sizes = params["layer_sizes"]
+        # The deque acts as a rolling window of the state of the game over time.
+        self.memory = deque(maxlen=2500)
         self.model = self.build_model()
 
-    def build_model(self):
-        """
-        builds a neural network of dense layers consisting of an input layer,
-        3 hidden layers, and an output layer
+    def build_model(self) -> Sequential:
+        """Build a neural network of fully connected dense layers.
+
+        This model consists of one input layer, `len(self.layer_sizes - 1)` hidden
+        layers, and one output layer.
+
+        Returns:
+            Sequential: An ordered stack of neural network layers compiled into a model.
         """
         model = Sequential()
         for i, layer_size in enumerate(self.layer_sizes):
-            if (
-                i == 0
-            ):  # The input layer's shape (i.e. number of nodes) is defined by the dimension of the state space.
+            if i == 0:  # The number of input nodes is the dimension of the state space.
                 model.add(
                     Dense(
                         layer_size, input_shape=(self.state_space,), activation="relu"
                     )
                 )
-            else:  # The three hidden layers will have an integer number of nodes.
+            else:
+                # Recall Rectified Linear Unit, ReLU(x), returns x if x > 0, else 0.
                 model.add(Dense(layer_size, activation="relu"))
-                # Recall that the Rectified Linear Unit (ReLU) activation
-                # function that outputs the input directly if the input is
-                # positive, otherwise it outputs zero.
         # The number of nodes in the output layer is the dimension of the action space.
         model.add(Dense(self.action_space, activation="softmax"))
-        # The Softmax function is good here because it's best applied to
-        # multi-class classification problems where class membership is required
-        # on more than two class labels. In this instance, maybe the snake needs
-        # to travel in 3 or more directions to get to the apple.
+        # Softmax is used for multi-class classification. For example, maybe the snake
+        # needs to travel in more than one direction to get the apple.
         model.compile(loss="mse", optimizer=Adam(learning_rate=self.learning_rate))
         return model
 
-    def remember(self, state, action, reward, next_state, done):
-        """
-        adds the current state, next state, proposed action, total reward, and
-        whether we are done in the agent's running memory buffer (deque) of
-        states
+    def remember(
+        self,
+        state: List[int],
+        action: int,
+        reward: int,
+        next_state: List[int],
+        done: bool,
+    ) -> None:
+        """Store an experience tuple in the agent's memory buffer.
+
+        The experience tuple is (state, action, reward, next_state, done). This method
+        appends the experience tuple to the agent's memory buffer for later use in
+        learning.
+
+        Args:
+            state (List[int]): The current state of the environment.
+            action (int): The action taken in the current state.
+            reward (int): The reward received after taking the action.
+            next_state (List[int]): The state of the environment after taking the
+                action.
+            done (bool): A boolean indicating if the episode has ended.
         """
         self.memory.append((state, action, reward, next_state, done))
 
-    def act(self, state):
+    def act(self, state: List[int]):
+        """Move a randomly or in the best policy-predicted direction.
+
+        `self.epsilon` is the explore threshold parameter. If under the threshold, move
+        in a random direction, otherwise move in the direction which maximizes the
+        probability of a larger total reward.
+
+        Args:
+            state (List[int]): The state of the environment.
+
+        Returns:
+            int: The direction to move for the Snake's next step.
         """
-        moves in a random direction or the direction predicted to give the best
-        reward outcome
-        """
-        # If we are under the explore threshold parameter, move in a random
-        # direction, otherwise move in the direction which maximizes the
-        # probability of a larger total reward.
         if np.random.rand() <= self.epsilon:
             return random.randrange(self.action_space)
         act_values = self.model.predict(state)
@@ -141,51 +130,8 @@ class DQN:
         #           0:up      1:down      2:left      3:right
         return np.argmax(act_values[0])
 
-    """
-    A note on batch size from Deep Learning by Ian Goodfellow:
-
-    "Optimization algorithms that use the entire training set are called batch
-    or deterministic gradient methods, because they process all of the training
-    examples simultaneously in a large batch."
-
-    "Optimization algorithms that use only a single example at a time are
-    sometimes called stochastic or sometimes online methods. The term online is
-    usually reserved for the case where the examples are drawn from a stream of
-    continually created examples rather than from a fixed-size training set over
-    which several passes are made."
-
-    A note on batch sizing from Jason Brownlee:
-
-    "The number of training examples used in the estimate of the error gradient
-    is a hyperparameter for the learning algorithm called the 'batch size,' or
-    simply the 'batch.'
-
-    A batch size of 32 means that 32 samples from the training dataset will be
-    used to estimate the error gradient before the model weights are updated.
-    One training epoch means that the learning algorithm has made one pass
-    through the training dataset, where examples were separated into randomly
-    selected 'batch size' groups.
-
-    Historically, a training algorithm where the batch size is set to the total
-    number of training examples is called 'batch gradient descent' and a
-    training algorithm where the batch size is set to 1 training example is
-    called 'stochastic gradient descent' or 'online gradient descent.'"
-
-    Batch Gradient Descent:
-        batch_size = total number of examples in the training dataset
-    Stochastic Gradient Descent:
-        batch_size = 1
-    Minibatch Gradient Descent:
-        1 < batch_size < total number of examples in the training dataset
-
-    Put another way, the batch size defines the number of samples that must be
-    propagated through the network before the weights can be updated.
-    """
-
     def replay(self):
-        """
-        retrains the DQN
-        """
+        """Retrain the DQN."""
         # Collect more samples if we don't have  enough for a training batch.
         if len(self.memory) < self.batch_size:
             return

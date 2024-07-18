@@ -1,16 +1,16 @@
 ![logo](img/qsnake.png)
 # qSnake
-## Deep Q Learning for Top-Down 2D Games
-- Each time the snake eats an apple, it grows by one chunk.
+## [Deep Q Learning](https://huggingface.co/learn/deep-rl-course/en/unit3/deep-q-algorithm) for Top-Down 2D Games
+- In the game of [Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)), each time the snake eats an apple, it grows by one chunk.
 - The game ends if the snake head hits a wall or its own body.
 
 ![training-montage](/img/training-montage.gif)
 ![learning-curve](/img/learning-curve.png)
 
 # Overview
-- _**Reinforcement learning**_ is a style of machine learning that relies on past experience to develop a **policy** on what do to next.
-- _**Deep neural networks**_ are used in machine learning to set up decision pathways that maximize reward (i.e. **minimize loss** or error).
-- _**Q-learning**_ is a subclass of reinforcement learning that is **model-free**, meaning that it does not require a model of the environment in which it operates and can learn directly from raw experiences.
+- [**Reinforcement learning**](https://en.wikipedia.org/wiki/Reinforcement_learning) is a style of machine learning that relies on past experience to develop a **policy** on what do to next.
+- [**Deep neural networks**](https://en.wikipedia.org/wiki/Deep_learning) are used in machine learning to set up decision pathways that maximize reward (i.e. **minimize loss** or error).
+- [**Q-learning**](https://en.wikipedia.org/wiki/Q-learning) is a subclass of reinforcement learning that is **model-free**, meaning that it does not require a model of the environment in which it operates and can learn directly from raw experiences.
   - Given a reward structure (e.g. 10 points for eating an apple, but -100 for eating a body chunk), Q-learning can handle problems with inherent randomness (e.g. the apple respawning).
 
 In this exploration, a **policy** is a strategy to win the game of snake. Q-learning strives to find an *optimal* policy in the sense of maximizing the expected value of the total reward over any and all steps in the game, starting from an initial state.
@@ -20,11 +20,11 @@ The agent's policy begins as *"move randomly and hope for the best"* but changes
 ***The more the agent plays, the more its random movements are replaced by policy-predicted movements.***
 
 # Core Files
-`explore.py`
->Run `python explore.py` to interface with this project. Options like where to store output, whether to save images, build a gif, and also hyperparameters for the learning agent are all specified in `config.json`.
+## `explore.py`
+Run `python explore.py` to interface with this project. Options like where to store output, whether to save images, build a gif, and also hyperparameters for the learning agent are all specified in `config.json`.
 
-`config.json`
->Define how the script should run. All of the keys in the default configuration included below are required along with their example data types.
+## `config.json`
+Define how the script should run. All of the keys in the default configuration included below are required along with their example data types.
 ```json
 {
     "project_root_dir": ".",
@@ -46,24 +46,73 @@ The agent's policy begins as *"move randomly and hope for the best"* but changes
     }
 }
 ```
+### Core Param Definitions
+#### `epsilon`
+Initial ratio of random versus policy-predicted steps.
+#### `gamma`
+Discount factor for future rewards (0 is short-sighted, 1 is long-sighted).
+#### `batch_size`
+The number of training samples processed before the model's internal parameters are updated during one iteration of training.
+#### `epsilon_min`
+The minimum ratio of time steps we'd like the agent to move randomly vs in a predicted direction.
+#### `epsilon_decay`
+How much of the ratio of random moving we want to take into the next iteration of gathering a batch of states.
+#### `learning_rate`
+To what extent newly acquired info overrides old info (0 learn nothing and exploit prior knowledge exclusively; 1 only consider the most recent information)
+#### `layer_sizes`
+The number of nodes for the hidden layers of our Q network
+#### `num_episodes`
+The number of games to play.
+#### `max_steps`
+The maximum number of steps allowable in a single game.
 
-`requirements.txt`
->Run `pip install -r requirements.txt` to install all necessary dependencies. This project runs on [Python 3.9.7](https://www.python.org/downloads/release/python-397/).
+### An Important Note on `batch_size`
+- The number of training examples used in the *estimate* of the **error gradient** is a *hyperparameter* for the learning algorithm called the **"batch size"** (or simply **"the batch"**).
+- Note that the error gradient is a *statistical* estimate.
+- The more training examples used in the estimate:
+  1. The more accurate the estimate will be.
+  2. The more likely the network will adjust such that the model's overall performance improves.
+- **An improved estimate of the error gradient comes at a cost**: it requires the model to make many more predictions before the estimate can be calculated and the weights updated.
 
-`environment.py`
->This subclass of `gym.Env` represents the snake game environment.
+#### A Note on Batch Size from Deep Learning by Ian Goodfellow:
+>"Optimization algorithms that use the entire training set are called batch or deterministic gradient methods, because they process all of the training examples simultaneously in a large batch."
+>
+>"Optimization algorithms that use only a single example at a time are sometimes called stochastic or sometimes online methods. The term online is usually reserved for the case where the examples are drawn from a stream of continually created examples rather than from a fixed-size training set over which several passes are made."
 
-`agent.py`
->Train an agent to play snake via a deep Q-learning network.
+#### A Note on Batch Sizing from Jason Brownlee:
+> A batch size of 32 means that 32 samples from the training dataset will be used to estimate the error gradient before the model weights are updated. One training epoch means that the learning algorithm has made one pass through the training dataset, where examples were separated into randomly selected 'batch size' groups.
+>
+> Historically, a training algorithm where the batch size is set to the total number of training examples is called 'batch gradient descent' and a training algorithm where the batch size is set to 1 training example is called 'stochastic gradient descent' or 'online gradient descent.'"
+>
+> Put another way, the batch size defines the number of samples that must be propagated through the network before the weights can be updated.
 
-`plotting.py`
->Graph some statistics about how the Q-network was trained and the performance of the agent.
+#### Summary of Batch Sizing Styles
+| Gradient Descent Type        | Batch Size                                           |
+|------------------------------|-------------------------------------------------------|
+| **Batch Gradient Descent**   | all training samples    |
+| **Stochastic Gradient Descent** | 1                                                   |
+| **Minibatch Gradient Descent** | 1 < batch size < all training samples |
 
-`gif_creator.py`
->Convert saved eps files into png files and then png files into an animated gif. Using this class requires a separate installation of [Ghostscript](https://ghostscript.com/releases/index.html).
 
-`make_gif_from_images.py`
->Convert already-saved eps or png image files into a gif without having to re-run the game. Again, [Ghostscript](https://ghostscript.com/releases/index.html) is required.
+
+
+## `requirements.txt`
+Run `pip install -r requirements.txt` to install all necessary dependencies. This project runs on [Python 3.9.7](https://www.python.org/downloads/release/python-397/).
+
+## `environment.py`
+This subclass of `gym.Env` represents the snake game environment.
+
+## `agent.py`
+Train an agent to play snake via a deep Q-learning network.
+
+## `plotting.py`
+Graph some statistics about how the Q-network was trained and the performance of the agent.
+
+## `gif_builder.py`
+Convert saved eps files into png files and then png files into an animated gif. Using this class requires a separate installation of [Ghostscript](https://ghostscript.com/releases/index.html).
+
+## `make_gif_from_images.py`
+Convert already-saved eps or png image files into a gif without having to re-run the game. Again, [Ghostscript](https://ghostscript.com/releases/index.html) is required.
 
 # Setup
 If you are fairly new to Python programming, I'd reccommend the following steps:
@@ -104,11 +153,9 @@ If you are fairly new to Python programming, I'd reccommend the following steps:
 
 18. Play with a few settings in `config.json` and re-run `python explore.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a questions you want to explore.
 
-19. *OPTIONAL:* If you were bold enough to install Ghostscript, try saving game frames as eps files. You can then run `make_gif_from_images.py` (with some manual adjustments) to convert the eps files into png files and then into an animated gif.
+19. OPTIONAL - If you were bold enough to install Ghostscript, try saving game frames as eps files. You can then run `make_gif_from_images.py` (with some manual adjustments) to convert the eps files into png files and then into an animated gif.
 
-20. *OPTIONAL:* Try converting the saved eps files into png and then into a gif all at once by specifying `"save_for_gif": true` and `"make_gif": true` in config.json. Please note that this process can take ~30 minutes for 50 training episodes.
-
-21. To get a feel for the design of project, I would recommend reading the algorithm overview below, then `explore.py`, and then `environment.py` before `agent.py`.
+20. OPTIONAL - Try converting the saved eps files into png and then into a gif all at once by specifying `"save_for_gif": true` and `"make_gif": true` in config.json. Please note that this process can take ~30 minutes for 50 training episodes.
 
 # Algorithm Overview
 ## [Bellman Equations](https://en.wikipedia.org/wiki/Bellman_equation)
