@@ -26,7 +26,7 @@ def parse_args() -> Namespace:
     parser.add_argument(
         dest="config",
         nargs="?",
-        default="config.json",
+        default="configs/config.json",
         help="path to the configuration file",
     )
     return parser.parse_args()

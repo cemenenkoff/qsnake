@@ -130,8 +130,17 @@ class DQN:
         #           0:up      1:down      2:left      3:right
         return np.argmax(act_values[0])
 
-    def replay(self):
-        """Retrain the DQN."""
+    def replay(self) -> None:
+        """Retrain and update the DQN based on its working memory of past experiences.
+
+        The method operates in five steps:
+            1. Sample from working memory.
+            2. Process the batch.
+            3. Compute the targets.
+            4. Adjust the model.
+            5. Lessen random exploration.
+
+        """
         # Collect more samples if we don't have enough for a training batch.
         if len(self.memory) < self.batch_size:
             return
@@ -147,9 +156,8 @@ class DQN:
         states = np.squeeze(states)
         next_states = np.squeeze(next_states)
 
-        # The core of this algorithm is a Bellman equation as a simple value
-        # iteration update, using the weighted average of the old value and the
-        # new information.
+        # The core of this algorithm is a Bellman equation as a simple value iteration
+        # update, using the weighted average of the old value and the new information.
         targets = rewards + self.gamma * (
             np.amax(self.model.predict_on_batch(next_states), axis=1)
         ) * (1 - dones)
@@ -157,13 +165,34 @@ class DQN:
         ind = np.arange(self.batch_size)
         targets_full[[ind], [actions]] = targets
 
-        self.model.fit(states, targets_full, epochs=1, verbose=0)
-        # Attenuate the random exploration parameter as the model learns.
-        if self.epsilon > self.epsilon_min:
+        self.model.fit(states, targets_full, epochs=1, verbose=0)  # Update the model.
+        if self.epsilon > self.epsilon_min:  # Lessen the random exploration.
             self.epsilon *= self.epsilon_decay
 
 
-def train_dqn(env, params):
+def train_dqn(env: Snake, params: Dict[str, Any]) -> List[int]:
+    """Train a Deep Q-Network (DQN) agent on a given environment.
+
+    This function runs a series of episodes where the DQN agent interacts with the
+    environment, collects experiences, and updates its policy based on those
+    experiences. It records the total reward for each episode and returns a list of
+    rewards for all episodes.
+
+    Args:
+        env (Snake): The environment on which the agent will be trained. It must
+            implement methods like `reset` and `step`.
+        params (Dict[str, Any]): A dictionary of parameters for training, including:
+            - "num_episodes" (int): The number of episodes to train the agent.
+            - "max_steps" (int): The maximum number of steps per episode.
+
+    Returns:
+        List[int]: A list of total rewards for each episode.
+
+    Example:
+        >>> env = Snake()
+        >>> params = {"num_episodes": 100, "max_steps": 200}
+        >>> history = train_dqn(env, params)
+    """
     history = []
     agent = DQN(env, params)
     for episode_num in range(params["num_episodes"]):
@@ -175,18 +204,18 @@ def train_dqn(env, params):
             action = agent.act(state)
             prev_state = state
             # The step method allows the agent to move the snake.
-            next_state, reward, done, info = env.step(action, episode_num, step_num)
+            next_state, reward, done, _ = env.step(action, episode_num, step_num)
             total_reward += reward
             next_state = np.reshape(next_state, (1, env.state_space))
             agent.remember(state, action, reward, next_state, done)
             state = next_state
-            # We can include online gradient descent (i.e. batch_size=1) later.
+            # [TO DEV] Include online gradient descent (i.e. batch_size=1).
             if agent.batch_size > 1:
                 agent.replay()
             if done:
-                print(
-                    f'{str(prev_state)} {total_reward:<5} ({episode_num+1:>3}/{params["num_episodes"]:<3})'
-                )
+                prefix = f"{str(prev_state)} {total_reward:<5}"
+                suffix = f'({episode_num+1:>3}/{params["num_episodes"]:<3})'
+                print(f"{prefix} {suffix}")
                 break
         history.append(total_reward)
     return history
