@@ -18,26 +18,50 @@ class GifBuilder:
         self.eps_dir = eps_dir
         self.png_dir = png_dir
 
-    def _eps2png(self, eps_fpath: Path) -> None:
-        """Convert an eps file into a png.
+    def convert_eps_to_png(self, eps_path: Path) -> None:
+        """Convert an EPS file into a PNG.
 
         Args:
-            eps_fpath (Path): Path to the eps file.
+            eps_path (Path): Path to the EPS file.
         """
-        png_fname = eps_fpath.name.replace(".eps", ".png")
-        im = Image.open(eps_fpath)
-        fig = im.convert("RGBA")
-        fig.save(self.png_dir / png_fname)
-        im.close()
+        png_fname = eps_path.name.replace(".eps", ".png")
+        with Image.open(eps_path) as img:
+            fig = img.convert("RGBA")
+            fig.save(self.png_dir / png_fname)
+
+    def convert_eps_to_png_with_transparency(self, eps_path: Path) -> None:
+        """Convert an EPS file to a PNG with a transparent background.
+
+        Args:
+            eps_path (Path): Path to the EPS file.
+        """
+        png_path = eps_path.with_suffix(".png")
+        with Image.open(eps_path) as img:
+            img = img.convert("RGBA")
+            # Create a new image with a transparent background.
+            datas = img.getdata()
+            new_data = []
+            for item in datas:
+                # Change all white (also shades of whites) to transparent.
+                if (
+                    item[0] in list(range(200, 256))
+                    and item[1] in list(range(200, 256))
+                    and item[2] in list(range(200, 256))
+                ):
+                    new_data.append((255, 255, 255, 0))
+                else:
+                    new_data.append(item)
+            img.putdata(new_data)
+            img.save(png_path, "PNG")
 
     def convert_eps_files(self) -> None:
         """Convert all eps files in a directory into png format all at once."""
         if not self.png_dir.exists():
             self.png_dir.mkdir(parents=True)
-        eps_fpaths = [eps_fpath for eps_fpath in self.eps_dir.glob("*.eps")]
+        eps_fpaths = [eps_path for eps_path in self.eps_dir.glob("*.eps")]
         print("Converting eps files to png (this may take some time)...")
-        for eps_fpath in tqdm(eps_fpaths):
-            self._eps2png(Path(eps_fpath))
+        for eps_path in tqdm(eps_fpaths):
+            self.convert_eps_to_png(Path(eps_path))
 
     def make_gif(self, outpath: Path = Path.cwd() / "training_montage.gif") -> None:
         """Create an animated gif from an ordered series of png files.
