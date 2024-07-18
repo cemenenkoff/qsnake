@@ -4,26 +4,25 @@ import sys
 import time
 import turtle
 from pathlib import Path
+from typing import Tuple, List
 
 import gym
 
 
 class Snake(gym.Env):
-    """
-    a game environment where a user (or AI agent) can play Snake
-    """
+    """A game environment where a user (or AI agent) can play Snake."""
 
     FONT_FAM = "Courier"
     FONT_SIZE = 18
     FONT_ALIGN = "center"
     FONT_STYLE = "normal"
-    HEAD_SIZE = 20  # side length of the square snake head in pixels
-    HEIGHT = WIDTH = 20  # side length of square screen in snake heads
-    PIXEL_H = HEAD_SIZE * HEIGHT  # height of the screen in pixels
-    PIXEL_W = HEAD_SIZE * WIDTH  # width of the screen in pixels
-    SLEEP = 0.1  # seconds to wait between steps for humans
+    HEAD_SIZE = 20  # Side length of the square snake head in pixels.
+    HEIGHT = WIDTH = 20  # Side length of square screen in snake heads.
+    PIXEL_H = HEAD_SIZE * HEIGHT  # Height of the screen in pixels.
+    PIXEL_W = HEAD_SIZE * WIDTH  # Width of the screen in pixels.
+    SLEEP = 0.1  # Seconds to wait between steps for humans.
     GAME_TITLE = "Snake"
-    BG_COLOR = tuple(i / 255.0 for i in (242, 225, 242))  # lavender
+    BG_COLOR = tuple(i / 255.0 for i in (242, 225, 242))
     SNAKE_SHAPE = "square"
     SNAKE_COLOR = "green"
     SNAKE_SPEED = "fastest"
@@ -32,8 +31,8 @@ class Snake(gym.Env):
     APPLE_SHAPE = "circle"
     APPLE_COLOR = "red"
 
-    def __init__(self, config):
-        super(Snake, self).__init__()  # Initialize an Env class from gym.
+    def __init__(self, config) -> None:
+        super(Snake, self).__init__()  # Initialize an `Env` class from gym.
 
         self.state_definition_type = config["params"]["state_definition_type"]
         self.human = config["human"]
@@ -41,19 +40,19 @@ class Snake(gym.Env):
         self.eps_dir = config.get("eps_dir")
         self.step_number = 0
         self.episode_number = 0
-        self.done = False  # whether or not the game is over
+        self.done = False  # Whether or not the game is over.
         self.action_space = 4  # The dimension of the action space is 4.
         self.state_space = 12  # Our state/observation space is 12-dimensional.
         self.reward = 0
         self.total = 0
         self.maximum = 0
 
-        # Create the background Screen in which the snake hunts for the apple.
+        # Create the background `Screen` in which the snake hunts for the apple.
         self.win = turtle.Screen()
         self.win.title(self.GAME_TITLE)
         self.win.bgcolor(*self.BG_COLOR)
         self.win.tracer(0)
-        # +32 is an eyeballed frame adjustment.
+        # + 32 is an eyeballed frame adjustment.
         self.win.setup(width=self.PIXEL_W + 32, height=self.PIXEL_H + 32)
 
         # Create the snake itself as a head and an (invisible) dummy body chunk.
@@ -102,17 +101,14 @@ class Snake(gym.Env):
         )
 
         # Define user controls.
-        # win.listen collects key events from TurtleScreen.
         self.win.listen()
         self.win.onkeypress(self.move_up, "Up")
         self.win.onkeypress(self.move_down, "Down")
         self.win.onkeypress(self.move_left, "Left")
         self.win.onkeypress(self.move_right, "Right")
 
-    def move_head(self):
-        """
-        changes the snake head's position according to its current direction
-        """
+    def move_head(self) -> None:
+        """Change the snake head's position according to its current direction."""
         if self.head.direction == "up":
             y = self.head.ycor()
             # Remember that sety and setx are measured in pixels.
@@ -129,10 +125,8 @@ class Snake(gym.Env):
         else:  # This means self.head.direction == 'stop', so reset the reward.
             self.reward = 0
 
-    def move_body(self):
-        """
-        moves the snakes body, following the head's lead
-        """
+    def move_body(self) -> None:
+        """Move the snake's body, following the head's lead."""
         # The 0th index is the dummy body chunk and NOT the snake's head.
         for i, chunk in reversed(list(enumerate(self.body))):  # 10, 9, 8, 7, ...
             if i != 0:
@@ -142,31 +136,28 @@ class Snake(gym.Env):
             else:
                 self.body[i].goto(self.head.xcor(), self.head.ycor())
 
-    def move_up(self):
+    def move_up(self) -> None:
         self.head.direction = (
             "up" if self.head.direction != "down" else self.head.direction
         )
 
-    def move_down(self):
+    def move_down(self) -> None:
         self.head.direction = (
             "down" if self.head.direction != "up" else self.head.direction
         )
 
-    def move_left(self):
+    def move_left(self) -> None:
         self.head.direction = (
             "left" if self.head.direction != "right" else self.head.direction
         )
 
-    def move_right(self):
+    def move_right(self) -> None:
         self.head.direction = (
             "right" if self.head.direction != "left" else self.head.direction
         )
 
-    def append_body_chunk(self):
-        """
-        appends a chunk to elongate the snake's body after it successfully eats
-        an apple
-        """
+    def append_body_chunk(self) -> None:
+        """Elongate the snake's body after it successfully eats an apple."""
         chunk = turtle.Turtle()
         chunk.speed(self.SNAKE_SPEED)
         chunk.shape(self.SNAKE_SHAPE)
@@ -181,9 +172,7 @@ class Snake(gym.Env):
         self.body.append(chunk)
 
     def update_score(self):
-        """
-        increments and updates the scoreboard
-        """
+        """Increments and update the scoreboard."""
         self.total += 1
         self.maximum = self.total if self.total >= self.maximum else self.maximum
         self.score.clear()
@@ -193,18 +182,25 @@ class Snake(gym.Env):
             font=(self.FONT_FAM, self.FONT_SIZE, self.FONT_STYLE),
         )
 
-    def get_random_coordinates(self):
-        """
-        returns coordinates in units of HEAD_SIZE
+    def get_random_coordinates(self) -> Tuple[int]:
+        """Get coordinates in units of `HEAD_SIZE`.
+
+        Returns:
+            Tuple[int]: Random coordinates, measured in units of `HEAD_SIZE`.
         """
         x = random.randint(-self.WIDTH / 2, self.WIDTH / 2)
         y = random.randint(-self.HEIGHT / 2, self.HEIGHT / 2)
         return x, y
 
-    def spawn_apple(self, first=False):
-        """
-        spawns the apple at a random location on the screen that is not inside
-        the snake
+    def spawn_apple(self, first=False) -> bool:
+        """Spawn the apple at a random valid on-screen location.
+
+        Args:
+            first (bool, optional): Whether the apple is spawning for the first time.
+                Defaults to False.
+
+        Returns:
+            bool: True if the apple successfully spawned.
         """
         while True:
             self.apple.x, self.apple.y = self.get_random_coordinates()
@@ -220,10 +216,8 @@ class Snake(gym.Env):
             self.append_body_chunk()
         return True
 
-    def reset_score(self):
-        """
-        resets the scoreboard (keeping the best score)
-        """
+    def reset_score(self) -> None:
+        """Reset the scoreboard (keeping the best score)."""
         self.score.clear()
         self.total = 0
         self.score.write(
@@ -232,9 +226,11 @@ class Snake(gym.Env):
             font=(self.FONT_FAM, self.FONT_SIZE, self.FONT_STYLE),
         )
 
-    def get_distance_to_apple(self):
-        """
-        calculates the straight-line distance from the snake's head to the apple
+    def get_distance_to_apple(self) -> float:
+        """Get the straight-line distance from the snake's head to the apple.
+
+        Returns:
+            float: The distance from the snake's head to the apple, measured in pixels.
         """
         self.prev_dist = self.dist
         self.dist = math.sqrt(
@@ -242,19 +238,24 @@ class Snake(gym.Env):
             + (self.head.ycor() - self.apple.ycor()) ** 2
         )
 
-    def is_eating_body(self):
-        """
-        checks to see if the snake is eating its body
+    def is_eating_body(self) -> bool:
+        """Check if the snake is eating its body.
+
+        Returns:
+            bool: True if the snake is eating itself, False otherwise.
         """
         # [o][o]
-        # [o][<] You need a length of at leaset 4 to eat yourself.
+        # [o][<] You need a length of at least 4 to eat yourself.
         if any([body.distance(self.head) < self.HEAD_SIZE for body in self.body[3:]]):
             self.reset_score()
             return True
+        return False
 
-    def is_eating_apple(self):
-        """
-        checks to see if the snake is eating an apple
+    def is_eating_apple(self) -> bool:
+        """Check if the snake is eating an apple.
+
+        Returns:
+            bool: True if the snake is eating an apple, False otherwise.
         """
         if len(self.body) > 0:
             if any(
@@ -263,10 +264,13 @@ class Snake(gym.Env):
                 return True
         if self.head.distance(self.apple) < self.HEAD_SIZE:
             return True
+        return False
 
-    def is_hitting_wall(self):
-        """
-        checks to see if the snake is hitting a wall
+    def is_hitting_wall(self) -> bool:
+        """Check if the snake is hitting a wall.
+
+        Returns:
+            bool: True if the snake is hitting a wall, False otherwise.
         """
         if any(
             [
@@ -278,17 +282,16 @@ class Snake(gym.Env):
         ):
             self.reset_score()
             return True
+        return False
 
-    def reset(self):
-        """
-        Resets the environment to an initial state and returns an initial
-        observation.
+    def reset(self) -> List[int]:
+        """Reset the environment.
 
-        Note that this function should not reset the environment's random
-        number generator(s); random variables in the environment's state should
-        be sampled independently between multiple calls to `reset()`. In other
-        words, each call of `reset()` should yield an environment suitable for
-        a new episode, independent of previous episodes.
+        Note that this method should not reset the environment's random number
+        generator(s). Random variables in the environment's state should be sampled
+        independently between multiple calls to `reset()`. In other words, each call of
+        `reset()` should yield an environment suitable for a new episode, independent
+        of previous episodes.
 
         Returns:
             observation (object): the initial observation.
@@ -305,20 +308,16 @@ class Snake(gym.Env):
         self.done = False
         return self.get_state()
 
-    def save_eps(self):
-        """
-        saves the current frame as an eps file
-        """
+    def save_eps(self) -> None:
+        """Save the current frame as an eps file."""
         eps_fname = f"ep{self.episode_number:09d}-stp{self.step_number:09d}.eps"
         eps_outpath = (
             self.eps_dir / eps_fname if isinstance(self.eps_dir, Path) else eps_fname
         )
         turtle.getcanvas().postscript(file=eps_outpath, colormode="color")
 
-    def run_game(self):
-        """
-        runs the main snake game loop
-        """
+    def run_game(self) -> None:
+        """Run the main snake game loop."""
         # Flip this to True if the snake gains a reward during a time step.
         reward_given = False
         try:
@@ -331,7 +330,8 @@ class Snake(gym.Env):
                 reward_given = True
             self.move_body()  # After the snake head moves, update the body.
             self.get_distance_to_apple()
-        except:  # If we throw an error while exiting, just exit.
+        except Exception as exc:  # If we throw an error while exiting, just exit.
+            print(f"ERROR: Unexpected exception: {exc}")
             sys.exit()
 
         if self.is_eating_body():  # Check to see if the snake is eating itself.
@@ -351,25 +351,28 @@ class Snake(gym.Env):
         if self.save_for_gif:
             self.save_eps()
 
-    def step(self, action, episode_number=None, step_number=None):
-        """
-        Run one timestep of the environment's dynamics. When end of
-        episode is reached, you are responsible for calling `reset()`
+    def step(
+        self, action: int, episode_number: int = None, step_number: int = None
+    ) -> Tuple[List[int], float, bool, dict]:
+        """Run one timestep of the environment's dynamics.
+
+        When the end of episode is reached, you are responsible for calling `reset()`
         to reset this environment's state.
 
-        Accepts an action and returns a tuple (observation, reward, done, info).
+        `step` accepts an action and returns a tuple (observation, reward, done, info).
 
         Args:
-            action (object): an action provided by the agent
+            action (int): 0 (up), 1 (down), 2 (left), or 3 (right).
+            episode_number (int, optional): The training epoch. Defaults to None.
+            step_number (int, optional): The current step number. Defaults to None.
 
         Returns:
-            observation (object): agent's observation of the current environment
-            reward (float) : amount of reward returned after previous action
-            done (bool): whether the episode has ended, in which case further
-                         step() calls will return undefined results
-            info (dict): contains auxiliary diagnostic information (helpful for
-                         debugging, and sometimes learning)
-
+            Tuple[List[int], float, bool, dict]:
+                observation (object): The agent's view of the current environment.
+                reward (float) : The amount of reward returned after previous action.
+                done (bool): Whether the episode has ended (in which case further
+                    `step` calls will return undefined results).
+                info (dict): Auxiliary diagnostic information.
         """
         if action == 0:
             self.move_up()
@@ -390,17 +393,20 @@ class Snake(gym.Env):
         self.run_game()
         return self.get_state(), self.reward, self.done, {}
 
-    def get_state(self):
+    def get_state(self) -> List[int]:
+        """Obtain the 12-dimensional state of the snake.
+
+        Returns:
+            List[int]: The 12-dimensional state vector of the snake.
         """
-        obtains the 12-dimensional state of the snake
-        """
-        # Define the coordinates of the snake head in units of HEAD_SIZE.
+        # Define the coordinates of the snake head in units of `HEAD_SIZE`.
         self.head.x = self.head.xcor() / self.WIDTH
         self.head.y = self.head.ycor() / self.HEIGHT
 
         # Scale the coordinates of the snake head range from 0 to 1.
-        # This requires shifting the origin to the left by half the width of the 1-length x-interval,
-        # and also shifting down by half the height of the 1-length y-interval.
+        # This requires shifting the origin to the left by half the width of the
+        # 1-length x-interval, and also shifting down by half the height of the
+        # 1-length y-interval.
         self.head.xsc = self.head.x / self.WIDTH + 0.5
         self.head.ysc = self.head.y / self.HEIGHT + 0.5
 
@@ -419,22 +425,22 @@ class Snake(gym.Env):
             1
             if self.HEIGHT / 2 - 1 <= self.head.y and self.head.y <= self.HEIGHT / 2
             else 0
-        )  # within one HEAD_SIZE unit below the top wall
+        )  # Within one HEAD_SIZE unit below the top wall.
         wall_below = (
             1
             if -self.HEIGHT / 2 <= self.head.y and self.head.y <= -self.HEIGHT / 2 + 1
             else 0
-        )  # within one HEAD_SIZE unit to the left of the right wall
+        )  # Within one HEAD_SIZE unit to the left of the right wall.
         wall_left = (
             1
             if -self.WIDTH / 2 <= self.head.x and self.head.x <= -self.WIDTH / 2 + 1
             else 0
-        )  # within one HEAD_SIZE unit to the right of the left wall
+        )  # Within one HEAD_SIZE unit to the right of the left wall.
         wall_right = (
             1
             if self.WIDTH / 2 - 1 <= self.head.x and self.head.x <= self.WIDTH / 2
             else 0
-        )  # within one HEAD_SIZE unit above the bottom wall
+        )  # Within one HEAD_SIZE unit above the bottom wall.
 
         # Check to see if the snake's body chunks are adjacent to the head.
         # Here are some example states where ^ is the head and . is the tail:
@@ -498,7 +504,7 @@ class Snake(gym.Env):
                 0,
                 0,
             ]
-        # Remove body chunks from the definition of the obstacle substates.
+        # Remove body chunks from the definition of the obstacle sub-states.
         elif self.state_definition_type == "no_body":
             state = [
                 apple_above,
