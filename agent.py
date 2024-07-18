@@ -1,49 +1,62 @@
 import random
+
 import numpy as np
-'''
+
+"""
 In deep reinforcement learning, we need to create two things:
     - an environment (the snake game universe)
     - an agent (the algorithm which pilots the snake the environment)
 Our environment is the Snake class and our agent is the neural network.
-'''
+"""
 from keras import Sequential
-'''
+
+"""
 A Sequential deep learning model is appropriate for a plain stack of layers
 where each layer has exactly one input tensor and one output tensor.
-'''
+"""
 from collections import deque
-'''
+
+"""
 Deques are a generalization of stacks and queues (the name is pronounced "deck"
 and is short for "double-ended queue"). Deques support thread-safe, memory
 efficient appends and pops from either side of the deque with approximately the
 same O(1) performance in either direction.
-'''
+"""
 from keras.layers import Dense
-'''
+
+"""
 In any neural network, a dense layer is a layer that is deeply connected with
 its preceding layer which means the neurons of the layer are connected to every
 neuron of its preceding layer. This layer is the most commonly used layer in
 artificial neural network networks.
-'''
+"""
 from tensorflow.keras.optimizers import Adam
-'''
+
+"""
 Adam optimization is a stochastic gradient descent method that is based on
 adaptive estimation of first-order and second order moments. Whereas momentum
 can be seen as a ball running down a slope, Adam behaves like a heavy ball with
 friction, which thus prefers flat minima in the error surface.
-'''
+"""
+
 
 class DQN:
-    '''
+    """
     a deep-Q neural network that can train itself to play snake
-    '''
-    def __init__(self, env, params):
+    """
 
-        self.action_space = env.action_space # the dimension of the action space (4 here because the snake's only options are up, down, left, right)
-        self.state_space = env.state_space # the dimension of the state space (e.g. 12 binary elements)
-        self.epsilon = params['epsilon'] # the initial ratio of steps taken to randomly explore vs move in a predicted direction
-        self.gamma = params['gamma'] # the discount factor for future rewards (0 is short-sighted; 1 is long-sighted)
-        '''
+    def __init__(self, env, params):
+        self.action_space = env.action_space  # the dimension of the action space (4 here because the snake's only options are up, down, left, right)
+        self.state_space = (
+            env.state_space
+        )  # the dimension of the state space (e.g. 12 binary elements)
+        self.epsilon = params[
+            "epsilon"
+        ]  # the initial ratio of steps taken to randomly explore vs move in a predicted direction
+        self.gamma = params[
+            "gamma"
+        ]  # the discount factor for future rewards (0 is short-sighted; 1 is long-sighted)
+        """
         An important note on batch_size:
         The number of training examples used in the estimate of the error
         gradient is a hyperparameter for the learning algorithm called the
@@ -57,54 +70,67 @@ class DQN:
         The improved estimate of the error gradient comes at the cost of having
         to use the model to make many more predictions before the estimate can
         be calculated, and in turn, the weights updated.
-        '''
-        self.batch_size = params['batch_size']
-        self.epsilon_min = params['epsilon_min'] # the minimum ratio of time steps we'd like the agent to move randomly vs in a predicted direction
-        self.epsilon_decay = params['epsilon_decay'] # how much of the ratio of random moving we want to take into the next iteration of gathering a batch of states
-        self.learning_rate = params['learning_rate'] # to what extent newly acquired info overrides old info (0 learn nothing and exploit prior knowledge exclusively; 1 only consider the most recent information)
-        self.layer_sizes = params['layer_sizes'] # the number of nodes for the hidden layers of our Q network
-        self.memory = deque(maxlen=2500) # our defined working memory array of the state of the agent and the environment over time
+        """
+        self.batch_size = params["batch_size"]
+        self.epsilon_min = params[
+            "epsilon_min"
+        ]  # the minimum ratio of time steps we'd like the agent to move randomly vs in a predicted direction
+        self.epsilon_decay = params[
+            "epsilon_decay"
+        ]  # how much of the ratio of random moving we want to take into the next iteration of gathering a batch of states
+        self.learning_rate = params[
+            "learning_rate"
+        ]  # to what extent newly acquired info overrides old info (0 learn nothing and exploit prior knowledge exclusively; 1 only consider the most recent information)
+        self.layer_sizes = params[
+            "layer_sizes"
+        ]  # the number of nodes for the hidden layers of our Q network
+        self.memory = deque(
+            maxlen=2500
+        )  # our defined working memory array of the state of the agent and the environment over time
         self.model = self.build_model()
 
     def build_model(self):
-        '''
+        """
         builds a neural network of dense layers consisting of an input layer,
         3 hidden layers, and an output layer
-        '''
+        """
         model = Sequential()
         for i, layer_size in enumerate(self.layer_sizes):
-            if i == 0: # The input layer's shape (i.e. number of nodes) is defined by the dimension of the state space.
-                model.add(Dense(layer_size, input_shape=(self.state_space,),
-                                activation='relu'))
-            else: # The three hidden layers will have an integer number of nodes.
-                model.add(Dense(layer_size, activation='relu'))
+            if (
+                i == 0
+            ):  # The input layer's shape (i.e. number of nodes) is defined by the dimension of the state space.
+                model.add(
+                    Dense(
+                        layer_size, input_shape=(self.state_space,), activation="relu"
+                    )
+                )
+            else:  # The three hidden layers will have an integer number of nodes.
+                model.add(Dense(layer_size, activation="relu"))
                 # Recall that the Rectified Linear Unit (ReLU) activation
                 # function that outputs the input directly if the input is
                 # positive, otherwise it outputs zero.
         # The number of nodes in the output layer is the dimension of the action space.
-        model.add(Dense(self.action_space, activation='softmax'))
+        model.add(Dense(self.action_space, activation="softmax"))
         # The Softmax function is good here because it's best applied to
         # multi-class classification problems where class membership is required
         # on more than two class labels. In this instance, maybe the snake needs
         # to travel in 3 or more directions to get to the apple.
-        model.compile(loss='mse', optimizer=Adam(learning_rate=self.learning_rate))
+        model.compile(loss="mse", optimizer=Adam(learning_rate=self.learning_rate))
         return model
 
-
     def remember(self, state, action, reward, next_state, done):
-        '''
+        """
         adds the current state, next state, proposed action, total reward, and
         whether we are done in the agent's running memory buffer (deque) of
         states
-        '''
+        """
         self.memory.append((state, action, reward, next_state, done))
 
-
     def act(self, state):
-        '''
+        """
         moves in a random direction or the direction predicted to give the best
         reward outcome
-        '''
+        """
         # If we are under the explore threshold parameter, move in a random
         # direction, otherwise move in the direction which maximizes the
         # probability of a larger total reward.
@@ -115,7 +141,7 @@ class DQN:
         #           0:up      1:down      2:left      3:right
         return np.argmax(act_values[0])
 
-    '''
+    """
     A note on batch size from Deep Learning by Ian Goodfellow:
 
     "Optimization algorithms that use the entire training set are called batch
@@ -154,12 +180,13 @@ class DQN:
 
     Put another way, the batch size defines the number of samples that must be
     propagated through the network before the weights can be updated.
-    '''
+    """
+
     def replay(self):
-        '''
+        """
         retrains the DQN
-        '''
-         # Collect more samples if we don't have  enough for a training batch.
+        """
+        # Collect more samples if we don't have  enough for a training batch.
         if len(self.memory) < self.batch_size:
             return
 
@@ -177,7 +204,9 @@ class DQN:
         # The core of this algorithm is a Bellman equation as a simple value
         # iteration update, using the weighted average of the old value and the
         # new information.
-        targets = rewards + self.gamma*(np.amax(self.model.predict_on_batch(next_states), axis=1))*(1-dones)
+        targets = rewards + self.gamma * (
+            np.amax(self.model.predict_on_batch(next_states), axis=1)
+        ) * (1 - dones)
         targets_full = self.model.predict_on_batch(states)
         ind = np.arange(self.batch_size)
         targets_full[[ind], [actions]] = targets
@@ -187,15 +216,16 @@ class DQN:
         if self.epsilon > self.epsilon_min:
             self.epsilon *= self.epsilon_decay
 
+
 def train_dqn(env, params):
     history = []
     agent = DQN(env, params)
-    for episode_num in range(params['num_episodes']):
+    for episode_num in range(params["num_episodes"]):
         state = env.reset()
         # Convert the initial state to a 1x12 matrix.
         state = np.reshape(state, (1, env.state_space))
         total_reward = 0
-        for step_num in range(params['max_steps']):
+        for step_num in range(params["max_steps"]):
             action = agent.act(state)
             prev_state = state
             # The step method allows the agent to move the snake.
@@ -208,7 +238,9 @@ def train_dqn(env, params):
             if agent.batch_size > 1:
                 agent.replay()
             if done:
-                print(f'{str(prev_state)} {total_reward:<5} ({episode_num+1:>3}/{params["num_episodes"]:<3})')
+                print(
+                    f'{str(prev_state)} {total_reward:<5} ({episode_num+1:>3}/{params["num_episodes"]:<3})'
+                )
                 break
         history.append(total_reward)
     return history

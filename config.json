@@ -1,6 +1,6 @@
 {
     "project_root_dir": ".",
-    "human": true,
+    "human": false,
     "name": "test",
     "save_for_gif": false,
     "make_gif": false,

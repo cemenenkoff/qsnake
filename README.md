@@ -1,28 +1,30 @@
-# qSnake: Deep Q Learning for Top-Down 2D Games
+![logo](img/qsnake.png)
+# qSnake
+## Deep Q Learning for Top-Down 2D Games
 - Each time the snake eats an apple, it grows by one chunk.
 - The game ends if the snake head hits a wall or its own body.
 
-![training montage](/example_output/training-montage.gif)
-![learning curve](/example_output/learning-curve.png)
+![training-montage](/img/training-montage.gif)
+![learning-curve](/img/learning-curve.png)
 
 # Overview
-- _**Reinforcement learning**_ is a style of machine learning that relies on past experience to develop a policy on what do to next.
-- _**Deep neural networks**_ are used in machine learning to set up decision pathways that maximize reward (i.e. minimize loss or error).
-- _**Q-learning**_ is a subclass of reinforcement learning that is *model-free*, meaning that it does not require a model of the environment in which it operates and can learn directly from raw experiences.
+- _**Reinforcement learning**_ is a style of machine learning that relies on past experience to develop a **policy** on what do to next.
+- _**Deep neural networks**_ are used in machine learning to set up decision pathways that maximize reward (i.e. **minimize loss** or error).
+- _**Q-learning**_ is a subclass of reinforcement learning that is **model-free**, meaning that it does not require a model of the environment in which it operates and can learn directly from raw experiences.
   - Given a reward structure (e.g. 10 points for eating an apple, but -100 for eating a body chunk), Q-learning can handle problems with inherent randomness (e.g. the apple respawning).
 
-In this exploration, a _**policy**_ is a strategy to win the game of snake. Q-learning finds an *optimal* policy in the sense of maximizing the expected value of the total reward over any and all steps in the game, starting from an initial state.
+In this exploration, a **policy** is a strategy to win the game of snake. Q-learning strives to find an *optimal* policy in the sense of maximizing the expected value of the total reward over any and all steps in the game, starting from an initial state.
 
 The agent's policy begins as *"move randomly and hope for the best"* but changes as it completes more games. With each game, it strives to get closer to an _**optimal action-selection policy**_ (where the possible actions are up, down, left, and right).
 
-**The more the agent plays, the more its random movements are replaced by policy-predicted movements.**
+***The more the agent plays, the more its random movements are replaced by policy-predicted movements.***
 
 # Core Files
 `explore.py`
->After everything is set up, running `python explore.py -c config.json` is the main way to interface with this project. User options like where to store output, whether to save images, build a gif, and also hyperparameters for the learning agent are all specified in `config.json`.
+>Run `python explore.py -c config.json` to interface with this project. Options like where to store output, whether to save images, build a gif, and also hyperparameters for the learning agent are all specified in `config.json`.
 
 `config.json`
->This configuration file defines how the script should run. All of the keys in the default configuration included below are required along with their example data types.
+>Define how the script should run. All of the keys in the default configuration included below are required along with their example data types.
 ```json
 {
     "project_root_dir": ".",
@@ -46,16 +48,16 @@ The agent's policy begins as *"move randomly and hope for the best"* but changes
 ```
 
 `requirements.txt`
->After cloning this repository (and hopefully setting up a virtual environment), run `pip install -r requirements.txt` to install all necessary dependencies. This project runs on **Python 3.9.7**, and some of the main modules utilized in this demo are `tensorflow`, `keras`, `turtle`, and `gym`.
+>Run `pip install -r requirements.txt` to install all necessary dependencies. This project runs on [Python 3.9.7](https://www.python.org/downloads/release/python-397/).
 
 `environment.py`
->This subclass of `gym.Env` represents our snake game.
+>This subclass of `gym.Env` represents the snake game environment.
 
 `agent.py`
->This script trains an agent to play snake via a deep Q-learning network.
+>Train an agent to play snake via a deep Q-learning network.
 
 `plotting.py`
->This supporting script graphs some statistics about how the Q-network was trained and the performance of the agent.
+>Graph some statistics about how the Q-network was trained and the performance of the agent.
 
 `gif_creator.py`
 >Convert saved eps files into png files and then png files into an animated gif. Using this class requires a separate installation of [Ghostscript](https://ghostscript.com/releases/index.html).
@@ -64,7 +66,7 @@ The agent's policy begins as *"move randomly and hope for the best"* but changes
 >Convert already-saved eps or png image files into a gif without having to re-run the game. Again, [Ghostscript](https://ghostscript.com/releases/index.html) is required.
 
 # Setup
-If you are fairly new to python programming, I'd reccommend the following steps:
+If you are fairly new to Python programming, I'd reccommend the following steps:
 
 1. Download and install [VS Code](https://code.visualstudio.com/download).
 
@@ -110,7 +112,7 @@ If you are fairly new to python programming, I'd reccommend the following steps:
 
 # Algorithm Overview
 ## [Bellman Equations](https://en.wikipedia.org/wiki/Bellman_equation)
-![equation](/example_output/bellman.png)
+![equation](/img/bellman.png)
 
 What's shown above is an [algorithmic solution to a Bellman equation](https://en.wikipedia.org/wiki/Q-learning#Algorithm) using value iteration (also known as backward induction). The linked article is very well-written, but here's a summary:
 
