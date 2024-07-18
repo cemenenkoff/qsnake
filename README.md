@@ -1,11 +1,11 @@
-![logo](img/qsnake.png)
+![logo](img/readme/qsnake-logo.png)
 # qSnake
 ## [Deep Q Learning](https://huggingface.co/learn/deep-rl-course/en/unit3/deep-q-algorithm) for Top-Down 2D Games
 - In the game of [Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)), each time the snake eats an apple, it grows by one chunk.
 - The game ends if the snake head hits a wall or its own body.
 
-![training-montage](/img/training-montage.gif)
-![learning-curve](/img/learning-curve.png)
+![training-montage](/img/readme/training-montage.gif)
+![learning-curve](/img/readme/learning-curve.png)
 
 # Overview
 - [**Reinforcement learning**](https://en.wikipedia.org/wiki/Reinforcement_learning) is a style of machine learning that relies on past experience to develop a **policy** on what do to next.
@@ -20,8 +20,8 @@ The agent's policy begins as *"move randomly and hope for the best"* but changes
 ***The more the agent plays, the more its random movements are replaced by policy-predicted movements.***
 
 # Core Files
-## `explore.py`
-Run `python explore.py` to interface with this project. Options like where to store output, whether to save images, build a gif, and also hyperparameters for the learning agent are all specified in `config.json`.
+## `q_snake.py`
+Run `python q_snake.py` to interface with this project. Options like where to store output, whether to save images, build a gif, and also hyperparameters for the learning agent are all specified in `config.json`.
 
 ## `config.json`
 Define how the script should run. All of the keys in the default configuration included below are required along with their example data types.
@@ -145,13 +145,13 @@ If you are fairly new to Python programming, I'd reccommend the following steps:
 
 14. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
 
-15. Once everything is installed, run `python explore.py` to test if you can play the game manually.
+15. Once everything is installed, run `python q_snake.py` to test if you can play the game manually.
 
-16. Next, specify `"human": false` in `config.json`, save it, and then run  `python explore.py` again, this time to see if the *agent* is able to play the game.
+16. Next, specify `"human": false` in `config.json`, save it, and then run  `python q_snake.py` again, this time to see if the *agent* is able to play the game.
 
 17. Let the agent run to the end and check that `plotting.py` is able to produce a graph of the learning curve.
 
-18. Play with a few settings in `config.json` and re-run `python explore.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a questions you want to explore.
+18. Play with a few settings in `config.json` and re-run `python q_snake.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a questions you want to explore.
 
 19. OPTIONAL - If you were bold enough to install Ghostscript, try saving game frames as eps files. You can then run `make_gif_from_images.py` (with some manual adjustments) to convert the eps files into png files and then into an animated gif.
 
@@ -159,7 +159,7 @@ If you are fairly new to Python programming, I'd reccommend the following steps:
 
 # Algorithm Overview
 ## [Bellman Equations](https://en.wikipedia.org/wiki/Bellman_equation)
-![equation](/img/bellman.png)
+![equation](/img/readme/bellman.png)
 
 What's shown above is an [algorithmic solution to a Bellman equation](https://en.wikipedia.org/wiki/Q-learning#Algorithm) using value iteration (also known as backward induction). The linked article is very well-written, but here's a summary:
 

@@ -2,7 +2,7 @@
     "project_root_dir": ".",
     "human": false,
     "name": "test",
-    "save_for_gif": false,
+    "save_for_gif": true,
     "make_gif": false,
     "params":{
         "epsilon": 1.0,

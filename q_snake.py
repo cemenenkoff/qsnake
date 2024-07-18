@@ -98,7 +98,7 @@ def main():
     config = check_config(get_config(args.config))
     params = config["params"]  # The main parameters for the agent.
     project_root_dir = Path(config["project_root_dir"])
-    figures_dir = project_root_dir / "figures"
+    runs_dir = project_root_dir / "runs"
 
     # Name a folder to store the output of this run.
     ts = datetime.now().strftime("%a%b%d-%H%M%S")
@@ -113,7 +113,7 @@ def main():
 
     if config["save_for_gif"]:
         # Create folders to store the eps files for gif creation.
-        eps_dir = figures_dir / instance_folder / "gif-build" / "eps"
+        eps_dir = runs_dir / instance_folder / "gif-build" / "eps"
         config["eps_dir"] = eps_dir
         eps_dir.mkdir(exist_ok=True, parents=True)
 
@@ -125,7 +125,7 @@ def main():
     elif not config["human"]:
         history = train_dqn(env, params)
         # If an agent plays, create a folder to store our learning curve graph.
-        instance_dir = figures_dir / instance_folder
+        instance_dir = runs_dir / instance_folder
         instance_dir.mkdir(exist_ok=True, parents=True)
         plot_name = f"learning-curve-{params_str}.png"
         plot_history(history, outpath=instance_dir / plot_name, params=params)
@@ -134,7 +134,7 @@ def main():
         gif_name = f"training-montage-{params_str}.gif"
         bob_the_builder = GifBuilder(config["eps_dir"], png_dir)
         bob_the_builder.convert_eps_files()
-        bob_the_builder.make_gif(outpath=figures_dir / instance_folder / gif_name)
+        bob_the_builder.make_gif(outpath=runs_dir / instance_folder / gif_name)
 
 
 if __name__ == "__main__":

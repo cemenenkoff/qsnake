@@ -4,7 +4,7 @@ import sys
 import time
 import turtle
 from pathlib import Path
-from typing import Tuple, List
+from typing import List, Tuple
 
 import gym
 
@@ -21,7 +21,7 @@ class Snake(gym.Env):
     PIXEL_H = HEAD_SIZE * HEIGHT  # Height of the screen in pixels.
     PIXEL_W = HEAD_SIZE * WIDTH  # Width of the screen in pixels.
     SLEEP = 0.1  # Seconds to wait between steps for humans.
-    GAME_TITLE = "Snake"
+    GAME_TITLE = "qSnake"
     BG_COLOR = tuple(i / 255.0 for i in (255, 255, 255))
     SNAKE_SHAPE = "square"
     SNAKE_COLOR = "green"
