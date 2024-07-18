@@ -22,7 +22,7 @@ class Snake(gym.Env):
     PIXEL_W = HEAD_SIZE * WIDTH  # Width of the screen in pixels.
     SLEEP = 0.1  # Seconds to wait between steps for humans.
     GAME_TITLE = "Snake"
-    BG_COLOR = tuple(i / 255.0 for i in (242, 225, 242))
+    BG_COLOR = tuple(i / 255.0 for i in (255, 255, 255))
     SNAKE_SHAPE = "square"
     SNAKE_COLOR = "green"
     SNAKE_SPEED = "fastest"

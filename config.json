@@ -12,8 +12,8 @@
         "epsilon_decay": 0.98,
         "learning_rate": 0.00025,
         "layer_sizes": [128, 128, 128],
-        "num_episodes": 5,
-        "max_steps": 100,
+        "num_episodes": 30,
+        "max_steps": 300,
         "state_definition_type": "default"
     }
 }

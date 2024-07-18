@@ -125,18 +125,18 @@ class DQN:
         """
         if np.random.rand() <= self.epsilon:
             return random.randrange(self.action_space)
-        act_values = self.model.predict(state)
+        act_values = self.model.predict(state, verbose=0)
         # e.g. [[0.08789534, 0.8699538 , 0.03103394, 0.01111698]]
         #           0:up      1:down      2:left      3:right
         return np.argmax(act_values[0])
 
     def replay(self):
         """Retrain the DQN."""
-        # Collect more samples if we don't have  enough for a training batch.
+        # Collect more samples if we don't have enough for a training batch.
         if len(self.memory) < self.batch_size:
             return
 
-        # Get a batch_size'd random sample from the working memory buffer.
+        # Get a batch-sized random sample from the working memory buffer.
         minibatch = random.sample(self.memory, self.batch_size)
         states = np.array([memory[0] for memory in minibatch])
         actions = np.array([memory[1] for memory in minibatch])
