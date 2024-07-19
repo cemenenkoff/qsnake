@@ -97,7 +97,7 @@ The maximum number of steps allowable in a single game.
 
 
 ## `requirements.txt`
-Run `pip install -r requirements.txt` to install all necessary dependencies. This project runs on [Python 3.9.7](https://www.python.org/downloads/release/python-397/).
+Run `pip install -r requirements.txt` to install all necessary dependencies. This project runs on [Python 3.12.4](https://www.python.org/downloads/release/python-3124/).
 
 ## `environment.py`
 This subclass of `gym.Env` represents the snake game environment.
@@ -119,7 +119,7 @@ If you are fairly new to Python programming, I'd reccommend the following steps:
 
 1. Download and install [VS Code](https://code.visualstudio.com/download).
 
-2. Install [Python 3.9.7](https://www.python.org/downloads/) (add it to PATH if you have no other Python versions installed).
+2. Install [Python 3.12.4](https://www.python.org/downloads/release/python-3124/) (add it to PATH if you have no other Python versions installed).
 
 3. Install [Git bash](https://git-scm.com/downloads).
 
@@ -127,7 +127,7 @@ If you are fairly new to Python programming, I'd reccommend the following steps:
 
 5. Open VS Code, and from the Git bash shell, run `pip install virtualenv` to install the `virtualenv` module.
 
-6. Run `python -m virtualenv <myenvname> --python=python3.9.7` to create a virtual environment that runs on Python 3.9.7.
+6. Run `python -m virtualenv <myenvname> --python=python3.12.4` to create a virtual environment that runs on Python 3.12.4.
 
 7. In your shell, navigate to the main project folder that contains `<myenvname>` via `cd <projdir>`. You can confirm the environment folder exists with a quick `ls -la` command.
 
@@ -139,7 +139,7 @@ If you are fairly new to Python programming, I'd reccommend the following steps:
 
 11. From the dropdown menu, click `Python: Select Interpreter`.
 
-12. Select `Python 3.9.7 64-bit ('<myenvname>':venv)` (it may already be selected automatically).
+12. Select `Python 3.12.4 64-bit ('<myenvname>':venv)`.
 
 13. Run `pip list` to see a list of installed packages. It should only have two or three modules.
 
