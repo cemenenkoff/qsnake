@@ -7,17 +7,20 @@ from matplotlib import pyplot as plt
 from sklearn.linear_model import LinearRegression
 
 # Configure global matplotlib settings.
-mpl.rc("axes", labelsize=24, facecolor="none")
+mpl.rc("axes", titlesize=36, labelsize=24, facecolor="none")
 mpl.rc("xtick", labelsize=16)
 mpl.rc("ytick", labelsize=16)
-WIDTH = 10
-HEIGHT = WIDTH / 1.618
-mpl.rc("figure", figsize=(WIDTH, HEIGHT), facecolor="none")
+GIF_HEIGHT_PIXELS = 324
+HEIGHT_PIXELS = 10 * GIF_HEIGHT_PIXELS
+DPI = 600
+HEIGHT = HEIGHT_PIXELS / DPI
+WIDTH = 1.618 * HEIGHT
+mpl.rc("figure", dpi=DPI, figsize=(WIDTH, HEIGHT), facecolor="none")
 plt.style.use("ggplot")  # This plot style is borrowed from R's ggplot2.
 
 
 def save_fig(
-    outpath: Union[Path, str], tight_layout: bool = True, resolution: int = 300
+    outpath: Union[Path, str], tight_layout: bool = True, resolution: int = DPI
 ) -> None:
     """Save the current figure to a specified path.
 
@@ -25,7 +28,7 @@ def save_fig(
         outpath (Union[Path, str]): The desired output path for the image.
         tight_layout (bool, optional): Whether to crop the image to its content.
             Defaults to True.
-        resolution (int, optional): The pixel density of the image. Defaults to 300.
+        resolution (int, optional): The pixel density of the image. Defaults to `DPI`.
     """
     if tight_layout:
         plt.tight_layout()
@@ -65,7 +68,7 @@ def plot_history(
     """
     window_len = max(int(params.get("num_episodes") / 5), 5)
     df = prepare_data_for_plotting(history, window_len=window_len)
-    _, ax = plt.subplots(figsize=(12, 8))
+    _, ax = plt.subplots()
     # Establish the base scatter plot.
     ax.plot(
         df["Episode"],

@@ -55,7 +55,6 @@ def check_config(config: dict) -> dict:
         dict: The validated config file.
     """
     req = {
-        "project_root_dir": str,
         "human": bool,
         "name": str,
         "save_for_gif": bool,
@@ -93,19 +92,17 @@ def main():
     args = parse_args()
     config = check_config(get_config(args.config))
     params = config["params"]  # The main parameters for the agent.
-    project_root_dir = Path(config["project_root_dir"])
-    runs_dir = project_root_dir / "runs"
+    runs_dir = Path.cwd() / "runs"
 
     # Name a folder to store the output of this run.
-    ts = datetime.now().strftime("%a%b%d-%H%M%S")
+    ts = datetime.now().strftime("%Y%m%d-%H%M%S")
     num_ep = params["num_episodes"]
     bat_sz = params["batch_size"]
     state_def = params["state_definition_type"]
     params_str = f"{state_def}-{num_ep}ep-{bat_sz}batch"
+    if config["name"]:
+        params_str = f"{config['name']}-{params_str}"
     instance_folder = f"{ts}-{params_str}"
-    name = config["name"]
-    if isinstance(name, str) and name:
-        instance_folder = f"{name}-{instance_folder}"
 
     if config["save_for_gif"]:
         # Create folders to store the eps files for gif creation.
