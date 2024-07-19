@@ -4,13 +4,10 @@ from argparse import ArgumentParser, Namespace
 from datetime import datetime
 from pathlib import Path
 
-import tensorflow as tf
 from agent import train_dqn
 from environment import Snake
 from gif_builder import GifBuilder
 from plotting import plot_history
-
-tf.get_logger().setLevel("ERROR")
 
 
 def parse_args() -> Namespace:

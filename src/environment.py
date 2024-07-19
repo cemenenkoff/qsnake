@@ -188,8 +188,8 @@ class Snake(gym.Env):
         Returns:
             Tuple[int]: Random coordinates, measured in units of `HEAD_SIZE`.
         """
-        x = random.randint(-self.WIDTH / 2, self.WIDTH / 2)
-        y = random.randint(-self.HEIGHT / 2, self.HEIGHT / 2)
+        x = random.randint(round(-self.WIDTH / 2), round(self.WIDTH / 2))
+        y = random.randint(round(-self.HEIGHT / 2), round(self.HEIGHT / 2))
         return x, y
 
     def spawn_apple(self, first=False) -> bool:

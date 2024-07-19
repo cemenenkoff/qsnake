@@ -5,7 +5,7 @@ from typing import Any, Dict, List
 import numpy as np
 from environment import Snake
 from keras import Sequential
-from keras.layers import Dense
+from keras.layers import Dense, Input
 from tensorflow.keras.optimizers import Adam
 
 """
@@ -68,16 +68,10 @@ class DQN:
             Sequential: An ordered stack of neural network layers compiled into a model.
         """
         model = Sequential()
-        for i, layer_size in enumerate(self.layer_sizes):
-            if i == 0:  # The number of input nodes is the dimension of the state space.
-                model.add(
-                    Dense(
-                        layer_size, input_shape=(self.state_space,), activation="relu"
-                    )
-                )
-            else:
-                # Recall Rectified Linear Unit, ReLU(x), returns x if x > 0, else 0.
-                model.add(Dense(layer_size, activation="relu"))
+        # Recall Rectified Linear Unit activation, ReLU(x), returns x if x > 0, else 0.
+        model.add(Input(shape=(self.state_space,)))
+        for layer_size in self.layer_sizes:
+            model.add(Dense(layer_size, activation="relu"))
         # The number of nodes in the output layer is the dimension of the action space.
         model.add(Dense(self.action_space, activation="softmax"))
         # Softmax is used for multi-class classification. For example, maybe the snake
