@@ -8,13 +8,14 @@ cloudpickle==3.0.0
 colorama==0.4.6
 contourpy==1.2.1
 cycler==0.12.1
+Farama-Notifications==0.0.4
 flatbuffers==24.3.25
 fonttools==4.53.1
 gast==0.6.0
 google-pasta==0.2.0
 grpcio==1.65.1
-gym==0.26.2
 gym-notices==0.0.8
+gymnasium==0.29.1
 h5py==3.11.0
 idna==3.7
 joblib==1.4.2

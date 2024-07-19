@@ -33,7 +33,7 @@ click==8.1.7
 cloudpickle==3.0.0
     # via
     #   -r requirements.in
-    #   gym
+    #   gymnasium
 colorama==0.4.6
     # via
     #   -r requirements.in
@@ -48,6 +48,10 @@ cycler==0.12.1
     # via
     #   -r requirements.in
     #   matplotlib
+farama-notifications==0.0.4
+    # via
+    #   -r requirements.in
+    #   gymnasium
 flatbuffers==24.3.25
     # via
     #   -r requirements.in
@@ -69,12 +73,10 @@ grpcio==1.65.1
     #   -r requirements.in
     #   tensorboard
     #   tensorflow-intel
-gym==0.26.2
-    # via -r requirements.in
 gym-notices==0.0.8
-    # via
-    #   -r requirements.in
-    #   gym
+    # via -r requirements.in
+gymnasium==0.29.1
+    # via -r requirements.in
 h5py==3.11.0
     # via
     #   -r requirements.in
@@ -131,7 +133,7 @@ numpy==1.26.4
     # via
     #   -r requirements.in
     #   contourpy
-    #   gym
+    #   gymnasium
     #   h5py
     #   keras
     #   matplotlib
@@ -241,6 +243,7 @@ tqdm==4.66.4
 typing-extensions==4.12.2
     # via
     #   -r requirements.in
+    #   gymnasium
     #   optree
     #   tensorflow-intel
 tzdata==2024.1

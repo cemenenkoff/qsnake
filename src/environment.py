@@ -6,7 +6,7 @@ import turtle
 from pathlib import Path
 from typing import List, Tuple
 
-import gym
+import gymnasium as gym
 
 
 class Snake(gym.Env):

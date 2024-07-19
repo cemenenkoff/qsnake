@@ -7,7 +7,7 @@
     "params":{
         "epsilon": 1.0,
         "gamma": 0.95,
-        "batch_size": 256,
+        "batch_size": 2,
         "epsilon_min": 0.001,
         "epsilon_decay": 0.98,
         "learning_rate": 0.00025,

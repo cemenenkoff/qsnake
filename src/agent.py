@@ -39,7 +39,7 @@ class DQN:
         """Instantiate a deep-Q network meant to learn the game of Snake.
 
         Args:
-            env (Snake): The `gym.Env` subclass representing the game of Snake.
+            env (Snake): The `gymnasium.Env` subclass representing the game of Snake.
             params (Dict[str, Any]): Dictionary of relevant hyperparameters.
         """
         # There are only four possible directions to move in, so the action space is 4D.

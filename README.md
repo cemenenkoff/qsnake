@@ -1,6 +1,5 @@
 ![logo](img/readme/qsnake-logo.png)
-# qSnake
-## [Deep Q Learning](https://huggingface.co/learn/deep-rl-course/en/unit3/deep-q-algorithm) for Top-Down 2D Games
+# [Deep Q Learning](https://huggingface.co/learn/deep-rl-course/en/unit3/deep-q-algorithm) for Top-Down 2D Games
 - In the game of [Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)), each time the snake eats an apple, it grows by one chunk.
 - The game ends if the snake head hits a wall or its own body.
 
@@ -11,17 +10,18 @@
 - [**Reinforcement learning**](https://en.wikipedia.org/wiki/Reinforcement_learning) is a style of machine learning that relies on past experience to develop a **policy** on what do to next.
 - [**Deep neural networks**](https://en.wikipedia.org/wiki/Deep_learning) are used in machine learning to set up decision pathways that maximize reward (i.e. **minimize loss** or error).
 - [**Q-learning**](https://en.wikipedia.org/wiki/Q-learning) is a subclass of reinforcement learning that is **model-free**, meaning that it does not require a model of the environment in which it operates and can learn directly from raw experiences.
-  - Given a reward structure (e.g. 10 points for eating an apple, but -100 for eating a body chunk), Q-learning can handle problems with inherent randomness (e.g. the apple respawning).
 
-In this exploration, a **policy** is a strategy to win the game of snake. Q-learning strives to find an *optimal* policy in the sense of maximizing the expected value of the total reward over any and all steps in the game, starting from an initial state.
-
-The agent's policy begins as *"move randomly and hope for the best"* but changes as it completes more games. With each game, it strives to get closer to an _**optimal action-selection policy**_ (where the possible actions are up, down, left, and right).
+## Winning the Game
+- In this exploration, a **policy** is a strategy to win the game of snake, and we want to find the optimal one.
+- The **agent** executes the policy.
+- The policy begins as *"move randomly and hope for the best"*.
+- As the agent gains experience, the policy becomes less random and moves closer to an optimal solution.
 
 ***The more the agent plays, the more its random movements are replaced by policy-predicted movements.***
 
 # Core Files
 ## `q_snake.py`
-Run `python q_snake.py` to interface with this project. Options like where to store output, whether to save images, build a gif, and also hyperparameters for the learning agent are all specified in `config.json`.
+Run `python q_snake.py` to interface with this project.
 
 ## `config.json`
 Define how the script should run. All of the keys in the default configuration included below are required along with their example data types.
@@ -74,12 +74,12 @@ The maximum number of steps allowable in a single game.
   2. The more likely the network will adjust such that the model's overall performance improves.
 - **An improved estimate of the error gradient comes at a cost**: it requires the model to make many more predictions before the estimate can be calculated and the weights updated.
 
-#### A Note on Batch Size from Deep Learning by Ian Goodfellow:
+#### Notes Batch Size from Deep Learning by Ian Goodfellow:
 >"Optimization algorithms that use the entire training set are called batch or deterministic gradient methods, because they process all of the training examples simultaneously in a large batch."
 >
 >"Optimization algorithms that use only a single example at a time are sometimes called stochastic or sometimes online methods. The term online is usually reserved for the case where the examples are drawn from a stream of continually created examples rather than from a fixed-size training set over which several passes are made."
 
-#### A Note on Batch Sizing from Jason Brownlee:
+#### Notes Batch Sizing from Jason Brownlee:
 > A batch size of 32 means that 32 samples from the training dataset will be used to estimate the error gradient before the model weights are updated. One training epoch means that the learning algorithm has made one pass through the training dataset, where examples were separated into randomly selected 'batch size' groups.
 >
 > Historically, a training algorithm where the batch size is set to the total number of training examples is called 'batch gradient descent' and a training algorithm where the batch size is set to 1 training example is called 'stochastic gradient descent' or 'online gradient descent.'"
@@ -87,20 +87,17 @@ The maximum number of steps allowable in a single game.
 > Put another way, the batch size defines the number of samples that must be propagated through the network before the weights can be updated.
 
 #### Summary of Batch Sizing Styles
-| Gradient Descent Type        | Batch Size                                           |
-|------------------------------|-------------------------------------------------------|
-| **Batch Gradient Descent**   | all training samples    |
-| **Stochastic Gradient Descent** | 1                                                   |
-| **Minibatch Gradient Descent** | 1 < batch size < all training samples |
-
-
-
+| Gradient Descent Type           | Batch Size                            |
+|---------------------------------|---------------------------------------|
+| **Batch Gradient Descent**      | all training samples                  |
+| **Stochastic Gradient Descent** | 1                                     |
+| **Minibatch Gradient Descent**  | 1 < batch size < all training samples |
 
 ## `requirements.txt`
-Run `pip install -r requirements.txt` to install all necessary dependencies. This project runs on [Python 3.12.4](https://www.python.org/downloads/release/python-3124/).
+After creating a virtual environment with [Python 3.12.4](https://www.python.org/downloads/release/python-3124/), run `pip install -r requirements.txt` to install all necessary dependencies.
 
 ## `environment.py`
-This subclass of `gym.Env` represents the snake game environment.
+This subclass of `gymnasium.Env` represents the snake game environment.
 
 ## `agent.py`
 Train an agent to play snake via a deep Q-learning network.
@@ -157,22 +154,62 @@ If you are fairly new to Python programming, I'd reccommend the following steps:
 
 20. OPTIONAL - Try converting the saved eps files into png and then into a gif all at once by specifying `"save_for_gif": true` and `"make_gif": true` in config.json. Please note that this process can take ~30 minutes for 50 training episodes.
 
-# Algorithm Overview
-## [Bellman Equations](https://en.wikipedia.org/wiki/Bellman_equation)
-![equation](/img/readme/bellman.png)
+# Q-Learning Overview
+## What is the [Bellman Equation](https://en.wikipedia.org/wiki/Bellman_equation)?
 
-What's shown above is an [algorithmic solution to a Bellman equation](https://en.wikipedia.org/wiki/Q-learning#Algorithm) using value iteration (also known as backward induction). The linked article is very well-written, but here's a summary:
+The Bellman equation is a fundamental recursive formula in reinforcement learning that expresses the value (i.e. Q-value) of a **state** in terms of the expected reward and the values of subsequent states. It has an abstract general definition, but in Q-learning, it's more easily understood when rearranged into the [**Q-value update rule**](https://en.wikipedia.org/wiki/Q-learning#Algorithm).
 
-Q is a function that computes expected rewards for an action taken in a given state. It has a few hyperparameters, but two are especially important:
+$$Q^{\mathrm{new}}(s_t, a_t) \leftarrow \underbrace{Q(s_t, a_t)}_{\mathrm{old\,value}} + \underbrace{\alpha}_{\mathrm{learning\ rate}} \cdot \overbrace{\left(\underbrace{\underbrace{r_t}_{\mathrm{reward}} + \underbrace{\gamma}_{\mathrm{discount}} \cdot \underbrace{\underset{a}{\max}\ Q(s_{t+1},a)}_{\mathrm{est.\ optimal\ future\ value}}}_{\mathrm{new\ value\ (temporal\ difference\ target)}} -\;\underbrace{Q(s_t, a_t)}_{\mathrm{old\,value}}\right)}^{\mathrm{temporal\ difference}}$$
 
-### 1. The _**learning rate**_, $\alpha$, where $\alpha\in(0,1]$.
-   1. $\alpha$ determines _**to what extent newly acquired information overrides old information**_. A factor of 0 makes the agent exclusively use prior knowledge, whereas 1 makes it consider only the most recent data. In deterministic environments, a value of 1 is optimal, but when there is randomness involved, it needs to eventually decrease to zero. In practice however, using a constant learning rate works just fine.
-### 2. The _**discount factor**_, $\gamma$, where $\gamma\in(0,1]$.
+- $Q(s_t,a_t)$ is the Q-value of taking action $a$ in state $s$ at time $t$.
+- $\alpha$ is the learning rate, which determines the extent to which new experience overrides past experience.
+- $r_t$ is the immediate reward received after taking action $a$ in state $s$ at time $t$.
+- $\gamma$ is the discount factor, which balances the importance of immediate versus future rewards.
+- $s_{t+1}$ is the next state resulting from taking action $a$ in state $s$ at time $t$.
+- $\underset{a}{\max}\,Q(s_{t+1},a)$ is the maximum Q-value for the next state $s_{t+1}$ over all possible actions.
+
+An episode of the algorithm ends when state $s_{t+1}$ is a **final** state. For all final states $s_f$, $Q(s_f,a)$ is never updated, but is instead set to the reward value $r$ observed for state $s_f$.
+
+### Adjustable Hyperparameters
+#### 1. The _**learning rate**_, $\alpha$, where $\alpha\in(0,1]$.
+   1. $\alpha$ determines _**to what extent newly acquired information overrides old information**_. A factor of 0 makes the agent exclusively use prior knowledge, whereas 1 makes it consider only the most recent data. In deterministic environments, a value of 1 is optimal, but when there is randomness involved, it needs to eventually decrease to zero (meaning an optimal strategy is found). In practice, however, using a constant learning rate works just fine.
+#### 2. The _**discount factor**_, $\gamma$, where $\gamma\in(0,1]$.
    1. $\gamma$ determines the _**importance of future rewards**_.
       1. 0 makes the agent short-sighted, whereas 1 makes it strive for a long-term, larger reward.
       2. Starting with a small discount factor and increasing it toward a final value over time tends to accelerate learning.
+
+## Applying the Bellman Equation to Snake
+In the Snake game, the agent (the snake) navigates the game grid, eats food to grow, and avoids collisions with itself and the walls.
+### General Definitions in Terms of Snake
+- State $s$
+  - A configuration of the game (i.e. the position of the snake the food).
+- Action $a$
+  - Possible moves (i.e. up, down, left, or right).
+- Reward $r$
+  - The reward received for taking action $a$ in state $s$.
+    | **Reward Type** | **Description**                              |
+    |-----------------|----------------------------------------------|
+    | +               | Reward for eating food                      |
+    | -               | Penalty for colliding with walls or itself  |
+    | 0               | No reward for moving without eating food    |
+
+### Bellman Snake Algorithm
+1. Initialize DQN
+   - Start with an empty neural net where all Q-values are zero.
+2. Observe Current State $s$
+   - Record the current position of the snake and the apple on the grid.
+3. Choose Action $a$
+   - Choose to act based more on past experience or for random exploration (based on $\epsilon$, another hyperparameter set in `config.json` under `epsilon_decay`).
+4. Execute Action and Observe Reward
+   - Take the action $a$, move the snake, then receive the immediate reward $r$.
+5. Observe Next State
+   - Record the new position of the snake and the apple on the grid.
+6. Update Q-Value
+   - Apply the Bellman equation to update the Q-value for the state-action pair $(s, a)$
+7. Iterate
+   - Repeat the process, updating the weights in the DQN as the agent continues to play.
 ____
-## To do:
+## To Dev
 
 - ~~Allow for several user-definable agents via **config.json** files.~~
 
