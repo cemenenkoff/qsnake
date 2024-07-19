@@ -43,8 +43,8 @@
 - [4. Q-Learning Overview](#4-q-learning-overview)
   - [4.1 What is the Bellman Equation?](#41-what-is-the-bellman-equation)
     - [4.1.1 Adjustable Hyperparameters](#411-adjustable-hyperparameters)
-      - [4.1.1.1 The Learning Rate, $\\alpha$](#4111-the-learning-rate-alpha)
-      - [4.1.1.2 The Discount Factor, $\\gamma$](#4112-the-discount-factor-gamma)
+      - [4.1.1.1 The Learning Rate](#4111-the-learning-rate)
+      - [4.1.1.2 The Discount Factor](#4112-the-discount-factor)
   - [4.2 Applying the Bellman Equation to Snake](#42-applying-the-bellman-equation-to-snake)
     - [4.2.1 General Definitions in Terms of Snake](#421-general-definitions-in-terms-of-snake)
     - [4.2.2 Bellman Snake Algorithm](#422-bellman-snake-algorithm)
@@ -261,8 +261,8 @@ An episode of the algorithm ends when state $s_{t+1}$ is a **final** state. For 
 
 <!-- TOC --><a name="411-adjustable-hyperparameters"></a>
 ### 4.1.1 Adjustable Hyperparameters
-<!-- TOC --><a name="4111-the-learning-rate-alpha"></a>
-#### 4.1.1.1 The Learning Rate, $\alpha$
+<!-- TOC --><a name="4111-the-learning-rate"></a>
+#### 4.1.1.1 The Learning Rate
    - $\alpha$ determines to what extent newly acquired information overrides old information.
      - $\alpha\in(0,1]$
      - As $\alpha$ approaches 0, the agent more exclusively uses prior knowledge.
@@ -270,8 +270,8 @@ An episode of the algorithm ends when state $s_{t+1}$ is a **final** state. For 
      - In deterministic environments, a value of 1 is optimal.
      - In environments with some randomness, $\alpha$ needs to eventually decrease to zero (meaning an optimal strategy is found).
        - In practice, however, using a constant learning rate works just fine.
-<!-- TOC --><a name="4112-the-discount-factor-gamma"></a>
-#### 4.1.1.2 The Discount Factor, $\gamma$
+<!-- TOC --><a name="4112-the-discount-factor"></a>
+#### 4.1.1.2 The Discount Factor
    - $\gamma$ determines the importance of future rewards.
       - $\gamma\in(0,1]$
       - As $\gamma$ approaches 0, the agent further prioritizes short-term rewards.

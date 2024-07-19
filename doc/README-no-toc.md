@@ -180,7 +180,7 @@ $$Q^{\mathrm{new}}(s_t, a_t) \leftarrow \underbrace{Q(s_t, a_t)}_{\mathrm{old\,v
 An episode of the algorithm ends when state $s_{t+1}$ is a **final** state. For all final states $s_f$, $Q(s_f,a)$ is never updated, but is instead set to the reward value $r$ observed for state $s_f$.
 
 ### 4.1.1 Adjustable Hyperparameters
-#### 4.1.1.1 The Learning Rate, $\alpha$
+#### 4.1.1.1 The Learning Rate
    - $\alpha$ determines to what extent newly acquired information overrides old information.
      - $\alpha\in(0,1]$
      - As $\alpha$ approaches 0, the agent more exclusively uses prior knowledge.
@@ -188,7 +188,7 @@ An episode of the algorithm ends when state $s_{t+1}$ is a **final** state. For 
      - In deterministic environments, a value of 1 is optimal.
      - In environments with some randomness, $\alpha$ needs to eventually decrease to zero (meaning an optimal strategy is found).
        - In practice, however, using a constant learning rate works just fine.
-#### 4.1.1.2 The Discount Factor, $\gamma$
+#### 4.1.1.2 The Discount Factor
    - $\gamma$ determines the importance of future rewards.
       - $\gamma\in(0,1]$
       - As $\gamma$ approaches 0, the agent further prioritizes short-term rewards.
