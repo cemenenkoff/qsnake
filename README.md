@@ -43,8 +43,8 @@
 - [4. Q-Learning Overview](#4-q-learning-overview)
   - [4.1 What is the Bellman Equation?](#41-what-is-the-bellman-equation)
     - [4.1.1 Adjustable Hyperparameters](#411-adjustable-hyperparameters)
-      - [4.1.1.1 The _**learning rate**_, $\\alpha$, where $\\alpha\\in(0,1\]$.](#4111-the-learning-rate-alpha-where-alphain01)
-      - [4.1.1.2 The _**discount factor**_, $\\gamma$, where $\\gamma\\in(0,1\]$.](#4112-the-discount-factor-gamma-where-gammain01)
+      - [4.1.1.1 The Learning Rate, $\\alpha$](#4111-the-learning-rate-alpha)
+      - [4.1.1.2 The Discount Factor, $\\gamma$](#4112-the-discount-factor-gamma)
   - [4.2 Applying the Bellman Equation to Snake](#42-applying-the-bellman-equation-to-snake)
     - [4.2.1 General Definitions in Terms of Snake](#421-general-definitions-in-terms-of-snake)
     - [4.2.2 Bellman Snake Algorithm](#422-bellman-snake-algorithm)
@@ -261,15 +261,21 @@ An episode of the algorithm ends when state $s_{t+1}$ is a **final** state. For 
 
 <!-- TOC --><a name="411-adjustable-hyperparameters"></a>
 ### 4.1.1 Adjustable Hyperparameters
-<!-- TOC --><a name="4111-the-learning-rate-alpha-where-alphain01"></a>
-#### 4.1.1.1 The _**learning rate**_, $\alpha$, where $\alpha\in(0,1]$.
-   - $\alpha$ determines _**to what extent newly acquired information overrides old information**_.
-     - A factor of 0 makes the agent exclusively use prior knowledge, whereas 1 makes it consider only the most recent data.
-     - In deterministic environments, a value of 1 is optimal, but when there is randomness involved, it needs to eventually decrease to zero (meaning an optimal strategy is found). In practice, however, using a constant learning rate works just fine.
-<!-- TOC --><a name="4112-the-discount-factor-gamma-where-gammain01"></a>
-#### 4.1.1.2 The _**discount factor**_, $\gamma$, where $\gamma\in(0,1]$.
-   - $\gamma$ determines the _**importance of future rewards**_.
-      - 0 makes the agent short-sighted, whereas 1 makes it strive for a long-term, larger reward.
+<!-- TOC --><a name="4111-the-learning-rate-alpha"></a>
+#### 4.1.1.1 The Learning Rate, $\alpha$
+   - $\alpha$ determines to what extent newly acquired information overrides old information.
+     - $\alpha\in(0,1]$
+     - As $\alpha$ approaches 0, the agent more exclusively uses prior knowledge.
+     - As $\alpha$ approaches 1, the agent more exclusively considers only the most recent data.
+     - In deterministic environments, a value of 1 is optimal.
+     - In environments with some randomness, $\alpha$ needs to eventually decrease to zero (meaning an optimal strategy is found).
+       - In practice, however, using a constant learning rate works just fine.
+<!-- TOC --><a name="4112-the-discount-factor-gamma"></a>
+#### 4.1.1.2 The Discount Factor, $\gamma$
+   - $\gamma$ determines the importance of future rewards.
+      - $\gamma\in(0,1]$
+      - As $\gamma$ approaches 0, the agent further prioritizes short-term rewards.
+     - As $\gamma$ approaches 1, the agent more exclusively acts to achieve long-term rewards.
       - Starting with a small discount factor and increasing it toward a final value over time tends to accelerate learning.
 
 <!-- TOC --><a name="42-applying-the-bellman-equation-to-snake"></a>
@@ -309,7 +315,7 @@ In the Snake game, the agent (the snake) navigates the game grid, eats food to g
 <!-- TOC --><a name="5-feature-roadmap"></a>
 # 5. Feature Roadmap
 Here are some ideas for future development.
-- Allow for models to be saved.
+- Enable model saving functionality.
 - Allow previously trained models to play with saved settings.
 - Allow previously trained models to play and resume training.
 
