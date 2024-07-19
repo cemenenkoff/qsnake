@@ -3,11 +3,10 @@ from collections import deque
 from typing import Any, Dict, List
 
 import numpy as np
+from environment import Snake
 from keras import Sequential
 from keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
-
-from src.environment import Snake
 
 """
 In deep reinforcement learning, we need to create two things:

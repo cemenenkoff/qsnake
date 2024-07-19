@@ -1,13 +1,13 @@
+from argparse import ArgumentParser
 from pathlib import Path
 from typing import Union
-from gif_builder import GifBuilder
 
-from argparse import ArgumentParser
+from gif_builder import GifBuilder
 
 RUNS_DIR = Path("runs")
 
 
-def make_gif(instance_folder: Union[Path, str] = None):
+def make_gif_from_images(instance_folder: Union[Path, str] = None):
     """Loop through eps files and turn them into an animated gif.
 
     Args:
@@ -22,9 +22,10 @@ def make_gif(instance_folder: Union[Path, str] = None):
     png_dir = gif_dir / "png"
     outpath = instance_folder / "animation.gif"
 
-    bob_the_builder = GifBuilder(eps_dir, png_dir)
-    bob_the_builder.convert_eps_files()  # Toggle this off if you already have pngs.
-    bob_the_builder.make_gif(outpath)
+    gif_builder = GifBuilder(eps_dir, png_dir)
+    # You can comment out the next line if you already have PNGs prepared.
+    gif_builder.convert_eps_files()
+    gif_builder.make_gif(outpath)
 
 
 if __name__ == "__main__":
@@ -33,4 +34,4 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     instance_folder = Path(args.folderpath) if args.folderpath else args.folderpath
-    make_gif(instance_folder)
+    make_gif_from_images(instance_folder)

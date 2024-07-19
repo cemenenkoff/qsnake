@@ -7,10 +7,10 @@ from matplotlib import pyplot as plt
 from sklearn.linear_model import LinearRegression
 
 # Configure global matplotlib settings.
-mpl.rc("axes", labelsize=14, facecolor="none")
-mpl.rc("xtick", labelsize=12)
-mpl.rc("ytick", labelsize=12)
-WIDTH = 15
+mpl.rc("axes", labelsize=24, facecolor="none")
+mpl.rc("xtick", labelsize=16)
+mpl.rc("ytick", labelsize=16)
+WIDTH = 10
 HEIGHT = WIDTH / 1.618
 mpl.rc("figure", figsize=(WIDTH, HEIGHT), facecolor="none")
 plt.style.use("ggplot")  # This plot style is borrowed from R's ggplot2.
