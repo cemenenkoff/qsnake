@@ -3,9 +3,6 @@
 - In the game of [Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)), each time the snake eats an apple, it grows by one chunk.
 - The game ends if the snake head hits a wall or its own body.
 
-![training-montage](/img/readme/training-montage.gif)
-![learning-curve](/img/readme/learning-curve.png)
-
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
 - [Deep Q Learning for Top-Down 2D Games](#deep-q-learning-for-top-down-2d-games)
@@ -53,6 +50,9 @@
 
 <!-- TOC end -->
 
+![training-montage](/img/readme/training-montage.gif)
+![learning-curve](/img/readme/learning-curve.png)
+
 <!-- TOC --><a name="1-general-overview"></a>
 # 1. General Overview
 - [**Reinforcement learning**](https://en.wikipedia.org/wiki/Reinforcement_learning) is a style of machine learning that relies on past experience to develop a **policy** on what do to next.
@@ -70,47 +70,49 @@
 
 <!-- TOC --><a name="2-setup"></a>
 # 2. Setup
-If you are fairly new to Python programming, I'd recommend the following steps:
+If you are fairly new to Python programming, I'd reccommend the following steps:
 
-1. Download and install [VS Code](https://code.visualstudio.com/download).
+1. Clone this repository.
 
-2. Install [Python 3.12.4](https://www.python.org/downloads/release/python-3124/) (add it to PATH if you have no other Python versions installed).
+2. Download and install [VS Code](https://code.visualstudio.com/download).
 
-3. Install [Git bash](https://git-scm.com/downloads).
+3. Install [Python 3.12.4](https://www.python.org/downloads/release/python-3124/) (add it to PATH if you have no other Python versions installed).
 
-4. *OPTIONAL:* If you want to utilize the GIF-making supporting scripts, install [Ghostscript](https://ghostscript.com/releases/index.html) and note the path of the binary. You will need to change a line in the preamble of **gif_creator.py** to specify where the binary is located.
+4. Install [Git bash](https://git-scm.com/downloads).
 
-5. Open VS Code, and from the Git bash shell, run `pip install virtualenv` to install the `virtualenv` module.
+5. *OPTIONAL:* If you want to utilize the GIF-making supporting scripts, install [Ghostscript](https://ghostscript.com/releases/index.html) and note the path of the binary. You will need to change a line in the preamble of **gif_creator.py** to specify where the binary is located.
 
-6. Run `python -m virtualenv <myenvname> --python=python3.12.4` to create a virtual environment that runs on Python 3.12.4.
+6. Open VS Code, and from the Git bash shell, run `pip install virtualenv` to install the `virtualenv` module.
 
-7. In your shell, navigate to the main project folder that contains `<myenvname>` via `cd <projdir>`. You can confirm the environment folder exists with a quick `ls -la` command.
+7. Run `python -m virtualenv <myenvname> --python=python3.12.4` to create a virtual environment that runs on Python 3.12.4.
 
-8. Activate the virtualenvironment with `source <myenvname>/bin/activate`.
+8. In your shell, navigate to the main project folder that contains `<myenvname>` via `cd <projdir>`. You can confirm the environment folder exists with a quick `ls -la` command.
 
-9.  You should see a `(<myenvname>)` string next to the terminal input when the environment is active.
+9.  Activate the virtualenvironment with `source <myenvname>/bin/activate`.
 
-10. Press `Ctrl+Shift+P` to open VS Code's command palette.
+10. You should see a `(<myenvname>)` string next to the terminal input when the environment is active.
 
-11. From the dropdown menu, click `Python: Select Interpreter`.
+11. Press `Ctrl+Shift+P` to open VS Code's command palette.
 
-12. Select `Python 3.12.4 64-bit ('<myenvname>':venv)`.
+12. From the dropdown menu, click `Python: Select Interpreter`.
 
-13. Run `pip list` to see a list of installed packages. It should only have two or three modules.
+13. Select `Python 3.12.4 64-bit ('<myenvname>':venv)`.
 
-14. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
+14. Run `pip list` to see a list of installed packages. It should only have two or three modules.
 
-15. Once everything is installed, run `python q_snake.py` to test if you can play the game manually.
+15. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
 
-16. Next, specify `"human": false` in `config.json`, save it, and then run  `python q_snake.py` again, this time to see if the *agent* is able to play the game.
+16. Once everything is installed, run `python q_snake.py` to test if you can play the game manually.
 
-17. Let the agent run to the end and check that `plotting.py` is able to produce a graph of the learning curve.
+17. Next, specify `"human": false` in `config.json`, save it, and then run  `python q_snake.py` again, this time to see if the *agent* is able to play the game.
 
-18. Play with a few settings in `config.json` and re-run `python q_snake.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a questions you want to explore.
+18. Let the agent run to the end and check that `plotting.py` is able to produce a graph of the learning curve.
 
-19. OPTIONAL - If you were bold enough to install Ghostscript, try saving game frames as EPS files. You can then run `make_gif_from_images.py` (with some manual adjustments) to convert the EPS files into PNG files and then into an animated GIF.
+19. Play with a few settings in `config.json` and re-run `python q_snake.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a questions you want to explore.
 
-20. OPTIONAL - Try converting the saved EPS files into PNG and then into a GIF all at once by specifying `"save_for_gif": true` and `"make_gif": true` in config.json. Please note that this process can take ~30 minutes for 50 training episodes.
+20. OPTIONAL - If you were bold enough to install Ghostscript, try saving game frames as EPS files. You can then run `make_gif_from_images.py` (with some manual adjustments) to convert the EPS files into PNG files and then into an animated GIF.
+
+21. OPTIONAL - Try converting the saved EPS files into PNG and then into a GIF all at once by specifying `"save_for_gif": true` and `"make_gif": true` in config.json. Please note that this process can take ~30 minutes for 50 training episodes.
 
 <!-- TOC --><a name="3-core-files"></a>
 # 3. Core Files
