@@ -98,7 +98,7 @@ def plot_history(
         label="Total Reward Linear Trend",
         color="skyblue",
     )
-    ax.set_title("Snake Agent Learning Curve")
+    ax.set_title("Snake Agent Learning Curve", color="grey", pad=10)
     ax.set_xlabel("Episode Number")
     ax.set_ylabel("Total Episode Reward")
     plt.legend(loc="best")

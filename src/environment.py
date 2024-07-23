@@ -90,7 +90,7 @@ class Snake(gym.Env):
 
         # Create a text scoreboard that will update with information.
         self.score = turtle.Turtle()
-        self.score.color("black")
+        self.score.color("#808080")  # Match the text color of the learning curve plot.
         self.score.penup()
         self.score.hideturtle()
         self.score.goto(0, int(0.75 * self.PIXEL_H / 2))
@@ -172,7 +172,7 @@ class Snake(gym.Env):
         self.body.append(chunk)
 
     def update_score(self):
-        """Increments and update the scoreboard."""
+        """Increment and update the scoreboard."""
         self.total += 1
         self.maximum = self.total if self.total >= self.maximum else self.maximum
         self.score.clear()
@@ -335,12 +335,12 @@ class Snake(gym.Env):
             sys.exit()
 
         if self.is_eating_body():  # Check to see if the snake is eating itself.
-            self.reward = -100  # Disincentivize eating yourself.
+            self.reward = -500  # Disincentivize eating yourself.
             reward_given = self.done = True
             if self.human:
                 self.reset()
         if self.is_hitting_wall():
-            self.reward = -100  # Eating yourself is just as bad as eating walls.
+            self.reward = -500  # Eating yourself is just as bad as eating walls.
             reward_given = self.done = True
             if self.human:
                 self.reset()
