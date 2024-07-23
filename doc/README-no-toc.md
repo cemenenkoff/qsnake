@@ -6,6 +6,8 @@
 ![training-montage](/img/readme/training-montage.gif)
 ![learning-curve](/img/readme/learning-curve.png)
 
+[TOC]
+
 # 1. General Overview
 - [**Reinforcement learning**](https://en.wikipedia.org/wiki/Reinforcement_learning) is a style of machine learning that relies on past experience to develop a **policy** on what do to next.
 - [**Deep neural networks**](https://en.wikipedia.org/wiki/Deep_learning) are used in machine learning to set up decision pathways that maximize reward (i.e. **minimize loss** or error).
@@ -60,21 +62,21 @@ If you are fairly new to Python programming, I'd recommend the following steps:
 
 19. Ensure the `"human"` option in `configs/config.json` is set to `true`.
 
-20. Once everything is installed, run `python q_snake.py` to test if you can play the game manually.
+20. Once everything is installed, run `python src/q_snake.py` to test if you can play the game manually.
 
-21. Next, specify `"human": false` in `config.json`, save it, and then run  `python q_snake.py` again, this time to see if the *agent* is able to play the game.
+21. Next, specify `"human": false` in `config.json`, save it, and then run  `python src/q_snake.py` again, this time to see if the *agent* is able to play the game.
 
 22. Let the agent run to the end and check that `plotting.py` is able to produce a graph of the learning curve.
 
-23. Play with a few settings in `config.json` and re-run `python q_snake.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a question you want to explore.
+23. Play with a few settings in `config.json` and re-run `python src/q_snake.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a question you want to explore.
 
-24. OPTIONAL - If you were bold enough to install Ghostscript, try saving game frames as EPS files. You can then run `make_gif_from_images.py` (with some manual adjustments) to convert the EPS files into PNG files and then into an animated GIF.
+24. OPTIONAL - If you were bold enough to install Ghostscript, try saving game frames as EPS files. You can then run `python src/make_gif_from_images.py` (with some manual adjustments) to convert the EPS files into PNG files and then into an animated GIF.
 
 25. OPTIONAL - Try converting the saved EPS files into PNG and then into a GIF all at once by specifying `"save_for_gif": true` and `"make_gif": true` in `config.json`. Please note that this process can take 30 to 60 minutes for 50 training episodes.
 
 # 3. Core Files
 ## 3.1 `q_snake.py`
-Run `python q_snake.py` to interface with this project.
+Run `python src/q_snake.py` to interface with this project.
 
 ## 3.2 `config.json`
 Define how the script should run. All of the keys in the default configuration included below are required along with their example data types.
