@@ -75,55 +75,51 @@
 # 2. Setup
 If you are fairly new to Python programming, I'd recommend the following steps:
 
-1. Clone this repository.
+1. Download and install [VS Code](https://code.visualstudio.com/download).
 
-2. Download and install [VS Code](https://code.visualstudio.com/download).
+2. Install [Python 3.12.4](https://www.python.org/downloads/release/python-3124/) (☑️ **Add python.exe to PATH** if you have no other Python versions installed).
 
-3. Install [Python 3.12.4](https://www.python.org/downloads/release/python-3124/) (add it to PATH if you have no other Python versions installed).
+3. Install [Git bash](https://git-scm.com/downloads).
 
-4. Install [Git bash](https://git-scm.com/downloads).
+4. Open VS Code.
 
-5. *OPTIONAL:* If you want to utilize the GIF-making supporting scripts, install [Ghostscript](https://ghostscript.com/releases/index.html) and note the path of the binary. You will need to change a line in the preamble of **gif_creator.py** to specify where the binary is located.
+5. Press `F1`, and in the command palette, search for `Terminal: Select Default Profile` and set Git bash as the default terminal.
 
-6. Open VS Code.
+6. Start a new terminal with `Ctrl` + `` ` ``.
 
-7. Open this repository (i.e. the `qsnake` folder) as the current workspace folder with Ctrl+K Ctrl+O.
+7. Clone this repository to a directory where you like to store your coding projects.
 
-8. Press F1, and in the command palette, search for `Terminal: Select Default Profile` and set Git bash as the default terminal.
+8. Open this repository (i.e. the `qsnake` folder) as the current workspace folder with `Ctrl` + `K` `Ctrl` + `O`.
 
-9. Start a new terminal with Ctrl + `.
+9.  Make sure the terminal path points to the `qsnake` folder, and if it doesn't, navigate there via `cd <path_to_qsnake_folder>`. You can confirm you're in the right spot with quick `ls -la` command.
 
-10. Make sure the terminal path points to the `qsnake` folder, and if it doesn't, navigate there via `cd <path_to_qsnake_folder>`. You can confirm you're in the right spot with quick `ls -la` command.
+10. From the terminal, run `pip install virtualenv` to install the `virtualenv` module.
 
-11. From the terminal, run `pip install virtualenv` to install the `virtualenv` module.
+11. Run `python -m virtualenv <myenvname> --python=python3.12.4` to create a virtual environment that runs on Python 3.12.4.
 
-12. Run `python -m virtualenv <myenvname> --python=python3.12.4` to create a virtual environment that runs on Python 3.12.4.
+12. Activate the virtual environment with `source <myenvname>/bin/activate`.
 
-13. Activate the virtual environment with `source <myenvname>/bin/activate`.
+13. You should see `(<myenvname>)` two lines above the terminal input line when the environment is active.
 
-14. You should see `(<myenvname>)` two lines above the terminal input line when the environment is active.
+14. Press `F1` to open VS Code's command palette, then search for `Python: Select Interpreter` and select `Python 3.12.4 64-bit ('<myenvname>':venv)`.
 
-15. Press F1 to open VS Code's command palette.
+15. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
 
-16. Search for `Python: Select Interpreter` and select `Python 3.12.4 64-bit ('<myenvname>':venv)`.
+16. Next, ensure the `"human"` option in `configs/config.json` is set to `true`.
 
-17. Run `pip list` to see a list of installed packages. It should only have two or three modules.
+17. Once everything is installed and configured, run `python src/q_snake.py` to test if you can play the game manually.
 
-18. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
+18. Next, specify `"human": false` in `config.json`, and then run  `python src/q_snake.py` again, this time to see if the *agent* is able to play the game.
 
-19. Ensure the `"human"` option in `configs/config.json` is set to `true`.
+19. Let the agent run to the end and check that `plotting.py` is able to produce a graph of the learning curve.
 
-20. Once everything is installed, run `python src/q_snake.py` to test if you can play the game manually.
+20. Play with a few settings in `config.json` and re-run `python src/q_snake.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a question you want to explore.
 
-21. Next, specify `"human": false` in `config.json`, save it, and then run  `python src/q_snake.py` again, this time to see if the *agent* is able to play the game.
+21. *OPTIONAL* - If you want to utilize the GIF-making supporting scripts, install [Ghostscript](https://ghostscript.com/releases/index.html) and note the path of the binary. You will need to change a line in the preamble of **gif_creator.py** to specify where the binary is located.
 
-22. Let the agent run to the end and check that `plotting.py` is able to produce a graph of the learning curve.
+22. *OPTIONAL* - If you were bold enough to install Ghostscript, try saving game frames as EPS files. You can then run `python src/make_gif_from_images.py` to convert the EPS files into PNG files and then into an animated GIF.
 
-23. Play with a few settings in `config.json` and re-run `python src/q_snake.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a question you want to explore.
-
-24. OPTIONAL - If you were bold enough to install Ghostscript, try saving game frames as EPS files. You can then run `python src/make_gif_from_images.py` (with some manual adjustments) to convert the EPS files into PNG files and then into an animated GIF.
-
-25. OPTIONAL - Try converting the saved EPS files into PNG and then into a GIF all at once by specifying `"save_for_gif": true` and `"make_gif": true` in `config.json`. Please note that this process can take 30 to 60 minutes for 50 training episodes.
+23. *OPTIONAL* - Try converting the saved EPS files into PNG and then into a GIF all at once by specifying both `"save_for_gif": true` and `"make_gif": true` in `config.json`. Please note that this process can take 30 to 60 minutes for 50 training episodes.
 
 <!-- TOC --><a name="3-core-files"></a>
 # 3. Core Files
