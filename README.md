@@ -4,7 +4,7 @@
 - The game ends if the snake head hits a wall or its own body.
 
 <p align="center">
-  <img src="/img/readme/training-montage.gif.png"/>
+  <img src="/img/readme/training-montage.gif"/>
 </p>
 ![learning-curve](/img/readme/learning-curve.png)
 
