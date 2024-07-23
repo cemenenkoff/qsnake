@@ -6,6 +6,7 @@
 <p align="center">
   <img src="/img/readme/training-montage.gif"/>
 </p>
+
 ![learning-curve](/img/readme/learning-curve.png)
 
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
