@@ -70,7 +70,7 @@
 
 <!-- TOC --><a name="2-setup"></a>
 # 2. Setup
-If you are fairly new to Python programming, I'd reccommend the following steps:
+If you are fairly new to Python programming, I'd recommend the following steps:
 
 1. Download and install [VS Code](https://code.visualstudio.com/download).
 
