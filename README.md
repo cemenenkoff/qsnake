@@ -3,6 +3,9 @@
 - In the game of [Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)), each time the snake eats an apple, it grows by one chunk.
 - The game ends if the snake head hits a wall or its own body.
 
+![training-montage](/img/readme/training-montage.gif)
+![learning-curve](/img/readme/learning-curve.png)
+
 <!-- TOC start (generated with https://github.com/derlin/bitdowntoc) -->
 
 - [Deep Q Learning for Top-Down 2D Games](#deep-q-learning-for-top-down-2d-games)
@@ -50,9 +53,6 @@
 
 <!-- TOC end -->
 
-![training-montage](/img/readme/training-montage.gif)
-![learning-curve](/img/readme/learning-curve.png)
-
 <!-- TOC --><a name="1-general-overview"></a>
 # 1. General Overview
 - [**Reinforcement learning**](https://en.wikipedia.org/wiki/Reinforcement_learning) is a style of machine learning that relies on past experience to develop a **policy** on what do to next.
@@ -70,7 +70,7 @@
 
 <!-- TOC --><a name="2-setup"></a>
 # 2. Setup
-If you are fairly new to Python programming, I'd reccommend the following steps:
+If you are fairly new to Python programming, I'd recommend the following steps:
 
 1. Clone this repository.
 
@@ -82,37 +82,45 @@ If you are fairly new to Python programming, I'd reccommend the following steps:
 
 5. *OPTIONAL:* If you want to utilize the GIF-making supporting scripts, install [Ghostscript](https://ghostscript.com/releases/index.html) and note the path of the binary. You will need to change a line in the preamble of **gif_creator.py** to specify where the binary is located.
 
-6. Open VS Code, and from the Git bash shell, run `pip install virtualenv` to install the `virtualenv` module.
+6. Open VS Code.
 
-7. Run `python -m virtualenv <myenvname> --python=python3.12.4` to create a virtual environment that runs on Python 3.12.4.
+7. Open this repository (i.e. the `qsnake` folder) as the current workspace folder with Ctrl+K Ctrl+O.
 
-8. In your shell, navigate to the main project folder that contains `<myenvname>` via `cd <projdir>`. You can confirm the environment folder exists with a quick `ls -la` command.
+8. Press F1, and in the command palette, search for `Terminal: Select Default Profile` and set Git bash as the default terminal.
 
-9.  Activate the virtualenvironment with `source <myenvname>/bin/activate`.
+9. Start a new terminal with Ctrl + `.
 
-10. You should see a `(<myenvname>)` string next to the terminal input when the environment is active.
+10. Make sure the terminal path points to the `qsnake` folder, and if it doesn't, navigate there via `cd <path_to_qsnake_folder>`. You can confirm you're in the right spot with quick `ls -la` command.
 
-11. Press `Ctrl+Shift+P` to open VS Code's command palette.
+11. From the terminal, run `pip install virtualenv` to install the `virtualenv` module.
 
-12. From the dropdown menu, click `Python: Select Interpreter`.
+12. Run `python -m virtualenv <myenvname> --python=python3.12.4` to create a virtual environment that runs on Python 3.12.4.
 
-13. Select `Python 3.12.4 64-bit ('<myenvname>':venv)`.
+13. Activate the virtual environment with `source <myenvname>/bin/activate`.
 
-14. Run `pip list` to see a list of installed packages. It should only have two or three modules.
+14. You should see `(<myenvname>)` two lines above the terminal input line when the environment is active.
 
-15. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
+15. Press F1 to open VS Code's command palette.
 
-16. Once everything is installed, run `python q_snake.py` to test if you can play the game manually.
+16. Search for `Python: Select Interpreter` and select `Python 3.12.4 64-bit ('<myenvname>':venv)`.
 
-17. Next, specify `"human": false` in `config.json`, save it, and then run  `python q_snake.py` again, this time to see if the *agent* is able to play the game.
+17. Run `pip list` to see a list of installed packages. It should only have two or three modules.
 
-18. Let the agent run to the end and check that `plotting.py` is able to produce a graph of the learning curve.
+18. Run `pip install -r requirements.txt` to install all dependencies on your activated virtual environment.
 
-19. Play with a few settings in `config.json` and re-run `python q_snake.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a questions you want to explore.
+19. Ensure the `"human"` option in `configs/config.json` is set to `true`.
 
-20. OPTIONAL - If you were bold enough to install Ghostscript, try saving game frames as EPS files. You can then run `make_gif_from_images.py` (with some manual adjustments) to convert the EPS files into PNG files and then into an animated GIF.
+20. Once everything is installed, run `python q_snake.py` to test if you can play the game manually.
 
-21. OPTIONAL - Try converting the saved EPS files into PNG and then into a GIF all at once by specifying `"save_for_gif": true` and `"make_gif": true` in config.json. Please note that this process can take ~30 minutes for 50 training episodes.
+21. Next, specify `"human": false` in `config.json`, save it, and then run  `python q_snake.py` again, this time to see if the *agent* is able to play the game.
+
+22. Let the agent run to the end and check that `plotting.py` is able to produce a graph of the learning curve.
+
+23. Play with a few settings in `config.json` and re-run `python q_snake.py` to see how the changes affect the agent's behavior. Feel free to do this until you get bored or it sparks a question you want to explore.
+
+24. OPTIONAL - If you were bold enough to install Ghostscript, try saving game frames as EPS files. You can then run `make_gif_from_images.py` (with some manual adjustments) to convert the EPS files into PNG files and then into an animated GIF.
+
+25. OPTIONAL - Try converting the saved EPS files into PNG and then into a GIF all at once by specifying `"save_for_gif": true` and `"make_gif": true` in `config.json`. Please note that this process can take 30 to 60 minutes for 50 training episodes.
 
 <!-- TOC --><a name="3-core-files"></a>
 # 3. Core Files
@@ -126,19 +134,19 @@ Define how the script should run. All of the keys in the default configuration i
 ```json
 {
     "human": true,
-    "name": "test",
+    "name": "default",
     "save_for_gif": false,
     "make_gif": false,
     "params":{
         "epsilon": 1.0,
         "gamma": 0.95,
-        "batch_size": 32,
+        "batch_size": 256,
         "epsilon_min": 0.001,
         "epsilon_decay": 0.98,
         "learning_rate": 0.00025,
         "layer_sizes": [128, 128, 128],
-        "num_episodes": 15,
-        "max_steps": 150,
+        "num_episodes": 20,
+        "max_steps": 3000,
         "state_definition_type": "default"
     }
 }
@@ -150,13 +158,13 @@ Define how the script should run. All of the keys in the default configuration i
 Whether to run so a human can play with the arrow keys, or to let the agent play by itself.
 <!-- TOC --><a name="3212-name"></a>
 #### 3.2.1.2 `name`
-The name of the current run.
+The name of the configuration.
 <!-- TOC --><a name="3213-save_for_gif"></a>
 #### 3.2.1.3 `save_for_gif`
 Whether to save EPS files of the agent as it trains in preparation for making a training montage GIF.
 <!-- TOC --><a name="3214-make_gif"></a>
 #### 3.2.1.4 `make_gif`
-Whether to make a gif at the end of the run.
+Whether to make a training montage GIF at the end of the run.
 
 <!-- TOC --><a name="322-config-param-definitions"></a>
 ### 3.2.2 Config Param Definitions
@@ -171,16 +179,16 @@ Discount factor for future rewards (0 is short-sighted, 1 is long-sighted).
 The number of training samples processed before the model's internal parameters are updated during one iteration of training.
 <!-- TOC --><a name="3224-epsilon_min"></a>
 #### 3.2.2.4 `epsilon_min`
-The minimum ratio of time steps we'd like the agent to move randomly vs in a predicted direction.
+The minimum ratio of time steps we'd like the agent to move randomly versus in a policy-predicted direction.
 <!-- TOC --><a name="3225-epsilon_decay"></a>
 #### 3.2.2.5 `epsilon_decay`
-How much of the ratio of random moving we want to take into the next iteration of gathering a batch of states.
+How much randomness we want to take into the next iteration of gathering a batch of states. For example, if we move randomly 50% of the time for the current batch and `epsilon_decay` is set to 0.95, we will move randomly 47% of the time on the next batch.
 <!-- TOC --><a name="3226-learning_rate"></a>
 #### 3.2.2.6 `learning_rate`
-To what extent newly acquired info overrides old info (0 learn nothing and exploit prior knowledge exclusively; 1 only consider the most recent information)
+To what extent newly acquired info overrides old info (0 learn nothing and exploit prior knowledge exclusively; 1 only consider the most recent information).
 <!-- TOC --><a name="3227-layer_sizes"></a>
 #### 3.2.2.7 `layer_sizes`
-The number of nodes for the hidden layers of our Q network
+The number of nodes for the hidden layers of our deeply-connected Q network.
 <!-- TOC --><a name="3228-num_episodes"></a>
 #### 3.2.2.8 `num_episodes`
 The number of games to play.
@@ -191,23 +199,25 @@ The maximum number of steps allowable in a single game.
 <!-- TOC --><a name="323-an-important-note-on-batch_size"></a>
 ### 3.2.3 An Important Note on `batch_size`
 - The number of training examples used in the *estimate* of the **error gradient** is a *hyperparameter* for the learning algorithm called the **"batch size"** (or simply **"the batch"**).
+- A **hyperparameter** is a variable set before learning begins.
 - Note that the error gradient is a *statistical* estimate.
-- The more training examples used in the estimate:
+- The more training examples used in the estimate
   1. The more accurate the estimate will be.
   2. The more likely the network will adjust such that the model's overall performance improves.
-- **An improved estimate of the error gradient comes at a cost**: it requires the model to make many more predictions before the estimate can be calculated and the weights updated.
+- **An improved estimate of the error gradient comes at a cost**.
+  - It requires the model to make many more predictions before the estimate can be calculated and the weights updated.
 
 <!-- TOC --><a name="3231-notes-batch-size-from-deep-learning-by-ian-goodfellow"></a>
 #### 3.2.3.1 Notes Batch Size from Deep Learning by Ian Goodfellow:
->"Optimization algorithms that use the entire training set are called batch or deterministic gradient methods, because they process all of the training examples simultaneously in a large batch."
+>Optimization algorithms that use the entire training set are called batch or deterministic gradient methods, because they process all of the training examples simultaneously in a large batch.
 >
->"Optimization algorithms that use only a single example at a time are sometimes called stochastic or sometimes online methods. The term online is usually reserved for the case where the examples are drawn from a stream of continually created examples rather than from a fixed-size training set over which several passes are made."
+>Optimization algorithms that use only a single example at a time are sometimes called stochastic or sometimes online methods. The term online is usually reserved for the case where the examples are drawn from a stream of continually created examples rather than from a fixed-size training set over which several passes are made.
 
 <!-- TOC --><a name="3232-notes-batch-sizing-from-jason-brownlee"></a>
 #### 3.2.3.2 Notes Batch Sizing from Jason Brownlee:
-> A batch size of 32 means that 32 samples from the training dataset will be used to estimate the error gradient before the model weights are updated. One training epoch means that the learning algorithm has made one pass through the training dataset, where examples were separated into randomly selected 'batch size' groups.
+> A batch size of 32 means that 32 samples from the training dataset will be used to estimate the error gradient before the model weights are updated. One training epoch means that the learning algorithm has made one pass through the training dataset, where examples were separated into randomly selected "batch size" groups.
 >
-> Historically, a training algorithm where the batch size is set to the total number of training examples is called 'batch gradient descent' and a training algorithm where the batch size is set to 1 training example is called 'stochastic gradient descent' or 'online gradient descent.'"
+> Historically, a training algorithm where the batch size is set to the total number of training examples is called "batch gradient descent" and a training algorithm where the batch size is set to 1 training example is called "stochastic gradient descent" or "online gradient descent".
 >
 > Put another way, the batch size defines the number of samples that must be propagated through the network before the weights can be updated.
 
@@ -221,15 +231,15 @@ The maximum number of steps allowable in a single game.
 
 <!-- TOC --><a name="33-requirementstxt"></a>
 ## 3.3 `requirements.txt`
-After creating a virtual environment with [Python 3.12.4](https://www.python.org/downloads/release/python-3124/), run `pip install -r requirements.txt` to install all necessary dependencies.
+The modules required for running the project. After creating a virtual environment with [Python 3.12.4](https://www.python.org/downloads/release/python-3124/), run `pip install -r requirements.txt` to install all necessary dependencies.
 
 <!-- TOC --><a name="34-environmentpy"></a>
 ## 3.4 `environment.py`
-This subclass of `gymnasium.Env` represents the snake game environment.
+This subclass of `gymnasium.Env` represents the Snake game environment (which includes the snake itself).
 
 <!-- TOC --><a name="35-agentpy"></a>
 ## 3.5 `agent.py`
-Train an agent to play snake via a deep Q-learning network.
+Train an agent to play Snake via a deep Q-learning network.
 
 <!-- TOC --><a name="36-plottingpy"></a>
 ## 3.6 `plotting.py`
@@ -237,7 +247,7 @@ Graph some statistics about how the Q-network was trained and the performance of
 
 <!-- TOC --><a name="37-gif_builderpy"></a>
 ## 3.7 `gif_builder.py`
-Convert saved EPS files into PNG files and then PNG files into an animated GIF. Using this class requires a separate installation of [Ghostscript](https://ghostscript.com/releases/index.html).
+Convert saved EPS files into PNG files and then PNG files into an animated GIF. Using this class requires a separate installation of [Ghostscript](https://ghostscript.com/releases/index.html), and `EpsImagePlugin.gs_windows_binary = <path_to_binary>` must be appropriately edited within `gif_builder.py`.
 
 <!-- TOC --><a name="38-make_gif_from_imagespy"></a>
 ## 3.8 `make_gif_from_images.py`
@@ -247,7 +257,6 @@ Convert already-saved EPS or PNG image files into a GIF without having to re-run
 # 4. Q-Learning Overview
 <!-- TOC --><a name="41-what-is-the-bellman-equation"></a>
 ## 4.1 What is the [Bellman Equation](https://en.wikipedia.org/wiki/Bellman_equation)?
-
 The Bellman equation is a fundamental recursive formula in reinforcement learning that expresses the value (i.e. Q-value) of a **state** in terms of the expected reward and the values of subsequent states. It has an abstract general definition, but in Q-learning, it's more easily understood when rearranged into the [**Q-value update rule**](https://en.wikipedia.org/wiki/Q-learning#Algorithm).
 
 ![banner](/img/readme/q-update-rule.png)
@@ -257,9 +266,9 @@ The Bellman equation is a fundamental recursive formula in reinforcement learnin
 - $r_t$ is the immediate reward received after taking action $a$ in state $s$ at time $t$.
 - $\gamma$ is the discount factor, which balances the importance of immediate versus future rewards.
 - $s_{t+1}$ is the next state resulting from taking action $a$ in state $s$ at time $t$.
-- $\underset{a}{\max}\,Q(s_{t+1},a)$ is the maximum Q-value for the next state $s_{t+1}$ over all possible actions.
+- $\underset{a}{\max}\,Q(s_{t+1},a)$ is the maximum Q-value for the next state $s_{t+1}$ over all possible actions $a$.
 
-An episode of the algorithm ends when state $s_{t+1}$ is a **final** state. For all final states $s_f$, $Q(s_f,a)$ is never updated, but is instead set to the reward value $r$ observed for state $s_f$.
+An episode of the algorithm ends when state $s_{t+1}$ is a **final** state (referred to as a `done` state in `agent.py`). For all final states $s_f$, $Q(s_f,a)$ is never updated, but is instead set to the reward value $r$ observed for state $s_f$.
 
 <!-- TOC --><a name="411-adjustable-hyperparameters"></a>
 ### 4.1.1 Adjustable Hyperparameters
@@ -268,7 +277,7 @@ An episode of the algorithm ends when state $s_{t+1}$ is a **final** state. For 
    - $\alpha$ determines to what extent newly acquired information overrides old information.
      - $\alpha\in(0,1]$
      - As $\alpha$ approaches 0, the agent more exclusively uses prior knowledge.
-     - As $\alpha$ approaches 1, the agent more exclusively considers only the most recent data.
+     - As $\alpha$ approaches 1, the agent more exclusively considers the most recent data.
      - In deterministic environments, a value of 1 is optimal.
      - In environments with some randomness, $\alpha$ needs to eventually decrease to zero (meaning an optimal strategy is found).
        - In practice, however, using a constant learning rate works just fine.
@@ -282,25 +291,25 @@ An episode of the algorithm ends when state $s_{t+1}$ is a **final** state. For 
 
 <!-- TOC --><a name="42-applying-the-bellman-equation-to-snake"></a>
 ## 4.2 Applying the Bellman Equation to Snake
-In the Snake game, the agent (the snake) navigates the game grid, eats food to grow, and avoids collisions with itself and the walls.
+In the Snake game, the agent (the brain controlling the snake) navigates the game grid, eats food to grow, and avoids collisions with itself and the walls.
 <!-- TOC --><a name="421-general-definitions-in-terms-of-snake"></a>
 ### 4.2.1 General Definitions in Terms of Snake
 - State $s$
-  - A configuration of the game (i.e. the position of the snake the food).
+  - A configuration of the game (i.e. the position of the snake, the walls, and the food).
 - Action $a$
   - Possible moves (i.e. up, down, left, or right).
 - Reward $r$
   - The reward received for taking action $a$ in state $s$.
     | **Reward Type** | **Description**                              |
     |-----------------|----------------------------------------------|
-    | $+$             | Reward for eating food                       |
-    | $-$             | Penalty for colliding with walls or itself   |
-    | $0$             | No reward for moving without eating food     |
+    | $+$             | Reward for eating food.                       |
+    | $-$             | Penalty for colliding with walls or itself.   |
+    | $0$             | No reward for moving without eating food.     |
 
 <!-- TOC --><a name="422-bellman-snake-algorithm"></a>
 ### 4.2.2 Bellman Snake Algorithm
 1. ***Initialize DQN***
-   - Start with an empty neural net where all Q-values are zero.
+   - Start with an empty deeply-connected neural net where all Q-values are zero.
 2. ***Observe Current State***
    - Record the current position of the snake and the apple on the grid.
 3. ***Choose Action***
