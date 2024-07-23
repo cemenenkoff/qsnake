@@ -3,7 +3,9 @@
 - In the game of [Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)), each time the snake eats an apple, it grows by one chunk.
 - The game ends if the snake head hits a wall or its own body.
 
-![training-montage](/img/readme/training-montage.gif)
+<p align="center">
+  <img src="/img/readme/training-montage.gif.png"/>
+</p>
 ![learning-curve](/img/readme/learning-curve.png)
 
 [TOC]
