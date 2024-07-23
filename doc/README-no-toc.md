@@ -1,6 +1,10 @@
 ![banner](/img/readme/qsnake-banner-grey.png)
 # [Deep Q Learning](https://huggingface.co/learn/deep-rl-course/en/unit3/deep-q-algorithm) for Top-Down 2D Games
-- In the game of [Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)), each time the snake eats an apple, it grows by one chunk.
+Train a deep Q-network to master the classic game of [Snake](https://en.wikipedia.org/wiki/Snake_(video_game_genre)). Watch as the computer learns in real time, evolving from novice to expert through continuous gameplay and self-improvement.
+
+The rules of the game are simple.
+- The snake's length represents the player's score.
+- Each time the snake eats an apple, it grows by one chunk.
 - The game ends if the snake head hits a wall or its own body.
 
 <p align="center">

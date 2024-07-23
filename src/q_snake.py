@@ -89,6 +89,10 @@ def check_config(config: dict) -> dict:
 
 
 def main():
+    """Train a deep Q-network to master the classic game of Snake.
+
+    Watch as the computer learns in real time, evolving from novice to expert through continuous gameplay and self-improvement.
+    """
     args = parse_args()
     config = check_config(get_config(args.config))
     params = config["params"]  # The main parameters for the agent.
