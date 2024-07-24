@@ -87,8 +87,6 @@
 \begin_body
 
 \begin_layout Standard
-
-\color gray
 \begin_inset Formula 
 \[
 Q^{\mathrm{new}}(s_{t},a_{t})\leftarrow\underbrace{Q(s_{t},a_{t})}_{\mathrm{old\,value}}+\underbrace{\alpha}_{\mathrm{learning\ rate}}\cdot\overbrace{\left(\underbrace{\underbrace{r_{t}}_{\mathrm{reward}}+\underbrace{\gamma}_{\mathrm{discount}}\cdot\underbrace{\underset{a}{\max}\ Q(s_{t+1},a)}_{\mathrm{est.\ optimal\ future\ value}}}_{\mathrm{new\ value\ (temporal\ difference\ target)}}-\;\underbrace{Q(s_{t},a_{t})}_{\mathrm{old\,value}}\right)}^{\mathrm{temporal\ difference}}

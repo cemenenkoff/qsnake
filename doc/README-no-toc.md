@@ -184,7 +184,7 @@ Convert already-saved EPS or PNG image files into a GIF without having to re-run
 ## 4.1 What is the [Bellman Equation](https://en.wikipedia.org/wiki/Bellman_equation)?
 The Bellman equation is a fundamental recursive formula in reinforcement learning that expresses the value (i.e. Q-value) of a **state** in terms of the expected reward and the values of subsequent states. It has an abstract general definition, but in Q-learning, it's more easily understood when rearranged into the [**Q-value update rule**](https://en.wikipedia.org/wiki/Q-learning#Algorithm).
 
-![banner](/img/readme/q-update-rule.png)
+![banner](/img/readme/q-update-rule-grey-transparent.png)
 
 - $Q(s_t,a_t)$ is the Q-value of taking action $a$ in state $s$ at time $t$.
 - $\alpha$ is the learning rate, which determines the extent to which new experience overrides past experience.
