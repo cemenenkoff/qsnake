@@ -53,7 +53,7 @@ If you are fairly new to Python programming, I'd recommend the following steps:
 
 11. Run `python -m virtualenv <myenvname> --python=python3.12.4` to create a virtual environment that runs on Python 3.12.4.
 
-12. Activate the virtual environment with `source <myenvname>/bin/activate`.
+12. Activate the virtual environment with `source <myenvname>/Scripts/activate`.
 
 13. You should see `(<myenvname>)` two lines above the terminal input line when the environment is active.
 
