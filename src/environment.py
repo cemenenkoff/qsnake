@@ -128,7 +128,7 @@ class Snake(gym.Env):
     def move_body(self) -> None:
         """Move the snake's body, following the head's lead."""
         # The 0th index is the dummy body chunk and NOT the snake's head.
-        for i, chunk in reversed(list(enumerate(self.body))):  # 10, 9, 8, 7, ...
+        for i, _chunk in reversed(list(enumerate(self.body))):  # 10, 9, 8, 7, ...
             if i != 0:
                 x = self.body[i - 1].xcor()
                 y = self.body[i - 1].ycor()
@@ -246,7 +246,7 @@ class Snake(gym.Env):
         """
         # [o][o]
         # [o][<] You need a length of at least 4 to eat yourself.
-        if any([body.distance(self.head) < self.HEAD_SIZE for body in self.body[3:]]):
+        if any(body.distance(self.head) < self.HEAD_SIZE for body in self.body[3:]):
             self.reset_score()
             return True
         return False
@@ -257,14 +257,10 @@ class Snake(gym.Env):
         Returns:
             bool: True if the snake is eating an apple, False otherwise.
         """
-        if len(self.body) > 0:
-            if any(
-                [chunk.distance(self.apple) < self.HEAD_SIZE for chunk in self.body]
-            ):
-                return True
-        if self.head.distance(self.apple) < self.HEAD_SIZE:
-            return True
-        return False
+        return (
+            len(self.body) > 0
+            and any(chunk.distance(self.apple) < self.HEAD_SIZE for chunk in self.body)
+        ) or self.head.distance(self.apple) < self.HEAD_SIZE
 
     def is_hitting_wall(self) -> bool:
         """Check if the snake is hitting a wall.
@@ -520,8 +516,8 @@ class Snake(gym.Env):
                 direction_left,
                 direction_right,
             ]
-        # The 'default' state includes apple direction, obstacle adjacency, and
-        # head direction information.
+        # The 'default' state includes apple direction, obstacle adjacency, and head
+        # direction information.
         else:
             state = [
                 apple_above,

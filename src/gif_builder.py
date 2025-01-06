@@ -33,7 +33,7 @@ class GifBuilder:
         """Convert all eps files in a directory into png format all at once."""
         if not self.png_dir.exists():
             self.png_dir.mkdir(parents=True)
-        eps_fpaths = [eps_path for eps_path in self.eps_dir.glob("*.eps")]
+        eps_fpaths = list(self.eps_dir.glob("*.eps"))
         print("Converting eps files to png (this may take some time)...")
         for eps_path in tqdm(eps_fpaths):
             self.convert_eps_to_png(eps_path)
@@ -45,7 +45,7 @@ class GifBuilder:
             outpath (Path, optional): The desired output path for the finished gif.
                 Defaults to Path.cwd()/"training_montage.gif".
         """
-        pngs = [png for png in self.png_dir.glob("*.png")]
+        pngs = list(self.png_dir.glob("*.png"))
         frames = []
         # Note that we open and close a temp file to avoid potentially opening several
         # thousand files at once.
@@ -69,7 +69,7 @@ class GifBuilder:
                 duration=20,
                 loop=0,  # 0 makes the gif loop indefinitely.
                 transparency=0,
-                disposal=2,  # Remove lingering frames. See: https://tinyurl.com/mrxn7f4f
+                disposal=2,  # Remove ghost frames. See: https://tinyurl.com/mrxn7f4f
             )
         except Exception as exc:
             print(f"ERROR: Animated gif creation failed: {exc}")

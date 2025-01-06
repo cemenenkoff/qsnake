@@ -3,10 +3,11 @@ from collections import deque
 from typing import Any, Dict, List
 
 import numpy as np
-from environment import Snake
 from keras import Sequential
 from keras.layers import Dense, Input
 from tensorflow.keras.optimizers import Adam
+
+from environment import Snake
 
 """
 In deep reinforcement learning, we need to create two things:
@@ -28,7 +29,12 @@ neural network where each neuron in the current layer is connected to every neur
 the previous layer. This complete linkage is what gives the layer its name, and it's
 the most commonly used type of layer in artificial neural network networks.
 
-Adam (short for Adaptive Moment Estimation) optimization is a stochastic gradient descent method that is based on adaptive estimation of first-order and second order moments. Whereas momentum can be seen as a ball running down a slope, Adam behaves like a heavy ball with friction, which thus prefers flat minima in the error surface.
+Adam (Adaptive Moment Estimation) is a stochastic gradient descent method that
+adaptively estimates the first and second moments of the gradients. It combines the
+benefits of momentum (to accelerate convergence) and adaptive learning rates (to handle
+sparse or noisy gradients). Unlike momentum, which can be likened to a ball rolling
+down a slope, Adam behaves like a ball with friction, favoring stable, flat minima in
+the error surface.
 """
 
 
@@ -207,7 +213,7 @@ def train_dqn(env: Snake, params: Dict[str, Any]) -> List[int]:
                 agent.replay()
             if done:
                 prefix = f"{str(prev_state)} {total_reward:<5}"
-                suffix = f'({episode_num+1:>3}/{params["num_episodes"]:<3})'
+                suffix = f'({episode_num + 1:>3}/{params["num_episodes"]:<3})'
                 print(f"{prefix} {suffix}")
                 break
         history.append(total_reward)
